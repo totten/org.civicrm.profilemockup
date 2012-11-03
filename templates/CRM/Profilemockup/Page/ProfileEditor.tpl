@@ -39,8 +39,23 @@
 </script>
 
 <script type="text/template" id="palette_template">
-        <h3>Section 1</h3>
-        <div>Hello one, one, one, one, one, one, one, one, one, one, one, one, one, one, one, one, one, one, one, one, one, one, one, one, one</div>
-        <h3>Section 2</h3>
-        <div>Hello two, two, two, two, two, two, two, two, two, two, two, two, two, two, two, two, two, two, two, two, two, two, two, two, two</div>
+  <div class="crm-profilemockup-palette-acc">
+    <h3>Section 1</h3>
+    <div>
+        <ul>
+            <li>One</li>
+            <li>Two</li>
+            <li>Three</li>
+        </ul>
+    </div>
+    <h3>Section 2</h3>
+    <div>
+        <ul>
+            <li>Four</li>
+            <li>Five</li>
+            <li>Six</li>
+        </ul>
+        <button>Add</button>
+    </div>
+  </div>
 </script>

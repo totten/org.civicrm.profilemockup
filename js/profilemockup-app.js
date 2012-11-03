@@ -8,7 +8,7 @@ cj(document).ready(function($){
     });
     var app_router = new AppRouter();
     app_router.on('route:defaultRoute', function(name) {
-        var designerView = null;
+        var designerView = null; // Civi.Form.DesignerView
         $("#crm-profilemockup-dialog").dialog({
             autoOpen: true, // note: affects accordion height
             title: 'Embedded Profile Editor',

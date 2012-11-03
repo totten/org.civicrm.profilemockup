@@ -36,6 +36,22 @@
         },
     });
 
+    Civi.Form.PaletteView = Backbone.View.extend({
+        initialize: function() {
+            this.render();
+        },
+        render: function() {
+            var palette_template = _.template( $('#palette_template').html() );
+            this.$el.append(palette_template);
+            $(this.$el).find('.crm-profilemockup-palette-acc').accordion({
+                heightStyle: 'fill',
+                autoHeight: true
+            });
+        },
+        destroy: function() {
+            $(this.$el).find('.crm-profilemockup-palette-acc').accordion('destroy');
+        }
+    });
     /**
      * Display a list
      */
@@ -51,11 +67,8 @@
             this.$el.html( _.template($('#designer_template').html()) );
 
             // Setup accordion after open to ensure proper height
-            var palette_template = _.template( $('#palette_template').html() );
-            $('.crm-profilemockup-palette').append(palette_template);
-            $('.crm-profilemockup-palette').accordion({
-                heightStyle: 'fill',
-                autoHeight: true
+            this.paletteView = new Civi.Form.PaletteView({
+              el: $('.crm-profilemockup-palette')
             });
             $('.crm-profilemockup-save').button();
             $('.crm-profilemockup-preview').button();
@@ -81,7 +94,7 @@
         },
         destroy: function() {
             // TODO reconcile with View.remove()
-            $('.crm-profilemockup-palette').accordion('destroy');
+            this.paletteView.destroy();
         }
     });    
 })();
