@@ -52,8 +52,8 @@
             'id': {type: 'Number'},
             'title': {type: 'Text'},
             'is_active': {type: 'Checkbox'},
-            'help_post': {type: 'Text'},
-            'help_pre': {type: 'Text'}
+            'help_pre': {type: 'Text'},
+            'help_post': {type: 'Text'}
             // TODO
         },
         initialize: function(){

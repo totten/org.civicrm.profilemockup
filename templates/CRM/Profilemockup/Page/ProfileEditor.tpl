@@ -2,6 +2,8 @@
 
 {* Markup for the initial page view *}
 
+<div id="profile_editor_app"></div>
+
 <button class="crm-profilemockup-open">Edit Profile</button>
 <div id="crm-profilemockup-dialog" title="Dialog Title">
   <div id="crm-profilemockup-designer" class="crm-clearfix">
@@ -32,8 +34,7 @@
       </div>
     </div>
     <div class="crm-profilemockup-canvas">
-      Good day
-      <div id="profile_editor_app"></div>
+      <div class="crm-profilemockup-formdetail"></div>
     </div>
 </script>
 
