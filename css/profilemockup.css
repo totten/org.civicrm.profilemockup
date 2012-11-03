@@ -17,6 +17,12 @@
   margin: auto;
 }
 
+.crm-profilemockup-fields {
+  background:red;
+  min-width:100px;
+  min-height:100px;
+}
+
 /* fixme proper theming */
 .ui-dialog {
   border: 1px solid black;

@@ -43,9 +43,23 @@
         render: function() {
             var palette_template = _.template( $('#palette_template').html() );
             this.$el.append(palette_template);
-            $(this.$el).find('.crm-profilemockup-palette-acc').accordion({
+            var $acc = $(this.$el).find('.crm-profilemockup-palette-acc')
+            $acc.accordion({
                 heightStyle: 'fill',
                 autoHeight: true
+            });
+            $acc.find('li').draggable({
+                appendTo: "body",
+                helper: "clone"
+            });
+
+            $( ".crm-profilemockup-canvas ol" ).droppable({
+                activeClass: "ui-state-default",
+                hoverClass: "ui-state-hover",
+                accept: ":not(.ui-sortable-helper)",
+                drop: function( event, ui ) {
+                    $( "<li></li>" ).text( ui.draggable.text() ).appendTo( this );
+                }
             });
         },
         destroy: function() {
@@ -96,5 +110,5 @@
             // TODO reconcile with View.remove()
             this.paletteView.destroy();
         }
-    });    
+    });
 })();

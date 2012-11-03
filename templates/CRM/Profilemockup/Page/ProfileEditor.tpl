@@ -35,6 +35,8 @@
     </div>
     <div class="crm-profilemockup-canvas">
       <div class="crm-profilemockup-formdetail"></div>
+      <ol class="crm-profilemockup-fields">
+      </ol>
     </div>
 </script>
 
