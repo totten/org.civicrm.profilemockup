@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <extension key="org.civicrm.profilemockup" type="module">
   <file>profilemockup</file>
-  <name>FIXME</name>
-  <description>FIXME</description>
-  <license>FIXME</license>
+  <name>Profile Mockup</name>
+  <description>Non-functioning mockup of a profile editing UI</description>
+  <license>AGPL-3.0</license>
   <maintainer>
     <author>FIXME</author>
     <email>FIXME@example.com</email>
