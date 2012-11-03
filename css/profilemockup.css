@@ -1,0 +1,23 @@
+.crm-profilemockup-toolbar {
+  width: 25%;
+  float: right;
+}
+
+.crm-profilemockup-palette > div {
+  padding: 10px;
+}
+ 
+.crm-profilemockup-canvas {
+  width: 73%;
+  float: left;
+}
+
+.crm-profilemockup-buttonset {
+  text-align: center;
+  margin: auto;
+}
+
+/* fixme proper theming */
+.ui-dialog {
+  border: 1px solid black;
+}
