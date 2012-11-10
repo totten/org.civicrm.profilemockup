@@ -23,6 +23,31 @@
      * options:
      * - model: Civi.Form.FormModel
      */
+    Civi.Form.FormView = Backbone.View.extend({
+        initialize: function(){
+            this.render();
+        },
+        events: {
+          "click .crm-profilemockup-form-prop": 'doToggleForm'
+        },
+        render: function(){
+            $(this.$el).find('.crm-profilemockup-form-title').text(this.model.get('title'));
+            $(this.$el).find('.crm-profilemockup-form-prop').button({icons: {primary: 'ui-icon-pencil'}, text: false})
+            this.detailView = new Civi.Form.FormDetailView({
+                model: this.model,
+                el: $(this.$el).find('.crm-profilemockup-form-detail')
+            });
+            this.detailView.$el.hide();
+        },
+        doToggleForm: function(event) {
+            $('.crm-profilemockup-form-detail').toggle('blind', 250);
+        }
+    });
+
+    /**
+     * options:
+     * - model: Civi.Form.FormModel
+     */
     Civi.Form.FormDetailView = Backbone.View.extend({
         initialize: function(){
             this.render();
@@ -36,6 +61,9 @@
         },
     });
 
+    /**
+     * Display a selection of available fields
+     */
     Civi.Form.PaletteView = Backbone.View.extend({
         initialize: function() {
             this.render();
@@ -50,6 +78,7 @@
             });
             $acc.find('li').draggable({
                 appendTo: "body",
+                zIndex: 5000, // above jQuery UI dialog
                 helper: "clone"
             });
 
@@ -66,16 +95,18 @@
             $(this.$el).find('.crm-profilemockup-palette-acc').accordion('destroy');
         }
     });
+
     /**
-     * Display a list
+     * Display a complete form-editing UI, including canvas, palette, and
+     * buttons.
      */
     Civi.Form.DesignerView = Backbone.View.extend({
         initialize: function() {
             this.render();
         },
         events: {
-            'click .crm-profilemockup-save': 'onSave',
-            'click .crm-profilemockup-preview': 'onPreview',
+            'click .crm-profilemockup-save': 'doSave',
+            'click .crm-profilemockup-preview': 'doPreview',
         },
         render: function() {
             this.$el.html( _.template($('#designer_template').html()) );
@@ -88,8 +119,8 @@
             $('.crm-profilemockup-preview').button();
 
             var formModel = new Civi.Form.FormModel({id: 5, title: 'October Survey', help_post: (new Date()).toString()});
-            var formDetailView = new Civi.Form.FormDetailView({
-                el: $('.crm-profilemockup-formdetail', this.$el),
+            var formDetailView = new Civi.Form.FormView({
+                el: $('.crm-profilemockup-form', this.$el),
                 model: formModel
             });
             /*
@@ -100,10 +131,10 @@
             });
             */
         },
-        onSave: function(event) {
+        doSave: function(event) {
             console.log('save');
         },
-        onPreview: function(event) {
+        doPreview: function(event) {
             console.log('preview');
         },
         destroy: function() {

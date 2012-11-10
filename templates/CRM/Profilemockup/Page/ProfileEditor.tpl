@@ -34,7 +34,10 @@
       </div>
     </div>
     <div class="crm-profilemockup-canvas">
-      <div class="crm-profilemockup-formdetail"></div>
+      <div class="crm-profilemockup-form">
+        <div class="crm-profilemockup-form-summary"><span class="crm-profilemockup-form-title"></span> <button class="crm-profilemockup-form-prop">{ts}Settings{/ts}</button></div>
+        <div class="crm-profilemockup-form-detail"></div>
+      </div>
       <ol class="crm-profilemockup-fields">
       </ol>
     </div>

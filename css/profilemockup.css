@@ -23,6 +23,24 @@
   min-height:100px;
 }
 
+.crm-profilemockup-form-summary button {
+  visibility: hidden;
+}
+
+.crm-profilemockup-form-summary:hover button {
+  visibility: visible;
+}
+
+.crm-profilemockup-form-summary {
+  height: 2em;
+  border: 1px solid white;
+  padding: 0.1em;
+}
+
+.crm-profilemockup-form-summary:hover {
+  border: 1px dashed black;
+}
+
 /* fixme proper theming */
 .ui-dialog {
   border: 1px solid black;
