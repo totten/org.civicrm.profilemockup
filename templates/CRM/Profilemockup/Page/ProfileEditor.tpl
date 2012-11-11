@@ -38,8 +38,8 @@
         <div class="crm-profilemockup-form-summary"><span class="crm-profilemockup-form-title"></span> <button class="crm-profilemockup-form-prop">{ts}Settings{/ts}</button></div>
         <div class="crm-profilemockup-form-detail"></div>
       </div>
-      <ol class="crm-profilemockup-fields">
-      </ol>
+      <ul class="crm-profilemockup-fields">
+      </ul>
     </div>
 </script>
 
@@ -48,17 +48,17 @@
     <h3>Section 1</h3>
     <div>
         <ul>
-            <li>One</li>
-            <li>Two</li>
-            <li>Three</li>
+            <li data-fr="un">One</li>
+            <li data-fr="deux">Two</li>
+            <li data-fr="trois">Three</li>
         </ul>
     </div>
     <h3>Section 2</h3>
     <div>
         <ul>
-            <li>Four</li>
-            <li>Five</li>
-            <li>Six</li>
+            <li data-fr="quatre">Four</li>
+            <li data-fr="cinq">Five</li>
+            <li data-fr="six">Six</li>
         </ul>
         <button>Add</button>
     </div>

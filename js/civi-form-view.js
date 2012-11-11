@@ -78,18 +78,19 @@
             });
             $acc.find('li').draggable({
                 appendTo: "body",
-                zIndex: 5000, // above jQuery UI dialog
+                zIndex: $(this.$el).zIndex()+5000,
                 helper: "clone"
             });
 
-            $( ".crm-profilemockup-canvas ol" ).droppable({
+            $( ".crm-profilemockup-canvas ul" ).droppable({
                 activeClass: "ui-state-default",
                 hoverClass: "ui-state-hover",
                 accept: ":not(.ui-sortable-helper)",
                 drop: function( event, ui ) {
+                    console.log(ui.draggable.attr('data-fr'));
                     $( "<li></li>" ).text( ui.draggable.text() ).appendTo( this );
                 }
-            });
+            }).sortable().disableSelection();
         },
         destroy: function() {
             $(this.$el).find('.crm-profilemockup-palette-acc').accordion('destroy');
