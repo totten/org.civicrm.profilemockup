@@ -10,6 +10,10 @@
         initialize: function(){
             this.render();
         },
+        events: {
+          "click .crm-designer-action-settings": 'doToggleForm',
+          "click .crm-designer-action-remove": 'doRemove'
+        },
         render: function(){
             var field_template = _.template($('#field_template').html(), {
               formField: this.model,
@@ -17,6 +21,12 @@
             });
             this.$el.html(field_template);
         },
+        doToggleForm: function(event) {
+          console.log('open field settings');
+        },
+        doRemove: function(event) {
+          console.log('remove field');
+        }
     });
 
     /**
@@ -45,7 +55,7 @@
             this.render();
         },
         events: {
-          "click .crm-designer-buttons": 'doToggleForm'
+          "click .crm-designer-action-settings": 'doToggleForm'
         },
         render: function(){
             $(this.$el).find('.crm-designer-form-title').text(this.model.get('title'));
