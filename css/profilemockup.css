@@ -18,9 +18,13 @@
 }
 
 .crm-profilemockup-fields {
-  background:red;
+  border: 1px solid white;
   min-width:100px;
   min-height:100px;
+}
+
+.crm-profilemockup-fields:hover {
+  border: 1px dashed #444;
 }
 
 .crm-profilemockup-form-summary button {

@@ -38,8 +38,8 @@
         <div class="crm-profilemockup-form-summary"><span class="crm-profilemockup-form-title"></span> <button class="crm-profilemockup-form-prop">{ts}Settings{/ts}</button></div>
         <div class="crm-profilemockup-form-detail"></div>
       </div>
-      <ul class="crm-profilemockup-fields">
-      </ul>
+      <div class="crm-profilemockup-fields">
+      </div>
     </div>
 </script>
 
@@ -47,19 +47,19 @@
   <div class="crm-profilemockup-palette-acc">
     <h3>Section 1</h3>
     <div>
-        <ul>
-            <li data-fr="un">One</li>
-            <li data-fr="deux">Two</li>
-            <li data-fr="trois">Three</li>
-        </ul>
+        <div>
+            <div class="crm-profilemockup-palette-field" data-fr="un">One</div>
+            <div class="crm-profilemockup-palette-field" data-fr="deux">Two</div>
+            <div class="crm-profilemockup-palette-field" data-fr="trois">Three</div>
+        </div>
     </div>
     <h3>Section 2</h3>
     <div>
-        <ul>
-            <li data-fr="quatre">Four</li>
-            <li data-fr="cinq">Five</li>
-            <li data-fr="six">Six</li>
-        </ul>
+        <div>
+            <div class="crm-profilemockup-palette-field" data-fr="quatre">Four</div>
+            <div class="crm-profilemockup-palette-field" data-fr="cinq">Five</div>
+            <div class="crm-profilemockup-palette-field" data-fr="six">Six</div>
+        </div>
         <button>Add</button>
     </div>
   </div>

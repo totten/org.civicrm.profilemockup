@@ -76,19 +76,19 @@
                 heightStyle: 'fill',
                 autoHeight: true
             });
-            $acc.find('li').draggable({
+            $acc.find('.crm-profilemockup-palette-field').draggable({
                 appendTo: "body",
                 zIndex: $(this.$el).zIndex()+5000,
                 helper: "clone"
             });
 
-            $( ".crm-profilemockup-canvas ul" ).droppable({
+            $( ".crm-profilemockup-fields" ).droppable({
                 activeClass: "ui-state-default",
                 hoverClass: "ui-state-hover",
                 accept: ":not(.ui-sortable-helper)",
                 drop: function( event, ui ) {
                     console.log(ui.draggable.attr('data-fr'));
-                    $( "<li></li>" ).text( ui.draggable.text() ).appendTo( this );
+                    $( "<div></div>" ).text( "ADDED: " + ui.draggable.text() ).appendTo( this );
                 }
             }).sortable().disableSelection();
         },
