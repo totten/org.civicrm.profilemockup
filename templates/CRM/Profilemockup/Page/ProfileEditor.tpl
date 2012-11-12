@@ -43,24 +43,28 @@
     </div>
 </script>
 
+{*
+Render a palette of available fields
+
+@param array<string,PaletteFieldModel> fieldsByEntitySection
+@param array<string,sectionData> sections
+*}
+{literal}
 <script type="text/template" id="palette_template">
   <div class="crm-profilemockup-palette-acc">
-    <h3>Section 1</h3>
-    <div>
+    <% _.each(sections, function(section, sectionId){ %>
+      <h3><%= section.title %></h3>
+      <div>
         <div>
-            <div class="crm-profilemockup-palette-field" data-fr="un">One</div>
-            <div class="crm-profilemockup-palette-field" data-fr="deux">Two</div>
-            <div class="crm-profilemockup-palette-field" data-fr="trois">Three</div>
+        <% _.each(fieldsByEntitySection[sectionId], function(paletteFieldModel){ %>
+          <div class="crm-profilemockup-palette-field"><%= paletteFieldModel.get('label') %></div>
+        <%}); %>
         </div>
-    </div>
-    <h3>Section 2</h3>
-    <div>
-        <div>
-            <div class="crm-profilemockup-palette-field" data-fr="quatre">Four</div>
-            <div class="crm-profilemockup-palette-field" data-fr="cinq">Five</div>
-            <div class="crm-profilemockup-palette-field" data-fr="six">Six</div>
-        </div>
-        <button>Add</button>
-    </div>
+        <% if (section.is_addable) { %>
+          <button>Add</button>
+        <% } %>
+      </div>
+    <% }); %>
   </div>
 </script>
+{/literal}

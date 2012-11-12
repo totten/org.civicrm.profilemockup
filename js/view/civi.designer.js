@@ -63,13 +63,29 @@
 
     /**
      * Display a selection of available fields
+     *
+     * options:
+     *  - model: PaletteFieldCollection
      */
     Civi.Designer.PaletteView = Backbone.View.extend({
         initialize: function() {
             this.render();
         },
         render: function() {
-            var palette_template = _.template( $('#palette_template').html() );
+            var fieldsByEntitySection = this.model.groupBy(function(paletteFieldModel){
+              return paletteFieldModel.get('entityName') + '-' + paletteFieldModel.get('sectionName');
+            });
+            console.log('fieldsByEntitySection', fieldsByEntitySection);
+            var sections = {};
+            _.each(fieldsByEntitySection, function(localPaletteFields, sectionId, label){
+              sections[sectionId] = _.first(localPaletteFields).getSection();
+            });
+            console.log('sections', sections);
+
+            var palette_template = _.template($('#palette_template').html(), {
+              sections: sections,
+              fieldsByEntitySection: fieldsByEntitySection
+            });
             this.$el.append(palette_template);
             var $acc = $(this.$el).find('.crm-profilemockup-palette-acc')
             $acc.accordion({
@@ -87,7 +103,7 @@
                 hoverClass: "ui-state-hover",
                 accept: ":not(.ui-sortable-helper)",
                 drop: function( event, ui ) {
-                    console.log(ui.draggable.attr('data-fr'));
+                    //console.log(ui.draggable.attr('data-fr'));
                     $( "<div></div>" ).text( "ADDED: " + ui.draggable.text() ).appendTo( this );
                 }
             }).sortable().disableSelection();
@@ -103,6 +119,9 @@
      */
     Civi.Designer.DesignerView = Backbone.View.extend({
         initialize: function() {
+            this.paletteFieldCollection = new Civi.Designer.PaletteFieldCollection();
+            this.paletteFieldCollection.addEntity('contact', Civi.Core.IndividualModel);
+            this.paletteFieldCollection.addEntity('act', Civi.Core.ActivityModel);
             this.render();
         },
         events: {
@@ -114,6 +133,7 @@
 
             // Setup accordion after open to ensure proper height
             this.paletteView = new Civi.Designer.PaletteView({
+              model: this.paletteFieldCollection,
               el: $('.crm-profilemockup-palette')
             });
             $('.crm-profilemockup-save').button();
@@ -125,7 +145,11 @@
                 model: formModel
             });
             /*
-            var formFieldModel = Civi.Form.createFormFieldModel(Civi.Core.IndividualModel, 'last_name');
+            var paletteFieldModel = new Civi.Designer.PaletteFieldModel({
+                modelClass: Civi.Core.IndividualModel,
+                fieldName: 'custom_456'
+            });
+            var formFieldModel = paletteFieldModel.createFormFieldModel();
             var formFieldDetailView = new Civi.Designer.FieldDetailView({
                 el: $("#profile_editor_app"),
                 model: formFieldModel

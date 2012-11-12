@@ -3,20 +3,6 @@
     if (!Civi.Form) Civi.Form = {};
 
     /**
-     * @param {class} ModelClass
-     * @param {string} field_name
-     */
-    Civi.Form.createFormFieldModel = function(ModelClass, field_name) {
-      var model = new Civi.Form.FieldModel({
-        //is_active: true,
-        label: field_name,
-        field_type: ModelClass.prototype.ENTITY_NAME,
-        field_name: field_name
-      });
-      return model;
-    };
-
-    /**
      * Represents a field in a customizable form.
      */
     Civi.Form.FieldModel = Backbone.Model.extend({

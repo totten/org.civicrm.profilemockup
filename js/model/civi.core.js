@@ -25,6 +25,7 @@
             custom_123: { type: 'Checkbox', section: 'custom1', title: 'Likes whiskers on kittens'},
             custom_456: { type: 'Checkbox', section: 'custom1', title: 'Likes dog bites' },
             custom_789: { type: 'Checkbox', section: 'custom1', title: 'Likes bee stings' },
+            custom_012: { type: 'Text', section: 'custom2', title: 'Pass phrase' },
         },
         initialize: function(){
         },
