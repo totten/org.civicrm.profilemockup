@@ -5,6 +5,7 @@
     /**
      * options:
      * - model: Civi.Form.FieldModel
+     * - paletteField: Civi.Designer.PaletteFieldModel
      */
     Civi.Designer.FieldView = Backbone.View.extend({
         initialize: function(){
@@ -58,12 +59,12 @@
           "click .crm-designer-action-settings": 'doToggleForm'
         },
         render: function(){
-            $(this.$el).find('.crm-designer-form-title').text(this.model.get('title'));
-            //$(this.$el).find('.crm-designer-buttons').button({icons: {primary: 'ui-icon-pencil'}, text: false})
-            //$(this.$el).find('.crm-designer-buttons')
+            this.$('.crm-designer-form-title').text(this.model.get('title'));
+            //this.$('.crm-designer-buttons').button({icons: {primary: 'ui-icon-pencil'}, text: false})
+            //this.$('.crm-designer-buttons')
             this.detailView = new Civi.Designer.FormDetailView({
                 model: this.model,
-                el: $(this.$el).find('.crm-designer-form-detail')
+                el: this.$('.crm-designer-form-detail')
             });
             this.detailView.$el.hide();
         },
@@ -93,7 +94,7 @@
      * Display a selection of available fields
      *
      * options:
-     *  - model: PaletteFieldCollection
+     *  - model: Civi.Designer.PaletteFieldCollection
      */
     Civi.Designer.PaletteView = Backbone.View.extend({
         initialize: function() {
@@ -115,7 +116,7 @@
               fieldsByEntitySection: fieldsByEntitySection
             });
             this.$el.append(palette_template);
-            var $acc = $(this.$el).find('.crm-designer-palette-acc')
+            var $acc = $(this.$el).find('.crm-designer-palette-acc');
             $acc.accordion({
                 heightStyle: 'fill',
                 autoHeight: true
