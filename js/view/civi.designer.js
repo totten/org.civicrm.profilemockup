@@ -6,6 +6,23 @@
      * options:
      * - model: Civi.Form.FieldModel
      */
+    Civi.Designer.FieldView = Backbone.View.extend({
+        initialize: function(){
+            this.render();
+        },
+        render: function(){
+            var field_template = _.template($('#field_template').html(), {
+              formField: this.model,
+              paletteField: this.options.paletteFieldModel
+            });
+            this.$el.html(field_template);
+        },
+    });
+
+    /**
+     * options:
+     * - model: Civi.Form.FieldModel
+     */
     Civi.Designer.FieldDetailView = Backbone.View.extend({
         initialize: function(){
             this.render();
@@ -28,11 +45,12 @@
             this.render();
         },
         events: {
-          "click .crm-profilemockup-form-prop": 'doToggleForm'
+          "click .crm-profilemockup-buttons": 'doToggleForm'
         },
         render: function(){
             $(this.$el).find('.crm-profilemockup-form-title').text(this.model.get('title'));
-            $(this.$el).find('.crm-profilemockup-form-prop').button({icons: {primary: 'ui-icon-pencil'}, text: false})
+            //$(this.$el).find('.crm-profilemockup-buttons').button({icons: {primary: 'ui-icon-pencil'}, text: false})
+            //$(this.$el).find('.crm-profilemockup-buttons')
             this.detailView = new Civi.Designer.FormDetailView({
                 model: this.model,
                 el: $(this.$el).find('.crm-profilemockup-form-detail')
@@ -104,11 +122,13 @@
                 hoverClass: "ui-state-hover",
                 accept: ":not(.ui-sortable-helper)",
                 drop: function( event, ui ) {
+                    $('.placeholder').hide(); // FIXME
                     var paletteFieldModel = paletteFieldView.model.getByCid(ui.draggable.attr('data-plm-cid'));
                     var formFieldModel = paletteFieldModel.createFormFieldModel();
-                    var formFieldDetailView = new Civi.Designer.FieldDetailView({
+                    var formFieldDetailView = new Civi.Designer.FieldView({
                         el: $("<div></div>"),
-                        model: formFieldModel
+                        model: formFieldModel,
+                        paletteFieldModel: paletteFieldModel
                     });
                     formFieldDetailView.$el.appendTo(this);
                 }

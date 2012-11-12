@@ -35,10 +35,15 @@
     </div>
     <div class="crm-profilemockup-canvas">
       <div class="crm-profilemockup-form">
-        <div class="crm-profilemockup-form-summary"><span class="crm-profilemockup-form-title"></span> <button class="crm-profilemockup-form-prop">{ts}Settings{/ts}</button></div>
+        <div class="crm-profilemockup-row">
+          <span class="crm-profilemockup-form-title"></span>
+          <a class="crm-profilemockup-buttons ui-icon ui-icon-pencil" title="{ts}Settings{/ts}"></a>
+        </div>
         <div class="crm-profilemockup-form-detail"></div>
       </div>
+      <hr/>
       <div class="crm-profilemockup-fields">
+        <div class="crm-profilemockup-row placeholder">{ts}Drag a field from the palette to add it to this form.{/ts}</div>
       </div>
     </div>
 </script>
@@ -65,6 +70,19 @@ Render a palette of available fields
         <% } %>
       </div>
     <% }); %>
+  </div>
+</script>
+{/literal}
+
+{*
+@param Civi.Form.FieldModel formField
+*}
+{literal}
+<script type="text/template" id="field_template">
+  <div class="crm-profilemockup-row">
+    <%= formField.get('label') %>
+    <span class="crm-profilemockup-field-binding">(<%= paletteField.getSection().title %>: <%= formField.get('field_name') %>)</span>
+    <a class="crm-profilemockup-buttons ui-icon ui-icon-pencil" title="{ts}Settings{/ts}"></a>
   </div>
 </script>
 {/literal}

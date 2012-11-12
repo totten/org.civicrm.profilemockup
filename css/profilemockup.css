@@ -17,31 +17,33 @@
   margin: auto;
 }
 
+.crm-profilemockup-field-binding {
+  border: 1px solid black;
+  background: #ccc;
+}
+
 .crm-profilemockup-fields {
-  border: 1px solid white;
   min-width:100px;
   min-height:100px;
 }
 
-.crm-profilemockup-fields:hover {
-  border: 1px dashed #444;
-}
-
-.crm-profilemockup-form-summary button {
+.crm-profilemockup-row .crm-profilemockup-buttons {
+  float: right;
   visibility: hidden;
 }
 
-.crm-profilemockup-form-summary:hover button {
+.crm-profilemockup-row:hover .crm-profilemockup-buttons {
   visibility: visible;
 }
 
-.crm-profilemockup-form-summary {
-  height: 2em;
+.crm-profilemockup-row {
   border: 1px solid white;
-  padding: 0.1em;
+  padding: 0.5em 2em 0.5em 2em;
+  width: 80%;
+  margin: auto;
 }
 
-.crm-profilemockup-form-summary:hover {
+.crm-profilemockup-row:hover {
   border: 1px dashed black;
 }
 
