@@ -12,7 +12,8 @@ cj(document).ready(function($){
         $("#crm-designer-dialog").dialog({
             autoOpen: true, // note: affects accordion height
             title: 'Embedded Profile Editor',
-            width: '95%',
+            width: '75%',
+            minWidth: 400,
             minHeight: 400,
             open: function() {
                 var div = $('<div></div>').appendTo($('#crm-designer-designer'));
