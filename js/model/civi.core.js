@@ -19,9 +19,9 @@
             'custom2': {title: 'Individual: Custom Things', is_addable: true}
         },
         schema: {
-            first_name: { type: 'Text' },
-            last_name: { type: 'Text' },
-            email: { validators: ['required', 'email'] },
+            first_name: { type: 'Text', title: 'First name' },
+            last_name: { type: 'Text', title: 'Last name' },
+            email: { validators: ['required', 'email'], title: 'Email' },
             custom_123: { type: 'Checkbox', section: 'custom1', title: 'Likes whiskers on kittens'},
             custom_456: { type: 'Checkbox', section: 'custom1', title: 'Likes dog bites' },
             custom_789: { type: 'Checkbox', section: 'custom1', title: 'Likes bee stings' },
@@ -38,9 +38,9 @@
             'custom3': {title: 'Activity: Questions', is_addable: true}
         },
         schema: {
-            subject: { type: 'Text' },
-            location: { type: 'Text' },
-            activity_date_time: { type: 'DateTime' },
+            subject: { type: 'Text', title: 'Subject' },
+            location: { type: 'Text', title: 'Location' },
+            activity_date_time: { type: 'DateTime', title: 'Date-Time' },
             custom_789: { type: 'Select', section: 'custom3', title: 'How often do you eat cheese?',
               options: ['Never', 'Sometimes', 'Often'],
             },
