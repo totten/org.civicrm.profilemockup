@@ -16,7 +16,7 @@ cj(document).ready(function($){
             minHeight: 400,
             open: function() {
                 var div = $('<div></div>').appendTo($('#crm-profilemockup-designer'));
-                designerView = new Civi.Form.DesignerView({
+                designerView = new Civi.Designer.DesignerView({
                     el: div
                 });
             },

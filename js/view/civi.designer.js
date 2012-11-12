@@ -1,12 +1,12 @@
 (function(){
     var Civi = (window.Civi) ? (window.Civi) : (window.Civi={});
-    if (!Civi.Form) Civi.Form = {};
+    if (!Civi.Designer) Civi.Designer = {};
 
     /**
      * options:
      * - model: Civi.Form.FieldModel
      */
-    Civi.Form.FieldDetailView = Backbone.View.extend({
+    Civi.Designer.FieldDetailView = Backbone.View.extend({
         initialize: function(){
             this.render();
         },
@@ -23,7 +23,7 @@
      * options:
      * - model: Civi.Form.FormModel
      */
-    Civi.Form.FormView = Backbone.View.extend({
+    Civi.Designer.FormView = Backbone.View.extend({
         initialize: function(){
             this.render();
         },
@@ -33,7 +33,7 @@
         render: function(){
             $(this.$el).find('.crm-profilemockup-form-title').text(this.model.get('title'));
             $(this.$el).find('.crm-profilemockup-form-prop').button({icons: {primary: 'ui-icon-pencil'}, text: false})
-            this.detailView = new Civi.Form.FormDetailView({
+            this.detailView = new Civi.Designer.FormDetailView({
                 model: this.model,
                 el: $(this.$el).find('.crm-profilemockup-form-detail')
             });
@@ -48,7 +48,7 @@
      * options:
      * - model: Civi.Form.FormModel
      */
-    Civi.Form.FormDetailView = Backbone.View.extend({
+    Civi.Designer.FormDetailView = Backbone.View.extend({
         initialize: function(){
             this.render();
         },
@@ -64,7 +64,7 @@
     /**
      * Display a selection of available fields
      */
-    Civi.Form.PaletteView = Backbone.View.extend({
+    Civi.Designer.PaletteView = Backbone.View.extend({
         initialize: function() {
             this.render();
         },
@@ -101,7 +101,7 @@
      * Display a complete form-editing UI, including canvas, palette, and
      * buttons.
      */
-    Civi.Form.DesignerView = Backbone.View.extend({
+    Civi.Designer.DesignerView = Backbone.View.extend({
         initialize: function() {
             this.render();
         },
@@ -113,20 +113,20 @@
             this.$el.html( _.template($('#designer_template').html()) );
 
             // Setup accordion after open to ensure proper height
-            this.paletteView = new Civi.Form.PaletteView({
+            this.paletteView = new Civi.Designer.PaletteView({
               el: $('.crm-profilemockup-palette')
             });
             $('.crm-profilemockup-save').button();
             $('.crm-profilemockup-preview').button();
 
             var formModel = new Civi.Form.FormModel({id: 5, title: 'October Survey', help_post: (new Date()).toString()});
-            var formDetailView = new Civi.Form.FormView({
+            var formDetailView = new Civi.Designer.FormView({
                 el: $('.crm-profilemockup-form', this.$el),
                 model: formModel
             });
             /*
             var formFieldModel = Civi.Form.createFormFieldModel(Civi.Core.IndividualModel, 'last_name');
-            var formFieldDetailView = new Civi.Form.FieldDetailView({
+            var formFieldDetailView = new Civi.Designer.FieldDetailView({
                 el: $("#profile_editor_app"),
                 model: formFieldModel
             });
