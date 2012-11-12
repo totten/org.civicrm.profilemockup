@@ -98,13 +98,19 @@
                 helper: "clone"
             });
 
+            var paletteFieldView = this;
             $( ".crm-profilemockup-fields" ).droppable({
                 activeClass: "ui-state-default",
                 hoverClass: "ui-state-hover",
                 accept: ":not(.ui-sortable-helper)",
                 drop: function( event, ui ) {
-                    //console.log(ui.draggable.attr('data-fr'));
-                    $( "<div></div>" ).text( "ADDED: " + ui.draggable.text() ).appendTo( this );
+                    var paletteFieldModel = paletteFieldView.model.getByCid(ui.draggable.attr('data-plm-cid'));
+                    var formFieldModel = paletteFieldModel.createFormFieldModel();
+                    var formFieldDetailView = new Civi.Designer.FieldDetailView({
+                        el: $("<div></div>"),
+                        model: formFieldModel
+                    });
+                    formFieldDetailView.$el.appendTo(this);
                 }
             }).sortable().disableSelection();
         },

@@ -57,7 +57,7 @@ Render a palette of available fields
       <div>
         <div>
         <% _.each(fieldsByEntitySection[sectionId], function(paletteFieldModel){ %>
-          <div class="crm-profilemockup-palette-field"><%= paletteFieldModel.get('label') %></div>
+          <div class="crm-profilemockup-palette-field" data-plm-cid="<%= paletteFieldModel.cid %>"><%= paletteFieldModel.get('label') %></div>
         <%}); %>
         </div>
         <% if (section.is_addable) { %>
