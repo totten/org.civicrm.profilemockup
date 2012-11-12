@@ -1,49 +1,49 @@
-.crm-profilemockup-toolbar {
+.crm-designer-toolbar {
   width: 25%;
   float: right;
 }
 
-.crm-profilemockup-palette > div {
+.crm-designer-palette > div {
   padding: 10px;
 }
  
-.crm-profilemockup-canvas {
+.crm-designer-canvas {
   width: 73%;
   float: left;
 }
 
-.crm-profilemockup-buttonset {
+.crm-designer-buttonset {
   text-align: center;
   margin: auto;
 }
 
-.crm-profilemockup-field-binding {
+.crm-designer-field-binding {
   border: 1px solid black;
   background: #ccc;
 }
 
-.crm-profilemockup-fields {
+.crm-designer-fields {
   min-width:100px;
   min-height:100px;
 }
 
-.crm-profilemockup-row .crm-profilemockup-buttons {
+.crm-designer-row .crm-designer-buttons {
   float: right;
   visibility: hidden;
 }
 
-.crm-profilemockup-row:hover .crm-profilemockup-buttons {
+.crm-designer-row:hover .crm-designer-buttons {
   visibility: visible;
 }
 
-.crm-profilemockup-row {
+.crm-designer-row {
   border: 1px solid white;
   padding: 0.5em 2em 0.5em 2em;
   width: 80%;
   margin: auto;
 }
 
-.crm-profilemockup-row:hover {
+.crm-designer-row:hover {
   border: 1px dashed black;
 }
 

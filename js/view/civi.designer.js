@@ -45,20 +45,20 @@
             this.render();
         },
         events: {
-          "click .crm-profilemockup-buttons": 'doToggleForm'
+          "click .crm-designer-buttons": 'doToggleForm'
         },
         render: function(){
-            $(this.$el).find('.crm-profilemockup-form-title').text(this.model.get('title'));
-            //$(this.$el).find('.crm-profilemockup-buttons').button({icons: {primary: 'ui-icon-pencil'}, text: false})
-            //$(this.$el).find('.crm-profilemockup-buttons')
+            $(this.$el).find('.crm-designer-form-title').text(this.model.get('title'));
+            //$(this.$el).find('.crm-designer-buttons').button({icons: {primary: 'ui-icon-pencil'}, text: false})
+            //$(this.$el).find('.crm-designer-buttons')
             this.detailView = new Civi.Designer.FormDetailView({
                 model: this.model,
-                el: $(this.$el).find('.crm-profilemockup-form-detail')
+                el: $(this.$el).find('.crm-designer-form-detail')
             });
             this.detailView.$el.hide();
         },
         doToggleForm: function(event) {
-            $('.crm-profilemockup-form-detail').toggle('blind', 250);
+            $('.crm-designer-form-detail').toggle('blind', 250);
         }
     });
 
@@ -105,19 +105,19 @@
               fieldsByEntitySection: fieldsByEntitySection
             });
             this.$el.append(palette_template);
-            var $acc = $(this.$el).find('.crm-profilemockup-palette-acc')
+            var $acc = $(this.$el).find('.crm-designer-palette-acc')
             $acc.accordion({
                 heightStyle: 'fill',
                 autoHeight: true
             });
-            $acc.find('.crm-profilemockup-palette-field').draggable({
+            $acc.find('.crm-designer-palette-field').draggable({
                 appendTo: "body",
                 zIndex: $(this.$el).zIndex()+5000,
                 helper: "clone"
             });
 
             var paletteFieldView = this;
-            $( ".crm-profilemockup-fields" ).droppable({
+            $( ".crm-designer-fields" ).droppable({
                 activeClass: "ui-state-default",
                 hoverClass: "ui-state-hover",
                 accept: ":not(.ui-sortable-helper)",
@@ -135,7 +135,7 @@
             }).sortable().disableSelection();
         },
         destroy: function() {
-            $(this.$el).find('.crm-profilemockup-palette-acc').accordion('destroy');
+            $(this.$el).find('.crm-designer-palette-acc').accordion('destroy');
         }
     });
 
@@ -151,8 +151,8 @@
             this.render();
         },
         events: {
-            'click .crm-profilemockup-save': 'doSave',
-            'click .crm-profilemockup-preview': 'doPreview',
+            'click .crm-designer-save': 'doSave',
+            'click .crm-designer-preview': 'doPreview',
         },
         render: function() {
             this.$el.html( _.template($('#designer_template').html()) );
@@ -160,14 +160,14 @@
             // Setup accordion after open to ensure proper height
             this.paletteView = new Civi.Designer.PaletteView({
               model: this.paletteFieldCollection,
-              el: $('.crm-profilemockup-palette')
+              el: $('.crm-designer-palette')
             });
-            $('.crm-profilemockup-save').button();
-            $('.crm-profilemockup-preview').button();
+            $('.crm-designer-save').button();
+            $('.crm-designer-preview').button();
 
             var formModel = new Civi.Form.FormModel({id: 5, title: 'October Survey', help_post: (new Date()).toString()});
             var formDetailView = new Civi.Designer.FormView({
-                el: $('.crm-profilemockup-form', this.$el),
+                el: $('.crm-designer-form', this.$el),
                 model: formModel
             });
             /*
