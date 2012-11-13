@@ -95,6 +95,9 @@
      *
      * options:
      *  - model: Civi.Designer.PaletteFieldCollection
+     *
+     * events:
+     *  - dropPaletteField: function(paletteFieldModel, event, ui)
      */
     Civi.Designer.PaletteView = Backbone.View.extend({
         initialize: function() {
@@ -133,15 +136,8 @@
                 hoverClass: "ui-state-hover",
                 accept: ":not(.ui-sortable-helper)",
                 drop: function( event, ui ) {
-                    $('.placeholder').hide(); // FIXME
                     var paletteFieldModel = paletteFieldView.model.getByCid(ui.draggable.attr('data-plm-cid'));
-                    var formFieldModel = paletteFieldModel.createFormFieldModel();
-                    var formFieldDetailView = new Civi.Designer.FieldView({
-                        el: $("<div></div>"),
-                        model: formFieldModel,
-                        paletteFieldModel: paletteFieldModel
-                    });
-                    formFieldDetailView.$el.appendTo(this);
+                    paletteFieldView.trigger('dropPaletteField', paletteFieldModel, event, ui);
                 }
             }).sortable().disableSelection();
         },
@@ -177,6 +173,17 @@
             });
             $('.crm-designer-save').button();
             $('.crm-designer-preview').button();
+            this.paletteView.on('dropPaletteField', function(paletteFieldModel, event, ui) {
+                $('.placeholder').hide(); // FIXME
+                console.log('dropped event', event);
+                var formFieldModel = paletteFieldModel.createFormFieldModel();
+                var formFieldDetailView = new Civi.Designer.FieldView({
+                    el: $("<div></div>"),
+                    model: formFieldModel,
+                    paletteFieldModel: paletteFieldModel
+                });
+                formFieldDetailView.$el.appendTo(event.target);
+            });
 
             var formDetailView = new Civi.Designer.FormView({
                 el: $('.crm-designer-form', this.$el),
