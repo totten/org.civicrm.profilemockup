@@ -9,8 +9,9 @@ cj(document).ready(function($){
     var app_router = new AppRouter();
     app_router.on('route:defaultRoute', function(name) {
         var paletteFieldCollection = new Civi.Designer.PaletteFieldCollection();
-        paletteFieldCollection.addEntity('contact', Civi.Core.IndividualModel);
-        paletteFieldCollection.addEntity('act', Civi.Core.ActivityModel);
+        paletteFieldCollection.addEntity(Civi.Core.ContactModel.prototype.ENTITY_NAME, Civi.Core.ContactModel);
+        paletteFieldCollection.addEntity(Civi.Core.IndividualModel.prototype.ENTITY_NAME, Civi.Core.IndividualModel);
+        paletteFieldCollection.addEntity(Civi.Core.ActivityModel.prototype.ENTITY_NAME, Civi.Core.ActivityModel);
 
         var formModel = new Civi.Form.FormModel({
             id: 5,
@@ -19,9 +20,8 @@ cj(document).ready(function($){
             fieldCollection: new Civi.Form.FieldCollection()
         });
 
-        // temporary; for debugging
-        window.paletteFieldCollection = paletteFieldCollection;
-        window.formModel = formModel;
+        window.tmpPaletteFieldCollection = paletteFieldCollection; // temporary; for debugging
+        window.tmpFormModel = formModel; // temporary; for debugging
 
         var designerView = null; // Civi.Form.DesignerView
         $("#crm-designer-dialog").dialog({
@@ -37,6 +37,7 @@ cj(document).ready(function($){
                     paletteFieldCollection: paletteFieldCollection,
                     el: div
                 });
+                window.tmpDesignerView = designerView; // temporary; for debugging
             },
             close: function() {
                 designerView.destroy();

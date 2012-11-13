@@ -20,11 +20,6 @@
             sectionName: null,
 
             /**
-             * @var {string} entityName + delim + sectionName
-             *
-            sectionId: null,*/
-
-            /**
              * @var {string}
              */
             fieldName: null,
@@ -43,7 +38,6 @@
             var fieldSchema = this.get('modelClass').prototype.schema[this.get('fieldName')];
             this.set('fieldSchema', fieldSchema);
             this.set('sectionName', fieldSchema.section || 'default');
-            //this.set('sectionId', this.get("entityName") + '-' + this.get('sectionName'));
             this.set('label', fieldSchema.title || this.get('fieldName'));
         },
         getSection: function() {
@@ -73,6 +67,11 @@
                     fieldName: key
                 });
                 collection.add(model, options);
+            });
+        },
+        getFieldByName: function(entityName, fieldName) {
+            return this.find(function(paletteFieldModel){
+                return (paletteFieldModel.get('entityName') == entityName && paletteFieldModel.get('fieldName') == fieldName);
             });
         }
     });

@@ -11,10 +11,23 @@
      * @see https://github.com/powmedia/backbone-forms
      */
 
+    Civi.Core.ContactModel = Backbone.Model.extend({
+        ENTITY_NAME: 'Contact',
+        sections: {
+            'default': {title: 'Contact'},
+        },
+        schema: {
+            legal_name: { type: 'Text', title: 'Legal name' },
+            email: { validators: ['required', 'email'], title: 'Email' }
+        },
+        initialize: function(){
+        }
+    });
+
     Civi.Core.IndividualModel = Backbone.Model.extend({
         ENTITY_NAME: 'Individual',
         sections: {
-            'default': {title: 'Individual: Core'},
+            'default': {title: 'Individual'},
             'custom1': {title: 'Individual: Favorite Things', is_addable: true},
             'custom2': {title: 'Individual: Custom Things', is_addable: true}
         },
@@ -28,13 +41,14 @@
             custom_012: { type: 'Text', section: 'custom2', title: 'Pass phrase' },
         },
         initialize: function(){
-        },
+        }
     });
+
 
     Civi.Core.ActivityModel = Backbone.Model.extend({
         ENTITY_NAME: 'Activity',
         sections: {
-            'default': {title: 'Activity: Core'},
+            'default': {title: 'Activity'},
             'custom3': {title: 'Activity: Questions', is_addable: true}
         },
         schema: {
@@ -46,6 +60,6 @@
             },
         },
         initialize: function(){
-        },
+        }
     });
 })();
