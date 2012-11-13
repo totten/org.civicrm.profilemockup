@@ -34,7 +34,6 @@
         schema: {
             first_name: { type: 'Text', title: 'First name' },
             last_name: { type: 'Text', title: 'Last name' },
-            email: { validators: ['required', 'email'], title: 'Email' },
             custom_123: { type: 'Checkbox', section: 'custom1', title: 'Likes whiskers on kittens'},
             custom_456: { type: 'Checkbox', section: 'custom1', title: 'Likes dog bites' },
             custom_789: { type: 'Checkbox', section: 'custom1', title: 'Likes bee stings' },
