@@ -153,12 +153,13 @@
     /**
      * Display a complete form-editing UI, including canvas, palette, and
      * buttons.
+     *
+     * options:
+     *  - model: Civi.Form.FormModel
+     *  - paletteFieldCollection: Civi.Designer.PaletteFieldCollection
      */
     Civi.Designer.DesignerView = Backbone.View.extend({
         initialize: function() {
-            this.paletteFieldCollection = new Civi.Designer.PaletteFieldCollection();
-            this.paletteFieldCollection.addEntity('contact', Civi.Core.IndividualModel);
-            this.paletteFieldCollection.addEntity('act', Civi.Core.ActivityModel);
             this.render();
         },
         events: {
@@ -169,23 +170,19 @@
             this.$el.html( _.template($('#designer_template').html()) );
 
             // Setup accordion after open to ensure proper height
+            console.log(this.options);
             this.paletteView = new Civi.Designer.PaletteView({
-              model: this.paletteFieldCollection,
+              model: this.options.paletteFieldCollection,
               el: $('.crm-designer-palette')
             });
             $('.crm-designer-save').button();
             $('.crm-designer-preview').button();
 
-            var formModel = new Civi.Form.FormModel({id: 5, title: 'October Survey', help_post: (new Date()).toString()});
             var formDetailView = new Civi.Designer.FormView({
                 el: $('.crm-designer-form', this.$el),
-                model: formModel
+                model: this.model
             });
             /*
-            var paletteFieldModel = new Civi.Designer.PaletteFieldModel({
-                modelClass: Civi.Core.IndividualModel,
-                fieldName: 'custom_456'
-            });
             var formFieldModel = paletteFieldModel.createFormFieldModel();
             var formFieldDetailView = new Civi.Designer.FieldDetailView({
                 el: $("#profile_editor_app"),

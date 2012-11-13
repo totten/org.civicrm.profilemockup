@@ -8,6 +8,17 @@ cj(document).ready(function($){
     });
     var app_router = new AppRouter();
     app_router.on('route:defaultRoute', function(name) {
+        var paletteFieldCollection = new Civi.Designer.PaletteFieldCollection();
+        paletteFieldCollection.addEntity('contact', Civi.Core.IndividualModel);
+        paletteFieldCollection.addEntity('act', Civi.Core.ActivityModel);
+
+        var formModel = new Civi.Form.FormModel({
+            id: 5,
+            title: 'October Survey',
+            help_post: (new Date()).toString(),
+            fieldCollection: new Civi.Form.FieldCollection()
+        });
+
         var designerView = null; // Civi.Form.DesignerView
         $("#crm-designer-dialog").dialog({
             autoOpen: true, // note: affects accordion height
@@ -18,6 +29,8 @@ cj(document).ready(function($){
             open: function() {
                 var div = $('<div></div>').appendTo($('#crm-designer-designer'));
                 designerView = new Civi.Designer.DesignerView({
+                    model: formModel,
+                    paletteFieldCollection: paletteFieldCollection,
                     el: div
                 });
             },

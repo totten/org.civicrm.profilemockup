@@ -31,7 +31,19 @@
     });
 
     /**
+     * Represents a list of fields in a customizable form
+     */
+    Civi.Form.FieldCollection = Backbone.Collection.extend({
+        model: Civi.Form.FieldModel,
+        initialize: function() {
+        }
+    });
+
+    /**
      * Represents a customizable form
+     *
+     * options:
+     *  - fieldCollection: Civi.Form.FieldCollection
      */
     Civi.Form.FormModel = Backbone.Model.extend({
         schema: {
