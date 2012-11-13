@@ -102,23 +102,23 @@
     Civi.Designer.PaletteView = Backbone.View.extend({
         initialize: function() {
             this.render();
+            this.model.on('add', this.render, this);
+            this.model.on('remove', this.render, this);
         },
         render: function() {
             var fieldsByEntitySection = this.model.groupBy(function(paletteFieldModel){
               return paletteFieldModel.get('entityName') + '-' + paletteFieldModel.get('sectionName');
             });
-            console.log('fieldsByEntitySection', fieldsByEntitySection);
             var sections = {};
             _.each(fieldsByEntitySection, function(localPaletteFields, sectionId, label){
               sections[sectionId] = _.first(localPaletteFields).getSection();
             });
-            console.log('sections', sections);
 
             var palette_template = _.template($('#palette_template').html(), {
               sections: sections,
               fieldsByEntitySection: fieldsByEntitySection
             });
-            this.$el.append(palette_template);
+            this.$el.html(palette_template);
             var $acc = $(this.$el).find('.crm-designer-palette-acc');
             $acc.accordion({
                 heightStyle: 'fill',

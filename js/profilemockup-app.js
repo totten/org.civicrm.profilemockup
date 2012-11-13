@@ -19,6 +19,10 @@ cj(document).ready(function($){
             fieldCollection: new Civi.Form.FieldCollection()
         });
 
+        // temporary; for debugging
+        window.paletteFieldCollection = paletteFieldCollection;
+        window.formModel = formModel;
+
         var designerView = null; // Civi.Form.DesignerView
         $("#crm-designer-dialog").dialog({
             autoOpen: true, // note: affects accordion height
