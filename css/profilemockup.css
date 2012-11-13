@@ -18,8 +18,9 @@
 }
 
 .crm-designer-field-binding {
-  border: 1px solid black;
-  background: #ccc;
+  border: 1px inset black;
+  padding: 0.4em;
+  background: #ddd;
 }
 
 .crm-designer-fields {
