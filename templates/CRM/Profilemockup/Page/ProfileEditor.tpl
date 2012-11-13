@@ -25,6 +25,7 @@
 </script>
 
 <script type="text/template" id="designer_template">
+  <div class="crm-designer">
     <div class="crm-designer-toolbar">
       <div class="crm-designer-buttonset">
         <button class="crm-designer-save">{ts}Save{/ts}</button>
@@ -48,6 +49,7 @@
         <div class="crm-designer-row placeholder">{ts}Drag a field from the palette to add it to this form.{/ts}</div>
       </div>
     </div>
+  </div>
 </script>
 
 {*
