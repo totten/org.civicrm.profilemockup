@@ -204,7 +204,7 @@
                     var formFieldDetailView = new Civi.Designer.FieldView({
                         el: $("<div></div>"),
                         model: formFieldModel,
-                       paletteFieldModel: paletteFieldModel
+                        paletteFieldModel: paletteFieldModel
                     });
                     $('.crm-designer-fields .ui-draggable').replaceWith(formFieldDetailView.$el); // FIXME: this.$
                 },
