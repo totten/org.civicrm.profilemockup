@@ -199,7 +199,10 @@
             // BOTTOM: Setup field-level editing
             var $fields = this.$('.crm-designer-fields');
             this.updatePlaceholder();
-            this.model.get('fieldCollection').each(function(formFieldModel){ // FIXME: weight
+            var formFieldModels = this.model.get('fieldCollection').sortBy(function(formFieldModel){
+              return formFieldModel.get('weight');
+            });
+            _.each(formFieldModels, function(formFieldModel){
                 // FIXME: Civi.Form.FieldModel doesn't have enough info to locate
                 // matching Civi.Designer.PaletteFieldModel unless one assumes that
                 // (formFieldModel.field_type === paletteFieldModel.entity_name)
