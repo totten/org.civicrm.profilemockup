@@ -21,9 +21,14 @@
               paletteField: this.options.paletteFieldModel
             });
             this.$el.html(field_template);
+            this.detailView = new Civi.Designer.FieldDetailView({
+                el: this.$el.find('.crm-designer-field-detail'),
+                model: this.model
+            });
+            this.detailView.$el.hide();
         },
         doToggleForm: function(event) {
-          console.log('open field settings');
+            $('.crm-designer-field-detail', this.el).toggle('blind', 250); // FIXME: this.$
         },
         doRemove: function(event) {
           this.model.destroy();
@@ -45,7 +50,7 @@
                 fields: ['label', 'field_name', 'field_type', 'is_active']
             });
             this.$el.html(form.render().el);
-        },
+        }
     });
 
     /**
@@ -188,12 +193,12 @@
                 // matching Civi.Designer.PaletteFieldModel unless one assumes that
                 // (formFieldModel.field_type === paletteFieldModel.entity_name)
                 var paletteFieldModel = designerView.options.paletteFieldCollection.getFieldByName(formFieldModel.get('field_type'), formFieldModel.get('field_name'));
-                var formFieldDetailView = new Civi.Designer.FieldView({
+                var formFieldView = new Civi.Designer.FieldView({
                     el: $("<div></div>"),
                     model: formFieldModel,
                     paletteFieldModel: paletteFieldModel
                 });
-                formFieldDetailView.$el.appendTo($fields);
+                formFieldView.$el.appendTo($fields);
             });
             $(".crm-designer-fields").sortable({ // FIXME: this.$
                 receive: function(event, ui) {
@@ -201,12 +206,12 @@
                     var formFieldModel = paletteFieldModel.createFormFieldModel();
                     designerView.model.get('fieldCollection').add(formFieldModel);
 
-                    var formFieldDetailView = new Civi.Designer.FieldView({
+                    var formFieldView = new Civi.Designer.FieldView({
                         el: $("<div></div>"),
                         model: formFieldModel,
                         paletteFieldModel: paletteFieldModel
                     });
-                    $('.crm-designer-fields .ui-draggable').replaceWith(formFieldDetailView.$el); // FIXME: this.$
+                    $('.crm-designer-fields .ui-draggable').replaceWith(formFieldView.$el); // FIXME: this.$
                 },
                 update: function() {
                     designerView.updateWeights();

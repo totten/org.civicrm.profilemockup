@@ -37,12 +37,14 @@
     <div class="crm-designer-canvas">
       <div class="crm-designer-form">
         <div class="crm-designer-row">
-          <span class="crm-designer-form-title"></span>
-          <span class="crm-designer-buttons">
-            <a class="crm-designer-action-settings ui-icon ui-icon-pencil" title="{ts}Settings{/ts}"></a>
-          </span>
+          <div class="crm-designer-form-summary">
+            <span class="crm-designer-form-title"></span>
+            <span class="crm-designer-buttons">
+              <a class="crm-designer-action-settings ui-icon ui-icon-pencil" title="{ts}Settings{/ts}"></a>
+            </span>
+          </div>
+          <div class="crm-designer-form-detail"></div>
         </div>
-        <div class="crm-designer-form-detail"></div>
       </div>
       <hr/>
       <div class="crm-designer-fields">
@@ -84,12 +86,15 @@ Render a palette of available fields
 {literal}
 <script type="text/template" id="field_template">
   <div class="crm-designer-row" data-field-cid="<%= formField.cid %>" data-plm-cid="<%= paletteField.cid %>">
-    <%= formField.get('label') %>
-    <span class="crm-designer-field-binding">(<%= paletteField.getSection().title %>: <%= formField.get('field_name') %>)</span>
-    <span class="crm-designer-buttons">
-      <a class="ui-icon ui-icon-pencil crm-designer-action-settings" title="{ts}Settings{/ts}"></a>
-      <a class="ui-icon ui-icon-trash crm-designer-action-remove" title="{ts}Remove{/ts}"></a>
-    </span>
+    <div class="crm-designer-field-summary">
+      <%= formField.get('label') %>
+      <span class="crm-designer-field-binding">(<%= paletteField.getSection().title %>: <%= formField.get('field_name') %>)</span>
+      <span class="crm-designer-buttons">
+        <a class="ui-icon ui-icon-pencil crm-designer-action-settings" title="{ts}Settings{/ts}"></a>
+        <a class="ui-icon ui-icon-trash crm-designer-action-remove" title="{ts}Remove{/ts}"></a>
+      </span>
+    </div>
+    <div class="crm-designer-field-detail"></div>
   </div>
 </script>
 {/literal}
