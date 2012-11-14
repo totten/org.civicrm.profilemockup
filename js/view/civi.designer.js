@@ -69,7 +69,7 @@
             this.detailView.$el.hide();
         },
         doToggleForm: function(event) {
-            $('.crm-designer-form-detail').toggle('blind', 250);
+            $('.crm-designer-form-detail').toggle('blind', 250); // FIXME: this.$
         }
     });
 
@@ -116,7 +116,7 @@
               fieldsByEntitySection: fieldsByEntitySection
             });
             this.$el.html(palette_template);
-            var $acc = $(this.$el).find('.crm-designer-palette-acc');
+            var $acc = $(this.$el).find('.crm-designer-palette-acc'); // FIXME: this.$
             $acc.accordion({
                 heightStyle: 'fill',
                 autoHeight: true
@@ -129,14 +129,14 @@
             });
 
             // FIXME: tight canvas/palette coupling
-            $( ".crm-designer-fields" ).droppable({
+            $(".crm-designer-fields").droppable({ // FIXME: this.$
                 activeClass: "ui-state-default",
                 hoverClass: "ui-state-hover",
                 accept: ":not(.ui-sortable-helper)"
             });
         },
         destroy: function() {
-            $(this.$el).find('.crm-designer-palette-acc').accordion('destroy');
+            $(this.$el).find('.crm-designer-palette-acc').accordion('destroy'); // FIXME: this.$
         }
     });
 
@@ -165,14 +165,14 @@
             // RIGHT: Setup accordion after open to ensure proper height
             this.paletteView = new Civi.Designer.PaletteView({
               model: this.options.paletteFieldCollection,
-              el: $('.crm-designer-palette')
+              el: $('.crm-designer-palette') // FIXME: this.$
             });
-            $('.crm-designer-save').button();
-            $('.crm-designer-preview').button();
+            $('.crm-designer-save').button(); // FIXME: this.$
+            $('.crm-designer-preview').button(); // FIXME: this.$
 
             // TOP: Setup form-level editing
             var formDetailView = new Civi.Designer.FormView({
-                el: $('.crm-designer-form', this.$el),
+                el: $('.crm-designer-form', this.$el), // FIXME: this.$
                 model: this.model
             });
 
@@ -194,7 +194,7 @@
                 });
                 formFieldDetailView.$el.appendTo($fields);
             });
-            $(".crm-designer-fields").sortable({
+            $(".crm-designer-fields").sortable({ // FIXME: this.$
                 receive: function(event, ui) {
                     var paletteFieldModel = designerView.options.paletteFieldCollection.getByCid(ui.item.attr('data-plm-cid'));
                     var formFieldModel = paletteFieldModel.createFormFieldModel();
@@ -205,7 +205,7 @@
                         model: formFieldModel,
                        paletteFieldModel: paletteFieldModel
                     });
-                    $('.crm-designer-fields .ui-draggable').replaceWith(formFieldDetailView.$el);
+                    $('.crm-designer-fields .ui-draggable').replaceWith(formFieldDetailView.$el); // FIXME: this.$
                 },
                 update: function() {
                     designerView.updateWeights();
@@ -222,20 +222,20 @@
         updateWeights: function() {
             var designerView = this;
             var weight = 1;
-            var rows = this.$('.crm-designer-fields .crm-designer-row').each(function(key,value){
-                if ($(value).hasClass('placeholder')) {
+            var rows = this.$('.crm-designer-fields .crm-designer-row').each(function(key,row){
+                if ($(row).hasClass('placeholder')) {
                   return;
                 }
-                var formFieldModel = designerView.model.get('fieldCollection').getByCid($(value).attr('data-field-cid'));
+                var formFieldModel = designerView.model.get('fieldCollection').getByCid($(row).attr('data-field-cid'));
                 formFieldModel.set('weight', weight);
                 weight++;
             });
         },
         updatePlaceholder: function() {
             if (this.model.get('fieldCollection').isEmpty()) {
-                $('.placeholder').show();
+                this.$('.placeholder').show();
             } else {
-                $('.placeholder').hide();
+                this.$('.placeholder').hide();
             }
         },
         destroy: function() {
