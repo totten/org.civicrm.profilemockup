@@ -95,9 +95,6 @@
      *
      * options:
      *  - model: Civi.Designer.PaletteFieldCollection
-     *
-     * events:
-     *  - dropPaletteField: function(paletteFieldModel, event, ui)
      */
     Civi.Designer.PaletteView = Backbone.View.extend({
         initialize: function() {
@@ -127,18 +124,15 @@
             $acc.find('.crm-designer-palette-field').draggable({
                 appendTo: "body",
                 zIndex: $(this.$el).zIndex()+5000,
-                helper: "clone"
+                helper: "clone",
+                connectToSortable: '.crm-designer-fields' // FIXME: tight canvas/palette coupling
             });
 
-            var paletteFieldView = this;
+            // FIXME: tight canvas/palette coupling
             $( ".crm-designer-fields" ).droppable({
                 activeClass: "ui-state-default",
                 hoverClass: "ui-state-hover",
-                accept: ":not(.ui-sortable-helper)",
-                drop: function( event, ui ) {
-                    var paletteFieldModel = paletteFieldView.model.getByCid(ui.draggable.attr('data-plm-cid'));
-                    paletteFieldView.trigger('dropPaletteField', paletteFieldModel, event, ui);
-                }
+                accept: ":not(.ui-sortable-helper)"
             });
         },
         destroy: function() {
@@ -175,20 +169,6 @@
             });
             $('.crm-designer-save').button();
             $('.crm-designer-preview').button();
-            this.paletteView.on('dropPaletteField', function(paletteFieldModel, event, ui) {
-                var formFieldModel = paletteFieldModel.createFormFieldModel();
-                designerView.model.get('fieldCollection').add(formFieldModel);
-
-                // FIXME: element positioning <=> field weight
-                var formFieldDetailView = new Civi.Designer.FieldView({
-                    el: $("<div></div>"),
-                    model: formFieldModel,
-                    paletteFieldModel: paletteFieldModel
-                });
-                formFieldDetailView.$el.appendTo(event.target);
-
-                designerView.updateWeights();
-            });
 
             // TOP: Setup form-level editing
             var formDetailView = new Civi.Designer.FormView({
@@ -215,9 +195,22 @@
                 formFieldDetailView.$el.appendTo($fields);
             });
             $(".crm-designer-fields").sortable({
-                update: function() { designerView.updateWeights(); }
+                receive: function(event, ui) {
+                    var paletteFieldModel = designerView.options.paletteFieldCollection.getByCid(ui.item.attr('data-plm-cid'));
+                    var formFieldModel = paletteFieldModel.createFormFieldModel();
+                    designerView.model.get('fieldCollection').add(formFieldModel);
+
+                    var formFieldDetailView = new Civi.Designer.FieldView({
+                        el: $("<div></div>"),
+                        model: formFieldModel,
+                       paletteFieldModel: paletteFieldModel
+                    });
+                    $('.crm-designer-fields .ui-draggable').replaceWith(formFieldDetailView.$el);
+                },
+                update: function() {
+                    designerView.updateWeights();
+                }
             }).disableSelection();
-            // $('.crm-designer-palette-field').draggable('option', 'connectToSortable', '.crm-designer-fields');
         },
         doSave: function(event) {
             console.log('save');
