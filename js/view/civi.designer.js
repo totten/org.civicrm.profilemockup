@@ -26,7 +26,8 @@
           console.log('open field settings');
         },
         doRemove: function(event) {
-          console.log('remove field');
+          this.model.destroy();
+          this.remove();
         }
     });
 
