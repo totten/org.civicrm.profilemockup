@@ -139,7 +139,7 @@
                     var paletteFieldModel = paletteFieldView.model.getByCid(ui.draggable.attr('data-plm-cid'));
                     paletteFieldView.trigger('dropPaletteField', paletteFieldModel, event, ui);
                 }
-            }).sortable().disableSelection();
+            });
         },
         destroy: function() {
             $(this.$el).find('.crm-designer-palette-acc').accordion('destroy');
@@ -176,7 +176,6 @@
             $('.crm-designer-save').button();
             $('.crm-designer-preview').button();
             this.paletteView.on('dropPaletteField', function(paletteFieldModel, event, ui) {
-                // FIXME: weight
                 var formFieldModel = paletteFieldModel.createFormFieldModel();
                 designerView.model.get('fieldCollection').add(formFieldModel);
 
@@ -187,6 +186,8 @@
                     paletteFieldModel: paletteFieldModel
                 });
                 formFieldDetailView.$el.appendTo(event.target);
+
+                designerView.updateWeights();
             });
 
             // TOP: Setup form-level editing
@@ -210,12 +211,29 @@
                 });
                 formFieldDetailView.$el.appendTo($fields);
             });
+            $(".crm-designer-fields").sortable({
+                update: function() { designerView.updateWeights(); }
+            }).disableSelection();
+            // $('.crm-designer-palette-field').draggable('option', 'connectToSortable', '.crm-designer-fields');
         },
         doSave: function(event) {
             console.log('save');
         },
         doPreview: function(event) {
             console.log('preview');
+        },
+        /** Determine visual order of fields and set the model values for "weight" */
+        updateWeights: function() {
+            var designerView = this;
+            var weight = 1;
+            var rows = this.$('.crm-designer-fields .crm-designer-row').each(function(key,value){
+                if ($(value).hasClass('placeholder')) {
+                  return;
+                }
+                var formFieldModel = designerView.model.get('fieldCollection').getByCid($(value).attr('data-field-cid'));
+                formFieldModel.set('weight', weight);
+                weight++;
+            });
         },
         updatePlaceholder: function() {
             if (this.model.get('fieldCollection').isEmpty()) {

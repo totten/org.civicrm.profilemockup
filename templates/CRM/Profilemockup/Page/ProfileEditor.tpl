@@ -83,7 +83,7 @@ Render a palette of available fields
 *}
 {literal}
 <script type="text/template" id="field_template">
-  <div class="crm-designer-row">
+  <div class="crm-designer-row" data-field-cid="<%= formField.cid %>" data-plm-cid="<%= paletteField.cid %>">
     <%= formField.get('label') %>
     <span class="crm-designer-field-binding">(<%= paletteField.getSection().title %>: <%= formField.get('field_name') %>)</span>
     <span class="crm-designer-buttons">
