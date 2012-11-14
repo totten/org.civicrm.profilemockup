@@ -47,7 +47,7 @@
         render: function(){
             var form = new Backbone.Form({
                 model: this.model,
-                fields: ['label', 'field_name', 'field_type', 'is_active']
+                fields: ['label', 'field_name', 'field_type', 'entity_name', 'is_active']
             });
             this.$el.html(form.render().el);
         }
@@ -189,10 +189,7 @@
               return formFieldModel.get('weight');
             });
             _.each(formFieldModels, function(formFieldModel){
-                // FIXME: Civi.Form.FieldModel doesn't have enough info to locate
-                // matching Civi.Designer.PaletteFieldModel unless one assumes that
-                // (formFieldModel.field_type === paletteFieldModel.entity_name)
-                var paletteFieldModel = designerView.options.paletteFieldCollection.getFieldByName(formFieldModel.get('field_type'), formFieldModel.get('field_name'));
+                var paletteFieldModel = designerView.options.paletteFieldCollection.getFieldByName(formFieldModel.get('entity_name'), formFieldModel.get('field_name'));
                 var formFieldView = new Civi.Designer.FieldView({
                     el: $("<div></div>"),
                     model: formFieldModel,

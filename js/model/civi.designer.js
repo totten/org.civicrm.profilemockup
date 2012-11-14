@@ -47,7 +47,8 @@
             var model = new Civi.Form.FieldModel({
                 //is_active: true,
                 label: this.get('label'),
-                field_type: this.get('modelClass').prototype.ENTITY_NAME,
+                entity_name: this.get('entityName'),
+                field_type: this.get('fieldSchema').civiFieldType,
                 field_name: this.get('fieldName')
             });
             return model;

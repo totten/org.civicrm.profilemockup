@@ -9,9 +9,8 @@ cj(document).ready(function($){
     var app_router = new AppRouter();
     app_router.on('route:defaultRoute', function(name) {
         var paletteFieldCollection = new Civi.Designer.PaletteFieldCollection();
-        paletteFieldCollection.addEntity(Civi.Core.ContactModel.prototype.ENTITY_NAME, Civi.Core.ContactModel);
-        paletteFieldCollection.addEntity(Civi.Core.IndividualModel.prototype.ENTITY_NAME, Civi.Core.IndividualModel);
-        paletteFieldCollection.addEntity(Civi.Core.ActivityModel.prototype.ENTITY_NAME, Civi.Core.ActivityModel);
+        paletteFieldCollection.addEntity('contact_1', Civi.Core.IndividualModel);
+        paletteFieldCollection.addEntity('activity_1', Civi.Core.ActivityModel);
 
         var formModel = new Civi.Form.FormModel({
             id: 5,
