@@ -16,7 +16,7 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
         //'formFieldCollection' => civicrm_api('UFField', 'get', array('version' => 3, 'uf_group_id' => 1)),
         'formFieldCollection' => array('values' => array()),
       ))
-      ->addScript('$ = cj;')
+      ->addScript('jQuery = $ = cj;')
       ->addScriptFile('org.civicrm.profilemockup', 'packages/backbone/json2.js', 100)
       ->addScriptFile('org.civicrm.profilemockup', 'packages/backbone/underscore.js', 110)
       ->addScriptFile('org.civicrm.profilemockup', 'packages/backbone/backbone.js', 120)

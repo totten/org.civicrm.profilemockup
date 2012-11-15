@@ -28,7 +28,7 @@
             this.detailView.$el.hide();
         },
         doToggleForm: function(event) {
-            $('.crm-designer-field-detail', this.el).toggle('blind', 250); // FIXME: this.$
+            this.$('.crm-designer-field-detail').toggle('blind', 250);
         },
         doRemove: function(event) {
           this.model.destroy();
@@ -75,7 +75,7 @@
             this.detailView.$el.hide();
         },
         doToggleForm: function(event) {
-            $('.crm-designer-form-detail').toggle('blind', 250); // FIXME: this.$
+            this.$('.crm-designer-form-detail').toggle('blind', 250);
         }
     });
 
@@ -122,7 +122,7 @@
               fieldsByEntitySection: fieldsByEntitySection
             });
             this.$el.html(palette_template);
-            var $acc = $(this.$el).find('.crm-designer-palette-acc'); // FIXME: this.$
+            var $acc = this.$('.crm-designer-palette-acc');
             $acc.accordion({
                 heightStyle: 'fill',
                 autoHeight: true
@@ -135,14 +135,14 @@
             });
 
             // FIXME: tight canvas/palette coupling
-            $(".crm-designer-fields").droppable({ // FIXME: this.$
+            this.$(".crm-designer-fields").droppable({
                 activeClass: "ui-state-default",
                 hoverClass: "ui-state-hover",
                 accept: ":not(.ui-sortable-helper)"
             });
         },
         destroy: function() {
-            $(this.$el).find('.crm-designer-palette-acc').accordion('destroy'); // FIXME: this.$
+            this.$('.crm-designer-palette-acc').accordion('destroy');
         }
     });
 
@@ -171,14 +171,14 @@
             // RIGHT: Setup accordion after open to ensure proper height
             this.paletteView = new Civi.Designer.PaletteView({
               model: this.options.paletteFieldCollection,
-              el: $('.crm-designer-palette') // FIXME: this.$
+              el: this.$('.crm-designer-palette')
             });
-            $('.crm-designer-save').button(); // FIXME: this.$
-            $('.crm-designer-preview').button(); // FIXME: this.$
+            this.$('.crm-designer-save').button();
+            this.$('.crm-designer-preview').button();
 
             // TOP: Setup form-level editing
             var formDetailView = new Civi.Designer.FormView({
-                el: $('.crm-designer-form', this.$el), // FIXME: this.$
+                el: this.$('.crm-designer-form'),
                 model: this.model
             });
 
@@ -197,7 +197,7 @@
                 });
                 formFieldView.$el.appendTo($fields);
             });
-            $(".crm-designer-fields").sortable({ // FIXME: this.$
+            this.$(".crm-designer-fields").sortable({
                 receive: function(event, ui) {
                     var paletteFieldModel = designerView.options.paletteFieldCollection.getByCid(ui.item.attr('data-plm-cid'));
                     var formFieldModel = paletteFieldModel.createFormFieldModel();
@@ -208,7 +208,7 @@
                         model: formFieldModel,
                         paletteFieldModel: paletteFieldModel
                     });
-                    $('.crm-designer-fields .ui-draggable').replaceWith(formFieldView.$el); // FIXME: this.$
+                    designerView.$('.crm-designer-fields .ui-draggable').replaceWith(formFieldView.$el);
                 },
                 update: function() {
                     designerView.updateWeights();
