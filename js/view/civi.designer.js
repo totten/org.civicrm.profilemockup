@@ -47,7 +47,7 @@
         render: function(){
             var form = new Backbone.Form({
                 model: this.model,
-                fields: ['label', 'field_name', 'field_type', 'entity_name'] // FIXME: 'is_active'
+                fields: ['label', 'field_name', 'field_type', 'entity_name', 'is_active']
             });
             this.$el.html(form.render().el);
         }
@@ -90,7 +90,7 @@
         render: function(){
             var form = new Backbone.Form({
                 model: this.model,
-                fields: ['title', 'help_pre', 'help_post'] // FIXME: is_active
+                fields: ['title', 'help_pre', 'help_post', 'is_active']
             });
             this.$el.html(form.render().el);
         },

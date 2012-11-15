@@ -1,6 +1,8 @@
 (function(){
     var Civi = (window.Civi) ? (window.Civi) : (window.Civi={});
     if (!Civi.Form) Civi.Form = {};
+    
+    var YESNO = [{val: 0, label: 'No'}, {val: 1, label: 'Yes'}];
 
     /**
      * This function is a hack for generating simulated values of "entity_name"
@@ -33,19 +35,19 @@
             'entity_name': {type: 'Text'}, // pseudo-field
             'field_type': {type: 'Select', options: ['Contact', 'Individual', 'Organization', 'Contribution', 'Membership', 'Participant', 'Activity']},
             'field_name': {type: 'Text'},
-            'is_active': {type: 'Checkbox'},
-            'is_view': {type: 'Checkbox'},
-            'is_required': {type: 'Checkbox'},
+            'is_active': {type: 'Select', options: YESNO},
+            'is_view': {type: 'Select', options: YESNO},
+            'is_required': {type: 'Select', options: YESNO},
             'weight': {type: 'Number'},
             'help_post': {type: 'Text'},
             'help_pre': {type: 'Text'},
             'visibility': {type: 'Select', options: ['User and User Admin Only','Public Pages','Public Pages and Listings']},
-            'in_selector': {type: 'Checkbox'},
-            'is_searchable': {type: 'Checkbox'},
+            'in_selector': {type: 'Select', options: YESNO},
+            'is_searchable': {type: 'Select', options: YESNO},
             'location_type_id': {type: 'Number'},
             'phone_type_id': {type: 'Number'},
-            'is_reserved': {type: 'Checkbox'},
-            'is_multi_summary': {type: 'Checkbox'},
+            'is_reserved': {type: 'Select', options: YESNO},
+            'is_multi_summary': {type: 'Select', options: YESNO},
         },
         initialize: function(){
             this.set('entity_name', Civi.Form.guessEntityName(this.get('field_type')));
@@ -71,7 +73,7 @@
         schema: {
             'id': {type: 'Number'},
             'title': {type: 'Text'},
-            'is_active': {type: 'Checkbox'},
+            'is_active': {type: 'Select', options: YESNO},
             'help_pre': {type: 'Text'},
             'help_post': {type: 'Text'}
             // TODO
