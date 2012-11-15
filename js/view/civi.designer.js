@@ -213,7 +213,7 @@
                 update: function() {
                     designerView.updateWeights();
                 }
-            }).disableSelection();
+            });
         },
         doSave: function(event) {
             console.log('save');
