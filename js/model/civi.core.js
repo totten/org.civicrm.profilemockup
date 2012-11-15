@@ -4,7 +4,6 @@
 
     /**
      * Civi data models require more attributes than basic Backbone models:
-     *  - ENTITY_NAME: constant used in Civi's data model
      *  - sections: array of field-groupings
      *  - schema: array of fields, keyed by field name, per backbone-forms
      *
@@ -33,7 +32,6 @@
 
 
     Civi.Core.ActivityModel = Backbone.Model.extend({
-        ENTITY_NAME: 'Activity',
         sections: {
             'default': {title: 'Activity'},
             'custom3': {title: 'Activity: Questions', is_addable: true}
