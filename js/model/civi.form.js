@@ -48,8 +48,8 @@
             'is_multi_summary': {type: 'Checkbox'},
         },
         initialize: function(){
-            this.set('entity_type', Civi.Form.guessEntityName(this.get('field_type')));
-        },
+            this.set('entity_name', Civi.Form.guessEntityName(this.get('field_type')));
+        }
     });
 
     /**

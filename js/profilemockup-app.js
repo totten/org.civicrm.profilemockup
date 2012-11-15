@@ -12,12 +12,9 @@ cj(document).ready(function($){
         paletteFieldCollection.addEntity('contact_1', Civi.Core.IndividualModel);
         paletteFieldCollection.addEntity('activity_1', Civi.Core.ActivityModel);
 
-        var formModel = new Civi.Form.FormModel({
-            id: 5,
-            title: 'October Survey',
-            help_post: (new Date()).toString(),
-            fieldCollection: new Civi.Form.FieldCollection()
-        });
+        var formData = _.clone(CRM.form);
+        formData.fieldCollection = new Civi.Form.FieldCollection(_.values(CRM.formFieldCollection.values));
+        var formModel = new Civi.Form.FormModel(formData);
 
         window.tmpPaletteFieldCollection = paletteFieldCollection; // temporary; for debugging
         window.tmpFormModel = formModel; // temporary; for debugging

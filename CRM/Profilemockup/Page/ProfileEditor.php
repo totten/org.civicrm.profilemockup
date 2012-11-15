@@ -10,7 +10,12 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
     // Example: Assign a variable for use in a template
     $this->assign('currentTime', date('Y-m-d H:i:s'));
     CRM_Core_Resources::singleton()
-      ->addSetting(array('civiCoreModels' => $this->getModels()))
+      ->addSetting(array(
+        'civiCoreModels' => $this->getModels(),
+        'form' => civicrm_api('UFGroup', 'getsingle', array('version' => 3, 'id' => 1)),
+        //'formFieldCollection' => civicrm_api('UFField', 'get', array('version' => 3, 'uf_group_id' => 1)),
+        'formFieldCollection' => array('values' => array()),
+      ))
       ->addScript('$ = cj;')
       ->addScriptFile('org.civicrm.profilemockup', 'packages/backbone/json2.js', 100)
       ->addScriptFile('org.civicrm.profilemockup', 'packages/backbone/underscore.js', 110)
