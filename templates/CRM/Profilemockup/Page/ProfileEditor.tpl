@@ -85,16 +85,24 @@ Render a palette of available fields
 *}
 {literal}
 <script type="text/template" id="field_template">
-  <div class="crm-designer-row" data-field-cid="<%= formField.cid %>" data-plm-cid="<%= paletteField.cid %>">
-    <div class="crm-designer-field-summary">
-      <%= formField.get('label') %>
-      <span class="crm-designer-field-binding">(<%= paletteField.getSection().title %>: <%= formField.get('field_name') %>)</span>
-      <span class="crm-designer-buttons">
-        <a class="ui-icon ui-icon-pencil crm-designer-action-settings" title="{ts}Settings{/ts}"></a>
-        <a class="ui-icon ui-icon-trash crm-designer-action-remove" title="{ts}Remove{/ts}"></a>
-      </span>
-    </div>
+  <div class="crm-designer-row" data-field-cid="<%= formField.cid %>">
+    <div class="crm-designer-field-summary"></div>
     <div class="crm-designer-field-detail"></div>
   </div>
+</script>
+{/literal}
+
+{*
+@param Civi.Form.FieldModel formField
+@param Civi.Designer.PaletteFieldModel paletteField
+*}
+{literal}
+<script type="text/template" id="field_summary_template">
+  <%= formField.get('label') %>
+  <span class="crm-designer-field-binding">(<%= paletteField.getSection().title %>: <%= formField.get('field_name') %>)</span>
+  <span class="crm-designer-buttons">
+    <a class="ui-icon ui-icon-pencil crm-designer-action-settings" title="{/literal}{ts}Settings{/ts}{literal}"></a>
+    <a class="ui-icon ui-icon-trash crm-designer-action-remove" title="{/literal}{ts}Remove{/ts}{literal}"></a>
+  </span>
 </script>
 {/literal}

@@ -10,10 +10,11 @@
     Civi.Designer.FieldView = Backbone.View.extend({
         initialize: function(){
             this.render();
+            this.model.on('change', this.renderSummary, this);
         },
         events: {
-          "click .crm-designer-action-settings": 'doToggleForm',
-          "click .crm-designer-action-remove": 'doRemove'
+            "click .crm-designer-action-settings": 'doToggleForm',
+            "click .crm-designer-action-remove": 'doRemove'
         },
         render: function(){
             var field_template = _.template($('#field_template').html(), {
@@ -21,6 +22,20 @@
               paletteField: this.options.paletteFieldModel
             });
             this.$el.html(field_template);
+
+            // Add top part
+            this.renderSummary();
+            this.renderDetail();
+        },
+        renderSummary: function() {
+            var field_summary_template = _.template($('#field_summary_template').html(), {
+              formField: this.model,
+              paletteField: this.options.paletteFieldModel
+            });
+            this.$('.crm-designer-field-summary').html(field_summary_template);
+        },
+        renderDetail: function() {
+            // Add bottom part
             this.detailView = new Civi.Designer.FieldDetailView({
                 el: this.$el.find('.crm-designer-field-detail'),
                 model: this.model
@@ -31,6 +46,7 @@
             this.$('.crm-designer-field-detail').toggle('blind', 250);
         },
         doRemove: function(event) {
+          this.model.off('change', this.render, this);
           this.model.destroy();
           this.remove();
         }
@@ -49,6 +65,7 @@
                 model: this.model,
                 fields: ['label', 'field_name', 'field_type', 'entity_name', 'is_active']
             });
+            form.on('change', form.commit, form);
             this.$el.html(form.render().el);
         }
     });
@@ -229,7 +246,8 @@
                 if ($(row).hasClass('placeholder')) {
                   return;
                 }
-                var formFieldModel = designerView.model.get('fieldCollection').getByCid($(row).attr('data-field-cid'));
+                var formFieldCid = $(row).attr('data-field-cid');
+                var formFieldModel = designerView.model.get('fieldCollection').getByCid(formFieldCid);
                 formFieldModel.set('weight', weight);
                 weight++;
             });
