@@ -17,13 +17,12 @@
             "click .crm-designer-action-remove": 'doRemove'
         },
         render: function(){
-            var field_template = _.template($('#field_template').html(), {
+            var field_row_template = _.template($('#field_row_template').html(), {
               formField: this.model,
               paletteField: this.options.paletteFieldModel
             });
-            this.$el.html(field_template);
+            this.$el.html(field_row_template);
 
-            // Add top part
             this.renderSummary();
             this.renderDetail();
         },
@@ -35,7 +34,6 @@
             this.$('.crm-designer-field-summary').html(field_summary_template);
         },
         renderDetail: function() {
-            // Add bottom part
             this.detailView = new Civi.Designer.FieldDetailView({
                 el: this.$el.find('.crm-designer-field-detail'),
                 model: this.model
@@ -77,14 +75,27 @@
     Civi.Designer.FormView = Backbone.View.extend({
         initialize: function(){
             this.render();
+            this.model.on('change', this.renderSummary, this); // FIXME: cleanup
         },
         events: {
-          "click .crm-designer-action-settings": 'doToggleForm'
+            "click .crm-designer-action-settings": 'doToggleForm'
         },
-        render: function(){
-            this.$('.crm-designer-form-title').text(this.model.get('title'));
-            //this.$('.crm-designer-buttons').button({icons: {primary: 'ui-icon-pencil'}, text: false})
-            //this.$('.crm-designer-buttons')
+        render: function() {
+            var form_row_template = _.template($('#form_row_template').html(), {
+              form: this.model
+            });
+            this.$el.html(form_row_template);
+
+            this.renderSummary();
+            this.renderDetail();
+        },
+        renderSummary: function() {
+            var form_summary_template = _.template($('#form_summary_template').html(), {
+                form: this.model
+            });
+            this.$('.crm-designer-form-summary').html(form_summary_template);
+        },
+        renderDetail: function() {
             this.detailView = new Civi.Designer.FormDetailView({
                 model: this.model,
                 el: this.$('.crm-designer-form-detail')
@@ -109,6 +120,7 @@
                 model: this.model,
                 fields: ['title', 'help_pre', 'help_post', 'is_active']
             });
+            form.on('change', form.commit, form);
             this.$el.html(form.render().el);
         },
     });

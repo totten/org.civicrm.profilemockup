@@ -36,15 +36,6 @@
     </div>
     <div class="crm-designer-canvas">
       <div class="crm-designer-form">
-        <div class="crm-designer-row">
-          <div class="crm-designer-form-summary">
-            <span class="crm-designer-form-title"></span>
-            <span class="crm-designer-buttons">
-              <a class="crm-designer-action-settings ui-icon ui-icon-pencil" title="{ts}Settings{/ts}"></a>
-            </span>
-          </div>
-          <div class="crm-designer-form-detail"></div>
-        </div>
       </div>
       <hr/>
       <div class="crm-designer-fields">
@@ -84,7 +75,7 @@ Render a palette of available fields
 @param Civi.Form.FieldModel formField
 *}
 {literal}
-<script type="text/template" id="field_template">
+<script type="text/template" id="field_row_template">
   <div class="crm-designer-row" data-field-cid="<%= formField.cid %>">
     <div class="crm-designer-field-summary"></div>
     <div class="crm-designer-field-detail"></div>
@@ -103,6 +94,30 @@ Render a palette of available fields
   <span class="crm-designer-buttons">
     <a class="ui-icon ui-icon-pencil crm-designer-action-settings" title="{/literal}{ts}Settings{/ts}{literal}"></a>
     <a class="ui-icon ui-icon-trash crm-designer-action-remove" title="{/literal}{ts}Remove{/ts}{literal}"></a>
+  </span>
+</script>
+{/literal}
+
+{*
+@param Civi.Form.FormModel form
+*}
+{literal}
+<script type="text/template" id="form_row_template">
+  <div class="crm-designer-row">
+    <div class="crm-designer-form-summary"></div>
+    <div class="crm-designer-form-detail"></div>
+  </div>
+</script>
+{/literal}
+
+{*
+@param Civi.Form.FormModel form
+*}
+{literal}
+<script type="text/template" id="form_summary_template">
+  <span><%= form.get('title') %></span>
+  <span class="crm-designer-buttons">
+    <a class="crm-designer-action-settings ui-icon ui-icon-pencil" title="{ts}Settings{/ts}"></a>
   </span>
 </script>
 {/literal}
