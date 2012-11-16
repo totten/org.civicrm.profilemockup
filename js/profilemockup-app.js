@@ -20,20 +20,23 @@ cj(document).ready(function($){
         window.tmpFormModel = formModel; // temporary; for debugging
 
         var designerView = null; // Civi.Form.DesignerView
+        var designerRegion = new Backbone.Marionette.Region({
+          el: '#crm-designer-designer'
+        });
         $("#crm-designer-dialog").dialog({
             autoOpen: true, // note: affects accordion height
             title: 'Embedded Profile Editor',
             width: '75%',
             minWidth: 400,
-            minHeight: 400,
+            minHeight: 600,
             open: function() {
-                var div = $('<div></div>').appendTo($('#crm-designer-designer'));
                 designerView = new Civi.Designer.DesignerView({
                     model: formModel,
-                    paletteFieldCollection: paletteFieldCollection,
-                    el: div
+                    paletteFieldCollection: paletteFieldCollection
                 });
+                designerRegion.show(designerView);
                 window.tmpDesignerView = designerView; // temporary; for debugging
+                window.tmpDesignerRegion = designerRegion;
             },
             close: function() {
                 designerView.destroy();

@@ -6,7 +6,11 @@
 .crm-designer-palette > div {
   padding: 10px;
 }
- 
+
+.crm-designer-palette {
+  height: 20em;
+}
+
 .crm-designer-canvas {
   width: 73%;
   float: left;

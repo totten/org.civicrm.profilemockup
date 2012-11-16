@@ -154,7 +154,8 @@
             var $acc = this.$('.crm-designer-palette-acc');
             $acc.accordion({
                 heightStyle: 'fill',
-                autoHeight: true
+                autoHeight: false,
+                clearStyle: true
             });
             $acc.find('.crm-designer-palette-field').draggable({
                 appendTo: "#crm-designer-designer",
@@ -185,7 +186,6 @@
      */
     Civi.Designer.DesignerView = Backbone.View.extend({
         initialize: function() {
-            this.render();
             this.model.get('fieldCollection').on('add', this.updatePlaceholder, this);
             this.model.get('fieldCollection').on('remove', this.updatePlaceholder, this);
         },

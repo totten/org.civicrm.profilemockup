@@ -20,6 +20,7 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
       ->addScriptFile('org.civicrm.profilemockup', 'packages/backbone/json2.js', 100)
       ->addScriptFile('org.civicrm.profilemockup', 'packages/backbone/underscore.js', 110)
       ->addScriptFile('org.civicrm.profilemockup', 'packages/backbone/backbone.js', 120)
+      ->addScriptFile('org.civicrm.profilemockup', 'packages/backbone/backbone.marionette.js', 125)
       ->addScriptFile('org.civicrm.profilemockup', 'packages/backbone-forms/distribution/backbone-forms.js', 130)
       ->addScriptFile('org.civicrm.profilemockup', 'packages/backbone-forms/distribution/adapters/backbone.bootstrap-modal.min.js', 140)
       ->addScriptFile('org.civicrm.profilemockup', 'packages/backbone-forms/distribution/editors/list.min.js', 140)
