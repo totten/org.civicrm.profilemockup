@@ -128,7 +128,7 @@
                 autoHeight: true
             });
             $acc.find('.crm-designer-palette-field').draggable({
-                appendTo: "body",
+                appendTo: "#crm-designer-designer",
                 zIndex: $(this.$el).zIndex()+5000,
                 helper: "clone",
                 connectToSortable: '.crm-designer-fields' // FIXME: tight canvas/palette coupling
