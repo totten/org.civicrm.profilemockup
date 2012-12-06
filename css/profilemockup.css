@@ -41,7 +41,7 @@
   visibility: visible;
 }
 
-.crm-designer-row {
+.crm-designer-row, .crm-designer-row-placeholder {
   border: 1px solid white;
   padding: 0.5em 2em 0.5em 2em;
   width: 80%;
@@ -50,6 +50,12 @@
 
 .crm-designer-row:hover {
   border: 1px dashed black;
+}
+
+.crm-designer-row-placeholder {
+  border: 1px dashed black;
+  visibility: visible !important;
+  background: #bbb;
 }
 
 /* fixme proper theming */

@@ -227,6 +227,8 @@
                 formFieldView.$el.appendTo($fields);
             });
             this.$(".crm-designer-fields").sortable({
+                placeholder: 'crm-designer-row-placeholder',
+                forcePlaceholderSize: true,
                 receive: function(event, ui) {
                     var paletteFieldModel = designerView.options.paletteFieldCollection.getByCid(ui.item.attr('data-plm-cid'));
                     var formFieldModel = paletteFieldModel.createFormFieldModel();
