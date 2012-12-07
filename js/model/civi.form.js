@@ -2,7 +2,7 @@
     var Civi = (window.Civi) ? (window.Civi) : (window.Civi={});
     if (!Civi.Form) Civi.Form = {};
     
-    var YESNO = [{val: 0, label: 'No'}, {val: 1, label: 'Yes'}];
+    var YESNO = [{val: 0, label: ts('No')}, {val: 1, label: ts('Yes')}];
 
     /**
      * This function is a hack for generating simulated values of "entity_name"

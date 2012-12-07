@@ -11,6 +11,16 @@
   height: 20em;
 }
 
+.crm-designer-palette-field {
+  padding: 1px;
+  border: 1px solid white;
+  cursor: move;
+}
+
+.crm-designer-palette-field:hover {
+  border: 1px dashed gray;
+}
+
 .crm-designer-canvas {
   width: 73%;
   float: left;
@@ -32,30 +42,33 @@
   min-height:100px;
 }
 
-.crm-designer-row .crm-designer-buttons {
+.crm-designer-row .crm-designer-buttons a {
   float: right;
+  cursor: pointer;
   visibility: hidden;
 }
 
-.crm-designer-row:hover .crm-designer-buttons {
+.crm-designer-row:hover .crm-designer-buttons a {
   visibility: visible;
 }
 
 .crm-designer-row, .crm-designer-row-placeholder {
   border: 1px solid white;
-  padding: 0.5em 2em 0.5em 2em;
+  padding: 0.5em;
   width: 80%;
   margin: auto;
 }
 
 .crm-designer-row:hover {
-  border: 1px dashed black;
+  border: 1px dashed gray;
+  cursor: move;
 }
 
 .crm-designer-row-placeholder {
-  border: 1px dashed black;
+  border: 1px dashed gray;
   visibility: visible !important;
-  background: #bbb;
+  background: #EFEFFF;
+  height: 1em;
 }
 
 /* fixme proper theming */
