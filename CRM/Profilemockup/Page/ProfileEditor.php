@@ -108,7 +108,7 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
     foreach ($customGroupTree as $customGroup) {
       $sectionName = 'cg_' . $customGroup['id'];
       $section = array(
-        'title' => ts('%1: %2', array(1=>$title, 2=>$customGroup['title'])),
+        'title' => ts('%1: %2', array(1 => $title, 2 => $customGroup['title'])),
         'is_addable' => TRUE,
       );
       $result['sections'][$sectionName] = $section;
