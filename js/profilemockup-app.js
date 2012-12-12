@@ -25,11 +25,14 @@ cj(document).ready(function($){
             minWidth: 400,
             minHeight: 600,
             open: function() {
+                var designerLayout = new Civi.Designer.DesignerLayout({});
+                designerApp.designerRegion.show(designerLayout);
+
                 var designerView = new Civi.Designer.DesignerView({
                     model: formModel,
                     paletteFieldCollection: paletteFieldCollection
                 });
-                designerApp.designerRegion.show(designerView);
+                designerLayout.main.show(designerView);
                 window.tmpDesignerView = designerView; // temporary; for debugging
                 window.tmpDesignerRegion = designerApp.designerRegion;
             },

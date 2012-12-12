@@ -176,6 +176,13 @@
         }
     });
 
+    Civi.Designer.DesignerLayout = Backbone.Marionette.Layout.extend({
+        template: '#designer-layout_template',
+        regions: {
+            main: '#designer-layout-main'
+        }
+    });
+
     /**
      * Display a complete form-editing UI, including canvas, palette, and
      * buttons.

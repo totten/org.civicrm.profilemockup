@@ -24,6 +24,11 @@
   </form>
 </script>
 
+
+<script type="text/template" id="designer-layout_template">
+    <div id="designer-layout-main"></div>
+</script>
+
 <script type="text/template" id="designer_template">
   <div class="crm-designer">
     <div class="crm-designer-toolbar">
