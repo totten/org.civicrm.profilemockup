@@ -18,7 +18,6 @@ cj(document).ready(function($){
         window.tmpFormModel = formModel; // temporary; for debugging
 
         // Prepare application
-        var designerView = null; // Civi.Form.DesignerView
         $("#crm-designer-dialog").dialog({
             autoOpen: true, // note: affects accordion height
             title: 'Embedded Profile Editor',
@@ -26,7 +25,7 @@ cj(document).ready(function($){
             minWidth: 400,
             minHeight: 600,
             open: function() {
-                designerView = new Civi.Designer.DesignerView({
+                var designerView = new Civi.Designer.DesignerView({
                     model: formModel,
                     paletteFieldCollection: paletteFieldCollection
                 });
