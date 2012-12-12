@@ -1,13 +1,6 @@
 cj(document).ready(function($){
-
-    // Router
-    var AppRouter = Backbone.Router.extend({
-        routes: {
-            '*actions': 'defaultRoute'
-        }
-    });
-    var app_router = new AppRouter();
-    app_router.on('route:defaultRoute', function(name) {
+    { // placeholder to keep indentation
+        // Prepare data to pass into application
         var paletteFieldCollection = new Civi.Designer.PaletteFieldCollection();
         paletteFieldCollection.addEntity('contact_1', Civi.Core.IndividualModel);
         paletteFieldCollection.addEntity('activity_1', Civi.Core.ActivityModel);
@@ -19,6 +12,8 @@ cj(document).ready(function($){
         window.tmpPaletteFieldCollection = paletteFieldCollection; // temporary; for debugging
         window.tmpFormModel = formModel; // temporary; for debugging
 
+        // Prepare application
+        var designerApp = new Backbone.Marionette.Application();
         var designerView = null; // Civi.Form.DesignerView
         var designerRegion = new Backbone.Marionette.Region({
           el: '#crm-designer-designer'
@@ -46,6 +41,5 @@ cj(document).ready(function($){
         $('.crm-designer-open').click(function(event){
             $("#crm-designer-dialog").dialog('open');
         });
-    });
-    Backbone.history.start();
+    }
 });
