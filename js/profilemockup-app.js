@@ -35,8 +35,7 @@ cj(document).ready(function($){
                 window.tmpDesignerRegion = designerApp.designerRegion;
             },
             close: function() {
-                designerView.destroy();
-                designerView.remove();
+                designerApp.designerRegion.close();
             }
         });
         $('.crm-designer-open').click(function(event){
