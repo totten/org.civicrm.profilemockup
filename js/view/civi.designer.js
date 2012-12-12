@@ -122,7 +122,7 @@
             });
             form.on('change', form.commit, form);
             this.$el.html(form.render().el);
-        },
+        }
     });
 
     /**
@@ -198,7 +198,7 @@
         },
         events: {
             'click .crm-designer-save': 'doSave',
-            'click .crm-designer-preview': 'doPreview',
+            'click .crm-designer-preview': 'doPreview'
         },
         render: function() {
             var designerView = this;
