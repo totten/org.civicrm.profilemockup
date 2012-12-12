@@ -1,5 +1,10 @@
 cj(document).ready(function($){
     { // placeholder to keep indentation
+        var designerApp = new Backbone.Marionette.Application();
+        designerApp.addRegions({
+            designerRegion: '#crm-designer-designer'
+        });
+
         // Prepare data to pass into application
         var paletteFieldCollection = new Civi.Designer.PaletteFieldCollection();
         paletteFieldCollection.addEntity('contact_1', Civi.Core.IndividualModel);
@@ -13,11 +18,7 @@ cj(document).ready(function($){
         window.tmpFormModel = formModel; // temporary; for debugging
 
         // Prepare application
-        var designerApp = new Backbone.Marionette.Application();
         var designerView = null; // Civi.Form.DesignerView
-        var designerRegion = new Backbone.Marionette.Region({
-          el: '#crm-designer-designer'
-        });
         $("#crm-designer-dialog").dialog({
             autoOpen: true, // note: affects accordion height
             title: 'Embedded Profile Editor',
@@ -29,9 +30,9 @@ cj(document).ready(function($){
                     model: formModel,
                     paletteFieldCollection: paletteFieldCollection
                 });
-                designerRegion.show(designerView);
+                designerApp.designerRegion.show(designerView);
                 window.tmpDesignerView = designerView; // temporary; for debugging
-                window.tmpDesignerRegion = designerRegion;
+                window.tmpDesignerRegion = designerApp.designerRegion;
             },
             close: function() {
                 designerView.destroy();
