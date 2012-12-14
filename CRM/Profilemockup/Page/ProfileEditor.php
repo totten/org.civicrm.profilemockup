@@ -13,8 +13,8 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
       ->addSetting(array(
         'civiCoreModels' => $this->getModels(),
         'form' => civicrm_api('UFGroup', 'getsingle', array('version' => 3, 'id' => 1)),
-        //'formFieldCollection' => civicrm_api('UFField', 'get', array('version' => 3, 'uf_group_id' => 1)),
-        'formFieldCollection' => array('values' => array()), // simulate new form
+        'formFieldCollection' => civicrm_api('UFField', 'get', array('version' => 3, 'uf_group_id' => 1)),
+        // 'formFieldCollection' => array('values' => array()), // simulate new form
       ))
       // TODO think of a way extensions can include jQuery plugins
       ->addScript('jQuery = $ = cj;') // HACK - must be removed
