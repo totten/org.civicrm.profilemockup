@@ -177,9 +177,31 @@
     });
 
     Civi.Designer.DesignerLayout = Backbone.Marionette.Layout.extend({
-        template: '#designer-layout_template',
+        template: '#designer_template',
         regions: {
-            main: '#designer-layout-main'
+            buttons: '.crm-designer-buttonset',
+            palette: '.crm-designer-palette',
+            form: '.crm-designer-form',
+            fields: '.crm-designer-fields'
+        }
+    });
+
+    Civi.Designer.ToolbarView = Backbone.Marionette.ItemView.extend({
+        template: '#designer_buttons_template',
+        events: {
+            'click .crm-designer-save': 'doSave',
+            'click .crm-designer-preview': 'doPreview'
+        },
+        render: function() {
+            Backbone.Marionette.ItemView.prototype.render.apply(this);
+            this.$('.crm-designer-save').button();
+            this.$('.crm-designer-preview').button();
+        },
+        doSave: function(event) {
+            console.log('save');
+        },
+        doPreview: function(event) {
+            console.log('preview');
         }
     });
 
@@ -191,32 +213,14 @@
      *  - model: Civi.Form.FormModel
      *  - paletteFieldCollection: Civi.Designer.PaletteFieldCollection
      */
-    Civi.Designer.DesignerView = Backbone.View.extend({
+    Civi.Designer.FieldCanvasView = Backbone.View.extend({
         initialize: function() {
             this.model.get('fieldCollection').on('add', this.updatePlaceholder, this);
             this.model.get('fieldCollection').on('remove', this.updatePlaceholder, this);
         },
-        events: {
-            'click .crm-designer-save': 'doSave',
-            'click .crm-designer-preview': 'doPreview'
-        },
         render: function() {
             var designerView = this;
-            this.$el.html( _.template($('#designer_template').html()) );
-
-            // RIGHT: Setup accordion after open to ensure proper height
-            this.paletteView = new Civi.Designer.PaletteView({
-              model: this.options.paletteFieldCollection,
-              el: this.$('.crm-designer-palette')
-            });
-            this.$('.crm-designer-save').button();
-            this.$('.crm-designer-preview').button();
-
-            // TOP: Setup form-level editing
-            var formDetailView = new Civi.Designer.FormView({
-                el: this.$('.crm-designer-form'),
-                model: this.model
-            });
+            this.$el.html( _.template($('#field_canvas_view_template').html()) );
 
             // BOTTOM: Setup field-level editing
             var $fields = this.$('.crm-designer-fields');
@@ -253,12 +257,6 @@
                 }
             });
         },
-        doSave: function(event) {
-            console.log('save');
-        },
-        doPreview: function(event) {
-            console.log('preview');
-        },
         /** Determine visual order of fields and set the model values for "weight" */
         updateWeights: function() {
             var designerView = this;
@@ -278,12 +276,6 @@
                 this.$('.placeholder').show();
             } else {
                 this.$('.placeholder').hide();
-            }
-        },
-        destroy: function() {
-            // TODO reconcile with View.remove()
-            if (this.paletteView) {
-                this.paletteView.destroy();
             }
         }
     });

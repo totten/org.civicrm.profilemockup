@@ -24,17 +24,10 @@
   </form>
 </script>
 
-
-<script type="text/template" id="designer-layout_template">
-    <div id="designer-layout-main"></div>
-</script>
-
 <script type="text/template" id="designer_template">
   <div class="crm-designer">
     <div class="crm-designer-toolbar">
       <div class="crm-designer-buttonset">
-        <button class="crm-designer-save">{ts}Save{/ts}</button>
-        <button class="crm-designer-preview">{ts}Preview{/ts}</button>
       </div>
       <div class="crm-designer-palette">
       </div>
@@ -44,7 +37,6 @@
       </div>
       <hr/>
       <div class="crm-designer-fields">
-        <div class="crm-designer-row placeholder">{ts}Drag a field from the palette to add it to this form.{/ts}</div>
       </div>
     </div>
   </div>
@@ -126,3 +118,12 @@ Render a palette of available fields
   </span>
 </script>
 {/literal}
+
+<script type="text/template" id="designer_buttons_template">
+    <button class="crm-designer-save">{ts}Save{/ts}</button>
+    <button class="crm-designer-preview">{ts}Preview{/ts}</button>
+</script>
+
+<script type="text/template" id="field_canvas_view_template">
+    <div class="crm-designer-row placeholder">{ts}Drag a field from the palette to add it to this form.{/ts}</div>
+</script>

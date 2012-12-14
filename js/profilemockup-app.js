@@ -28,13 +28,24 @@ cj(document).ready(function($){
                 var designerLayout = new Civi.Designer.DesignerLayout({});
                 designerApp.designerRegion.show(designerLayout);
 
-                var designerView = new Civi.Designer.DesignerView({
+                designerLayout.buttons.show(new Civi.Designer.ToolbarView());
+
+                designerLayout.palette.show(new Civi.Designer.PaletteView({
+                    model: paletteFieldCollection
+                }));
+
+                designerLayout.form.show(new Civi.Designer.FormView({
+                    model: formModel
+                }));
+
+                var fieldCanvasView = new Civi.Designer.FieldCanvasView({
                     model: formModel,
                     paletteFieldCollection: paletteFieldCollection
                 });
-                designerLayout.main.show(designerView);
-                window.tmpDesignerView = designerView; // temporary; for debugging
-                window.tmpDesignerRegion = designerApp.designerRegion;
+                designerLayout.fields.show(fieldCanvasView);
+                window.tmpDesignerView = fieldCanvasView; // temporary; for debugging
+                //designerLayout.fields.show(new Civi.Designer.ToolbarView());
+
             },
             close: function() {
                 designerApp.designerRegion.close();
