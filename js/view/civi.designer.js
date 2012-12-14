@@ -261,7 +261,7 @@
         updateWeights: function() {
             var designerView = this;
             var weight = 1;
-            var rows = this.$('.crm-designer-fields .crm-designer-row').each(function(key,row){
+            var rows = this.$('.crm-designer-row').each(function(key,row){
                 if ($(row).hasClass('placeholder')) {
                   return;
                 }
