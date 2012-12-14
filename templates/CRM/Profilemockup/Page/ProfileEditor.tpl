@@ -27,16 +27,16 @@
 <script type="text/template" id="designer_template">
   <div class="crm-designer">
     <div class="crm-designer-toolbar">
-      <div class="crm-designer-buttonset">
+      <div class="crm-designer-buttonset-region">
       </div>
-      <div class="crm-designer-palette">
+      <div class="crm-designer-palette-region">
       </div>
     </div>
     <div class="crm-designer-canvas">
-      <div class="crm-designer-form">
+      <div class="crm-designer-form-region">
       </div>
       <hr/>
-      <div class="crm-designer-fields">
+      <div class="crm-designer-fields-region">
       </div>
     </div>
   </div>
@@ -50,6 +50,7 @@ Render a palette of available fields
 *}
 {literal}
 <script type="text/template" id="palette_template">
+<div class="crm-designer-palette">
   <div class="crm-designer-palette-acc">
     <% _.each(sections, function(section, sectionId){ %>
       <h3><%= section.title %></h3>
@@ -65,6 +66,7 @@ Render a palette of available fields
       </div>
     <% }); %>
   </div>
+</div>
 </script>
 {/literal}
 
@@ -125,5 +127,7 @@ Render a palette of available fields
 </script>
 
 <script type="text/template" id="field_canvas_view_template">
+  <div class="crm-designer-fields">
     <div class="crm-designer-row placeholder">{ts}Drag a field from the palette to add it to this form.{/ts}</div>
+  </div>
 </script>

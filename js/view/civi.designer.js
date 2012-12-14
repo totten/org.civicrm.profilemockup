@@ -179,10 +179,10 @@
     Civi.Designer.DesignerLayout = Backbone.Marionette.Layout.extend({
         template: '#designer_template',
         regions: {
-            buttons: '.crm-designer-buttonset',
-            palette: '.crm-designer-palette',
-            form: '.crm-designer-form',
-            fields: '.crm-designer-fields'
+            buttons: '.crm-designer-buttonset-region',
+            palette: '.crm-designer-palette-region',
+            form: '.crm-designer-form-region',
+            fields: '.crm-designer-fields-region'
         }
     });
 
