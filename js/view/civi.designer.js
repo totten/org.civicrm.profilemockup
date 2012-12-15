@@ -81,9 +81,6 @@
         events: {
             "click .crm-designer-action-settings": 'doToggleForm'
         },
-        modelEvents: {
-            'change': 'updateSummary'
-        },
         onRender: function() {
             this.summary.show(new Civi.Designer.FormSummaryView({
                 model: this.model
@@ -98,9 +95,6 @@
         doToggleForm: function(event) {
             this.expanded = !this.expanded;
             this.detail.$el.toggle('blind', 250);
-        },
-        updateSummary: function() {
-            this.summary.currentView.render();
         }
     });
 
@@ -109,7 +103,10 @@
      * - model: Civi.Form.FormModel
      */
     Civi.Designer.FormSummaryView = Backbone.Marionette.ItemView.extend({
-        template: '#form_summary_template'
+        template: '#form_summary_template',
+        modelEvents: {
+            'change': 'render'
+        }
     });
 
     /**
