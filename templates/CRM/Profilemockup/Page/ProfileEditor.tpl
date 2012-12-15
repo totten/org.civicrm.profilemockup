@@ -3,7 +3,14 @@
 {* Markup for the initial page view *}
 
 <div id="profile_editor_app"></div>
-
+<label for="test-profile-id">Select Profile</label>
+<select id="test-profile-id">
+{crmAPI var='result' entity='UFGroup' action='get' sequential=1}
+{foreach from=$result.values item=UFGroup}
+  <option value="{$UFGroup.id}">{$UFGroup.title}</option>
+{/foreach}
+  <option value="">- Add New Profile -</option>
+</select>
 <button class="crm-designer-open">Edit Profile</button>
 <div id="crm-designer-dialog" title="Dialog Title">
   <div id="crm-designer-designer" class="crm-clearfix">

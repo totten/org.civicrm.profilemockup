@@ -1,19 +1,15 @@
 cj(document).ready(function($){
     { // placeholder to keep indentation
-        var designerApp = new Backbone.Marionette.Application();
-        designerApp.addRegions({
-            designerRegion: '#crm-designer-designer'
-        });
+      var designerApp = new Backbone.Marionette.Application();
+      designerApp.addRegions({
+        designerRegion: '#crm-designer-designer'
+      });
+      // Prepare data to pass into application
+      var paletteFieldCollection = new Civi.Designer.PaletteFieldCollection();
+      paletteFieldCollection.addEntity('contact_1', Civi.Core.IndividualModel);
+      paletteFieldCollection.addEntity('activity_1', Civi.Core.ActivityModel);
 
-        // Prepare data to pass into application
-        var paletteFieldCollection = new Civi.Designer.PaletteFieldCollection();
-        paletteFieldCollection.addEntity('contact_1', Civi.Core.IndividualModel);
-        paletteFieldCollection.addEntity('activity_1', Civi.Core.ActivityModel);
-
-        var formData = _.clone(CRM.form);
-        formData.fieldCollection = new Civi.Form.FieldCollection(_.values(CRM.formFieldCollection.values));
-        var formModel = new Civi.Form.FormModel(formData);
-
+      var launchDesigner = function(formModel) {
         window.tmpPaletteFieldCollection = paletteFieldCollection; // temporary; for debugging
         window.tmpFormModel = formModel; // temporary; for debugging
 
@@ -48,11 +44,33 @@ cj(document).ready(function($){
 
             },
             close: function() {
-                designerApp.designerRegion.close();
+              designerApp.designerRegion.close();
             }
         });
-        $('.crm-designer-open').click(function(event){
-            $("#crm-designer-dialog").dialog('open');
-        });
+      };
+
+      $('.crm-designer-open').click(function() {
+        var ufId = $('#test-profile-id').val();
+        if (ufId) {
+          // Retrieve UF group and fields from the api
+          CRM.api('UFGroup', 'getsingle', {id: ufId}, {success: function(data) {
+              var formData = data;
+              CRM.api('UFField', 'get', {uf_group_id: ufId}, {success: function(data) {
+                  formData.fieldCollection = new Civi.Form.FieldCollection(_.values(data.values));
+                  var formModel = new Civi.Form.FormModel(formData);
+                  launchDesigner(formModel);
+                }
+              });
+            }
+          });
+        }
+        else {
+          // Initialize new UF group
+          var formData = {};
+          formData.fieldCollection = new Civi.Form.FieldCollection({});
+          var formModel = new Civi.Form.FormModel(formData);
+          launchDesigner(formModel);
+        }
+      });
     }
 });
