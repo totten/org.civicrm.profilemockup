@@ -81,6 +81,9 @@
         events: {
             "click .crm-designer-action-settings": 'doToggleForm'
         },
+        modelEvents: {
+            'change': 'updateSummary'
+        },
         initialize: function(){
             Backbone.Marionette.Layout.prototype.initialize(this);
         },
@@ -94,11 +97,6 @@
             if (!this.expanded) {
                 this.detail.$el.hide();
             }
-
-            this.model.on('change', this.updateSummary, this);
-        },
-        onClose: function() {
-            this.model.off('change', this.updateSummary, this);
         },
         doToggleForm: function(event) {
             this.expanded = !this.expanded;
