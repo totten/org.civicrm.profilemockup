@@ -47,7 +47,7 @@
             'location_type_id': {type: 'Number'},
             'phone_type_id': {type: 'Number'},
             'is_reserved': {type: 'Select', options: YESNO},
-            'is_multi_summary': {type: 'Select', options: YESNO},
+            'is_multi_summary': {type: 'Select', options: YESNO}
         },
         initialize: function(){
             this.set('entity_name', Civi.Form.guessEntityName(this.get('field_type')));
@@ -79,6 +79,6 @@
             // TODO
         },
         initialize: function(){
-        },
+        }
     });
 })();

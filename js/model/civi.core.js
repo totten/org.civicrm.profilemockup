@@ -24,7 +24,7 @@
             custom_123: { type: 'Checkbox', section: 'custom1', title: 'Likes whiskers on kittens', civiFieldType: 'Individual'},
             custom_456: { type: 'Checkbox', section: 'custom1', title: 'Likes dog bites', civiFieldType: 'Individual' },
             custom_789: { type: 'Checkbox', section: 'custom1', title: 'Likes bee stings', civiFieldType: 'Individual' },
-            custom_012: { type: 'Text', section: 'custom2', title: 'Pass phrase', civiFieldType: 'Contact' },
+            custom_012: { type: 'Text', section: 'custom2', title: 'Pass phrase', civiFieldType: 'Contact' }
         },
         initialize: function(){
         }
@@ -43,7 +43,7 @@
             custom_789: { type: 'Select', section: 'custom3', title: 'How often do you eat cheese?',
               options: ['Never', 'Sometimes', 'Often'],
               civiFieldType: 'Activity'
-            },
+            }
         },
         initialize: function(){
         }
