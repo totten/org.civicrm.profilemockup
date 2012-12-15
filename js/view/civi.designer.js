@@ -122,9 +122,6 @@
      * - model: Civi.Form.FormModel
      */
     Civi.Designer.FormDetailView = Backbone.View.extend({
-        initialize: function(){
-            this.render();
-        },
         render: function(){
             var form = new Backbone.Form({
                 model: this.model,
