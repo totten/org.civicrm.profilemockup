@@ -84,9 +84,6 @@
         modelEvents: {
             'change': 'updateSummary'
         },
-        initialize: function(){
-            Backbone.Marionette.Layout.prototype.initialize(this);
-        },
         onRender: function() {
             this.summary.show(new Civi.Designer.FormSummaryView({
                 model: this.model
