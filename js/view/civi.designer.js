@@ -72,39 +72,49 @@
      * options:
      * - model: Civi.Form.FormModel
      */
-    Civi.Designer.FormView = Backbone.View.extend({
-        initialize: function(){
-            this.render();
-            this.model.on('change', this.renderSummary, this); // FIXME: cleanup
+    Civi.Designer.FormView = Backbone.Marionette.Layout.extend({
+        template: '#form_row_template',
+        regions: {
+            summary: '.crm-designer-form-summary',
+            detail: '.crm-designer-form-detail'
         },
         events: {
             "click .crm-designer-action-settings": 'doToggleForm'
         },
-        render: function() {
-            var form_row_template = _.template($('#form_row_template').html(), {
-              form: this.model
-            });
-            this.$el.html(form_row_template);
+        initialize: function(){
+            Backbone.Marionette.Layout.prototype.initialize(this);
+        },
+        onRender: function() {
+            this.summary.show(new Civi.Designer.FormSummaryView({
+                model: this.model
+            }));
+            this.detail.show(new Civi.Designer.FormDetailView({
+                model: this.model
+            }));
+            if (!this.expanded) {
+                this.detail.$el.hide();
+            }
 
-            this.renderSummary();
-            this.renderDetail();
+            this.model.on('change', this.updateSummary, this);
         },
-        renderSummary: function() {
-            var form_summary_template = _.template($('#form_summary_template').html(), {
-                form: this.model
-            });
-            this.$('.crm-designer-form-summary').html(form_summary_template);
-        },
-        renderDetail: function() {
-            this.detailView = new Civi.Designer.FormDetailView({
-                model: this.model,
-                el: this.$('.crm-designer-form-detail')
-            });
-            this.detailView.$el.hide();
+        onClose: function() {
+            this.model.off('change', this.updateSummary, this);
         },
         doToggleForm: function(event) {
-            this.$('.crm-designer-form-detail').toggle('blind', 250);
+            this.expanded = !this.expanded;
+            this.detail.$el.toggle('blind', 250);
+        },
+        updateSummary: function() {
+            this.summary.currentView.render();
         }
+    });
+
+    /**
+     * options:
+     * - model: Civi.Form.FormModel
+     */
+    Civi.Designer.FormSummaryView = Backbone.Marionette.ItemView.extend({
+        template: '#form_summary_template'
     });
 
     /**

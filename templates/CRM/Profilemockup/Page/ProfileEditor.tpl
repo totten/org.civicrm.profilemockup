@@ -101,11 +101,11 @@
 {/literal}
 
 {**
- * @param Civi.Form.FormModel form
+ * Variables correspond to properties of Civi.Form.FormModel
  *}
 {literal}
 <script type="text/template" id="form_summary_template">
-  <span><%= form.get('title') %></span>
+  <span><%= title %></span>
   <span class="crm-designer-buttons">
     <a class="crm-designer-action-settings ui-icon ui-icon-pencil" title="{ts}Settings{/ts}"></a>
   </span>
