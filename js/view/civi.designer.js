@@ -138,17 +138,9 @@
             this.model.on('remove', this.render, this);
         },
         render: function() {
-            var fieldsByEntitySection = this.model.groupBy(function(paletteFieldModel){
-              return paletteFieldModel.get('entityName') + '-' + paletteFieldModel.get('sectionName');
-            });
-            var sections = {};
-            _.each(fieldsByEntitySection, function(localPaletteFields, sectionId, label){
-              sections[sectionId] = _.first(localPaletteFields).getSection();
-            });
-
             var palette_template = _.template($('#palette_template').html(), {
-              sections: sections,
-              fieldsByEntitySection: fieldsByEntitySection
+              sections: this.model.getSections(),
+              fieldsByEntitySection: this.model.getFieldsByEntitySection()
             });
             this.$el.html(palette_template);
             var $acc = this.$('.crm-designer-palette-acc');

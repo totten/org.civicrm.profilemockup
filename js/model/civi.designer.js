@@ -70,10 +70,45 @@
                 collection.add(model, options);
             });
         },
+
+        /**
+         * Look up a palette-field
+         *
+         * @param entityName
+         * @param fieldName
+         * @return {Civi.Designer.PaletteFieldModel}
+         */
         getFieldByName: function(entityName, fieldName) {
             return this.find(function(paletteFieldModel){
                 return (paletteFieldModel.get('entityName') == entityName && paletteFieldModel.get('fieldName') == fieldName);
             });
+        },
+
+        /**
+         * Get a list of all fields, grouped into sections by "entityName+sectionName".
+         *
+         * @return {Object} keys are sections ("entityName+sectionName"); values are Civi.Designer.PaletteFieldModel
+         */
+        getFieldsByEntitySection: function() {
+            // TODO cache
+            var fieldsByEntitySection = this.groupBy(function(paletteFieldModel){
+                return paletteFieldModel.get('entityName') + '-' + paletteFieldModel.get('sectionName');
+            });
+            return fieldsByEntitySection;
+        },
+
+        /**
+         * Get a list of all sections mentioned in this field-collection
+         *
+         * @return {Object} keys are synthetic section is; values are objects with "title", "is_addable", etc
+         */
+        getSections: function() {
+            // TODO cache
+            var sections = {};
+            _.each(this.getFieldsByEntitySection(), function(localPaletteFields, sectionId, label){
+                sections[sectionId] = _.first(localPaletteFields).getSection();
+            });
+            return sections;
         }
     });
 })();
