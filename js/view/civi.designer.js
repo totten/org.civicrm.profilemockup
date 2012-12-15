@@ -120,13 +120,15 @@
      * - model: Civi.Form.FormModel
      */
     Civi.Designer.FormDetailView = Backbone.View.extend({
-        render: function(){
-            var form = new Backbone.Form({
+        initialize: function() {
+            this.form = new Backbone.Form({
                 model: this.model,
                 fields: ['title', 'help_pre', 'help_post', 'is_active']
             });
-            form.on('change', form.commit, form);
-            this.$el.html(form.render().el);
+            this.form.on('change', this.form.commit, this.form);
+        },
+        render: function(){
+            this.$el.html(this.form.render().el);
         }
     });
 
