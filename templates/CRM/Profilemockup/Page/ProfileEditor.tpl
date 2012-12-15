@@ -12,18 +12,9 @@
 
 {* Library of templates *}
 
-<script type="text/template" id="person_template">
-  <form>
-    <div>
-      Hello, <%= name %>.<br/>
-    </div>
-    <div>New name:
-      <input type="text" name="new_name">
-      <input type="button" name="save" value="Save" />
-    </div>
-  </form>
-</script>
-
+{**
+ * Outer Region
+ *}
 <script type="text/template" id="designer_template">
   <div class="crm-designer">
     <div class="crm-designer-toolbar">
@@ -37,7 +28,7 @@
     <div class="crm-designer-canvas">
       <div class="crm-designer-form">
       </div>
-      <hr/>
+      <hr />
       <div class="crm-designer-fields">
         <div class="crm-designer-row placeholder">{ts}Drag a field from the palette to add it to this form.{/ts}</div>
       </div>
@@ -45,12 +36,12 @@
   </div>
 </script>
 
-{*
-Render a palette of available fields
-
-@param array<string,PaletteFieldModel> fieldsByEntitySection
-@param array<string,sectionData> sections
-*}
+{**
+ * Render a palette of available fields
+ *
+ * @param array<string,PaletteFieldModel> fieldsByEntitySection
+ * @param array<string,sectionData> sections
+ *}
 {literal}
 <script type="text/template" id="palette_template">
   <div class="crm-designer-palette-acc">
@@ -63,7 +54,7 @@ Render a palette of available fields
         <%}); %>
         </div>
         <% if (section.is_addable) { %>
-          <button>Add</button>
+          <button type="button" class="crm-add-custom">Add</button>
         <% } %>
       </div>
     <% }); %>
@@ -71,9 +62,9 @@ Render a palette of available fields
 </script>
 {/literal}
 
-{*
-@param Civi.Form.FieldModel formField
-*}
+{**
+ * @param Civi.Form.FieldModel formField
+ *}
 {literal}
 <script type="text/template" id="field_row_template">
   <div class="crm-designer-row" data-field-cid="<%= formField.cid %>">
@@ -83,10 +74,10 @@ Render a palette of available fields
 </script>
 {/literal}
 
-{*
-@param Civi.Form.FieldModel formField
-@param Civi.Designer.PaletteFieldModel paletteField
-*}
+{**
+ * @param Civi.Form.FieldModel formField
+ * @param Civi.Designer.PaletteFieldModel paletteField
+ *}
 {literal}
 <script type="text/template" id="field_summary_template">
   <%= formField.get('label') %>
@@ -98,9 +89,9 @@ Render a palette of available fields
 </script>
 {/literal}
 
-{*
-@param Civi.Form.FormModel form
-*}
+{**
+ * @param Civi.Form.FormModel form
+ *}
 {literal}
 <script type="text/template" id="form_row_template">
   <div class="crm-designer-row">
@@ -110,9 +101,9 @@ Render a palette of available fields
 </script>
 {/literal}
 
-{*
-@param Civi.Form.FormModel form
-*}
+{**
+ * @param Civi.Form.FormModel form
+ *}
 {literal}
 <script type="text/template" id="form_summary_template">
   <span><%= form.get('title') %></span>
