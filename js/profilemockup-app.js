@@ -16,9 +16,9 @@ cj(document).ready(function($){
         // Prepare application
         $("#crm-designer-dialog").dialog({
             autoOpen: true, // note: affects accordion height
-            title: 'Embedded Profile Editor',
+            title: formModel.attributes.title || 'New Profile',
             width: '75%',
-            minWidth: 400,
+            minWidth: 500,
             minHeight: 600,
             open: function() {
                 var designerLayout = new Civi.Designer.DesignerLayout({});
@@ -67,7 +67,7 @@ cj(document).ready(function($){
         else {
           // Initialize new UF group
           var formData = {};
-          formData.fieldCollection = new Civi.Form.FieldCollection({});
+          formData.fieldCollection = new Civi.Form.FieldCollection();
           var formModel = new Civi.Form.FormModel(formData);
           launchDesigner(formModel);
         }
