@@ -28,7 +28,7 @@
    * buttons.
    *
    * options:
-   *  - model: Civi.Form.FormModel
+   *  - model: Civi.Form.UFGroupModel
    *  - paletteFieldCollection: Civi.Designer.PaletteFieldCollection
    */
   Civi.Designer.DesignerLayout = Backbone.Marionette.Layout.extend({
@@ -45,10 +45,10 @@
       this.palette.show(new Civi.Designer.PaletteView({
         model: this.options.paletteFieldCollection
       }));
-      this.form.show(new Civi.Designer.FormView({
+      this.form.show(new Civi.Designer.UFGroupView({
         model: this.model
       }));
-      this.fields.show(new Civi.Designer.FieldCanvasView({
+      this.fields.show(new Civi.Designer.UFFieldCanvasView({
         model: this.model,
         paletteFieldCollection: this.options.paletteFieldCollection
       }));
@@ -116,74 +116,74 @@
   });
 
   /**
-   * Display all FieldModel objects in a FormModel.
+   * Display all UFFieldModel objects in a UFGroupModel.
    *
    * options:
-   *  - model: Civi.Form.FormModel
+   *  - model: Civi.Form.UFGroupModel
    *  - paletteFieldCollection: Civi.Designer.PaletteFieldCollection
    */
-  Civi.Designer.FieldCanvasView = Backbone.View.extend({
+  Civi.Designer.UFFieldCanvasView = Backbone.View.extend({
     initialize: function() {
-      this.model.get('fieldCollection').on('add', this.updatePlaceholder, this);
-      this.model.get('fieldCollection').on('remove', this.updatePlaceholder, this);
+      this.model.get('ufFieldCollection').on('add', this.updatePlaceholder, this);
+      this.model.get('ufFieldCollection').on('remove', this.updatePlaceholder, this);
     },
     render: function() {
-      var fieldCanvasView = this;
+      var ufFieldCanvasView = this;
       this.$el.html(_.template($('#field_canvas_view_template').html()));
 
       // BOTTOM: Setup field-level editing
       var $fields = this.$('.crm-designer-fields');
       this.updatePlaceholder();
-      var formFieldModels = this.model.get('fieldCollection').sortBy(function(formFieldModel) {
-        return formFieldModel.get('weight');
+      var ufFieldModels = this.model.get('ufFieldCollection').sortBy(function(ufFieldModel) {
+        return ufFieldModel.get('weight');
       });
-      _.each(formFieldModels, function(formFieldModel) {
-        var paletteFieldModel = fieldCanvasView.options.paletteFieldCollection.getFieldByName(formFieldModel.get('entity_name'), formFieldModel.get('field_name'));
-        var formFieldView = new Civi.Designer.FieldView({
+      _.each(ufFieldModels, function(ufFieldModel) {
+        var paletteFieldModel = ufFieldCanvasView.options.paletteFieldCollection.getFieldByName(ufFieldModel.get('entity_name'), ufFieldModel.get('field_name'));
+        var ufFieldView = new Civi.Designer.UFFieldView({
           el: $("<div></div>"),
-          model: formFieldModel,
+          model: ufFieldModel,
           paletteFieldModel: paletteFieldModel
         });
-        formFieldView.render();
-        formFieldView.$el.appendTo($fields);
+        ufFieldView.render();
+        ufFieldView.$el.appendTo($fields);
       });
       this.$(".crm-designer-fields").sortable({
         placeholder: 'crm-designer-row-placeholder',
         forcePlaceholderSize: true,
         receive: function(event, ui) {
-          var paletteFieldModel = fieldCanvasView.options.paletteFieldCollection.getByCid(ui.item.attr('data-plm-cid'));
-          var formFieldModel = paletteFieldModel.createFormFieldModel();
-          fieldCanvasView.model.get('fieldCollection').add(formFieldModel);
+          var paletteFieldModel = ufFieldCanvasView.options.paletteFieldCollection.getByCid(ui.item.attr('data-plm-cid'));
+          var ufFieldModel = paletteFieldModel.createUFFieldModel();
+          ufFieldCanvasView.model.get('ufFieldCollection').add(ufFieldModel);
 
-          var formFieldView = new Civi.Designer.FieldView({
+          var ufFieldView = new Civi.Designer.UFFieldView({
             el: $("<div></div>"),
-            model: formFieldModel,
+            model: ufFieldModel,
             paletteFieldModel: paletteFieldModel
           });
-          formFieldView.render();
-          fieldCanvasView.$('.crm-designer-fields .ui-draggable').replaceWith(formFieldView.$el);
+          ufFieldView.render();
+          ufFieldCanvasView.$('.crm-designer-fields .ui-draggable').replaceWith(ufFieldView.$el);
         },
         update: function() {
-          fieldCanvasView.updateWeights();
+          ufFieldCanvasView.updateWeights();
         }
       });
     },
     /** Determine visual order of fields and set the model values for "weight" */
     updateWeights: function() {
-      var fieldCanvasView = this;
+      var ufFieldCanvasView = this;
       var weight = 1;
       var rows = this.$('.crm-designer-row').each(function(key, row) {
         if ($(row).hasClass('placeholder')) {
           return;
         }
-        var formFieldCid = $(row).attr('data-field-cid');
-        var formFieldModel = fieldCanvasView.model.get('fieldCollection').getByCid(formFieldCid);
-        formFieldModel.set('weight', weight);
+        var ufFieldCid = $(row).attr('data-field-cid');
+        var ufFieldModel = ufFieldCanvasView.model.get('ufFieldCollection').getByCid(ufFieldCid);
+        ufFieldModel.set('weight', weight);
         weight++;
       });
     },
     updatePlaceholder: function() {
-      if (this.model.get('fieldCollection').isEmpty()) {
+      if (this.model.get('ufFieldCollection').isEmpty()) {
         this.$('.placeholder').show();
       } else {
         this.$('.placeholder').hide();
@@ -193,10 +193,10 @@
 
   /**
    * options:
-   * - model: Civi.Form.FieldModel
+   * - model: Civi.Form.UFFieldModel
    * - paletteFieldModel: Civi.Designer.PaletteFieldModel
    */
-  Civi.Designer.FieldView = Backbone.Marionette.Layout.extend({
+  Civi.Designer.UFFieldView = Backbone.Marionette.Layout.extend({
     serializeData: extendedSerializeData,
     template: '#field_row_template',
     expanded: false,
@@ -209,11 +209,11 @@
       "click .crm-designer-action-remove": 'doRemove'
     },
     onRender: function() {
-      this.summary.show(new Civi.Designer.FieldSummaryView({
+      this.summary.show(new Civi.Designer.UFFieldSummaryView({
         model: this.model,
         paletteFieldModel: this.options.paletteFieldModel
       }));
-      this.detail.show(new Civi.Designer.FieldDetailView({
+      this.detail.show(new Civi.Designer.UFFieldDetailView({
         model: this.model
       }));
       if (!this.expanded) {
@@ -232,10 +232,10 @@
 
   /**
    * options:
-   * - model: Civi.Form.FieldModel
+   * - model: Civi.Form.UFFieldModel
    * - paletteFieldModel: Civi.Designer.PaletteFieldModel
    */
-  Civi.Designer.FieldSummaryView = Backbone.Marionette.ItemView.extend({
+  Civi.Designer.UFFieldSummaryView = Backbone.Marionette.ItemView.extend({
     serializeData: extendedSerializeData,
     template: '#field_summary_template',
     modelEvents: {
@@ -245,9 +245,9 @@
 
   /**
    * options:
-   * - model: Civi.Form.FieldModel
+   * - model: Civi.Form.UFFieldModel
    */
-  Civi.Designer.FieldDetailView = Backbone.View.extend({
+  Civi.Designer.UFFieldDetailView = Backbone.View.extend({
     initialize: function() {
       this.form = new Backbone.Form({
         model: this.model,
@@ -262,9 +262,9 @@
 
   /**
    * options:
-   * - model: Civi.Form.FormModel
+   * - model: Civi.Form.UFGroupModel
    */
-  Civi.Designer.FormView = Backbone.Marionette.Layout.extend({
+  Civi.Designer.UFGroupView = Backbone.Marionette.Layout.extend({
     serializeData: extendedSerializeData,
     template: '#form_row_template',
     expanded: false,
@@ -276,10 +276,10 @@
       "click .crm-designer-action-settings": 'doToggleForm'
     },
     onRender: function() {
-      this.summary.show(new Civi.Designer.FormSummaryView({
+      this.summary.show(new Civi.Designer.UFGroupSummaryView({
         model: this.model
       }));
-      this.detail.show(new Civi.Designer.FormDetailView({
+      this.detail.show(new Civi.Designer.UFGroupDetailView({
         model: this.model
       }));
       if (!this.expanded) {
@@ -294,9 +294,9 @@
 
   /**
    * options:
-   * - model: Civi.Form.FormModel
+   * - model: Civi.Form.UFGroupModel
    */
-  Civi.Designer.FormSummaryView = Backbone.Marionette.ItemView.extend({
+  Civi.Designer.UFGroupSummaryView = Backbone.Marionette.ItemView.extend({
     serializeData: extendedSerializeData,
     template: '#form_summary_template',
     modelEvents: {
@@ -306,9 +306,9 @@
 
   /**
    * options:
-   * - model: Civi.Form.FormModel
+   * - model: Civi.Form.UFGroupModel
    */
-  Civi.Designer.FormDetailView = Backbone.View.extend({
+  Civi.Designer.UFGroupDetailView = Backbone.View.extend({
     initialize: function() {
       this.form = new Backbone.Form({
         model: this.model,

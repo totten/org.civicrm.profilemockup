@@ -69,7 +69,7 @@
 {/literal}
 
 {**
- * Template for Civi.Form.FieldModel, Civi.Designer.FieldView
+ * Template for Civi.Form.UFFieldModel, Civi.Designer.UFFieldView
  * @see extendedSerializeData()
  *}
 {literal}
@@ -82,7 +82,7 @@
 {/literal}
 
 {**
- * Template for Civi.Form.FieldModel, Civi.Designer.FieldSummaryView
+ * Template for Civi.Form.UFFieldModel, Civi.Designer.UFFieldSummaryView
  * @see extendedSerializeData()
  *}
 {literal}
@@ -97,7 +97,7 @@
 {/literal}
 
 {**
- * @param Civi.Form.FormModel form
+ * @param Civi.Form.UFGroupModel form
  *}
 {literal}
 <script type="text/template" id="form_row_template">
@@ -109,7 +109,7 @@
 {/literal}
 
 {**
- * Variables correspond to properties of Civi.Form.FormModel
+ * Variables correspond to properties of Civi.Form.UFGroupModel
  *}
 {literal}
 <script type="text/template" id="form_summary_template">

@@ -30,7 +30,7 @@
   /**
    * Represents a field in a customizable form.
    */
-  Civi.Form.FieldModel = Backbone.Model.extend({
+  Civi.Form.UFFieldModel = Backbone.Model.extend({
     schema: {
       'id': {type: 'Number'},
       'uf_group_id': {type: 'Number'},
@@ -60,8 +60,8 @@
   /**
    * Represents a list of fields in a customizable form
    */
-  Civi.Form.FieldCollection = Backbone.Collection.extend({
-    model: Civi.Form.FieldModel,
+  Civi.Form.UFFieldCollection = Backbone.Collection.extend({
+    model: Civi.Form.UFFieldModel,
     initialize: function() {
     }
   });
@@ -70,9 +70,9 @@
    * Represents a customizable form
    *
    * options:
-   *  - fieldCollection: Civi.Form.FieldCollection
+   *  - ufFieldCollection: Civi.Form.UFFieldCollection
    */
-  Civi.Form.FormModel = Backbone.Model.extend({
+  Civi.Form.UFGroupModel = Backbone.Model.extend({
     schema: {
       'id': {type: 'Number'},
       'title': {type: 'Text'},

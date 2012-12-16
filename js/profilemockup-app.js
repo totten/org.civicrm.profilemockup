@@ -9,20 +9,20 @@ cj(document).ready(function($) {
     paletteFieldCollection.addEntity('contact_1', Civi.Core.IndividualModel);
     paletteFieldCollection.addEntity('activity_1', Civi.Core.ActivityModel);
 
-    var launchDesigner = function(formModel) {
+    var launchDesigner = function(ufGroupModel) {
       window.tmpPaletteFieldCollection = paletteFieldCollection; // temporary; for debugging
-      window.tmpFormModel = formModel; // temporary; for debugging
+      window.tmpUFGroupModel = ufGroupModel; // temporary; for debugging
 
       // Prepare application
       $("#crm-designer-dialog").dialog({
         autoOpen: true, // note: affects accordion height
-        title: formModel.attributes.title || 'New Profile',
+        title: ufGroupModel.attributes.title || 'New Profile',
         width: '75%',
         minWidth: 500,
         minHeight: 600,
         open: function() {
           var designerLayout = new Civi.Designer.DesignerLayout({
-            model: formModel,
+            model: ufGroupModel,
             paletteFieldCollection: paletteFieldCollection
           });
           designerApp.designerRegion.show(designerLayout);
@@ -40,9 +40,9 @@ cj(document).ready(function($) {
         CRM.api('UFGroup', 'getsingle', {id: ufId}, {success: function(data) {
           var formData = data;
           CRM.api('UFField', 'get', {uf_group_id: ufId}, {success: function(data) {
-            formData.fieldCollection = new Civi.Form.FieldCollection(_.values(data.values));
-            var formModel = new Civi.Form.FormModel(formData);
-            launchDesigner(formModel);
+            formData.ufFieldCollection = new Civi.Form.UFFieldCollection(_.values(data.values));
+            var ufGroupModel = new Civi.Form.UFGroupModel(formData);
+            launchDesigner(ufGroupModel);
           }
           });
         }
@@ -51,9 +51,9 @@ cj(document).ready(function($) {
       else {
         // Initialize new UF group
         var formData = {};
-        formData.fieldCollection = new Civi.Form.FieldCollection();
-        var formModel = new Civi.Form.FormModel(formData);
-        launchDesigner(formModel);
+        formData.ufFieldCollection = new Civi.Form.UFFieldCollection();
+        var ufGroupModel = new Civi.Form.UFGroupModel(formData);
+        launchDesigner(ufGroupModel);
       }
     });
   }
