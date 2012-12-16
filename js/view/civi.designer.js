@@ -19,6 +19,178 @@
   }
 
   /**
+   * Display a complete form-editing UI, including canvas, palette, and
+   * buttons.
+   *
+   * options:
+   *  - model: Civi.Form.FormModel
+   *  - paletteFieldCollection: Civi.Designer.PaletteFieldCollection
+   */
+  Civi.Designer.DesignerLayout = Backbone.Marionette.Layout.extend({
+    serializeData: extendedSerializeData,
+    template: '#designer_template',
+    regions: {
+      buttons: '.crm-designer-buttonset-region',
+      palette: '.crm-designer-palette-region',
+      form: '.crm-designer-form-region',
+      fields: '.crm-designer-fields-region'
+    },
+    onRender: function() {
+      this.buttons.show(new Civi.Designer.ToolbarView());
+
+      this.palette.show(new Civi.Designer.PaletteView({
+        model: this.options.paletteFieldCollection
+      }));
+
+      this.form.show(new Civi.Designer.FormView({
+        model: this.model
+      }));
+
+      var fieldCanvasView = new Civi.Designer.FieldCanvasView({
+        model: this.model,
+        paletteFieldCollection: this.options.paletteFieldCollection
+      });
+      this.fields.show(fieldCanvasView);
+    }
+  });
+
+  Civi.Designer.ToolbarView = Backbone.Marionette.ItemView.extend({
+    serializeData: extendedSerializeData,
+    template: '#designer_buttons_template',
+    events: {
+      'click .crm-designer-save': 'doSave',
+      'click .crm-designer-preview': 'doPreview'
+    },
+    onRender: function() {
+      this.$('.crm-designer-save').button();
+      this.$('.crm-designer-preview').button();
+    },
+    doSave: function(event) {
+      // CRM.api('UFField', 'replace', {uf_group_id: ufId, values:});
+      $("#crm-designer-dialog").dialog('close');
+      console.log('save');
+    },
+    doPreview: function(event) {
+      console.log('preview');
+    }
+  });
+
+  /**
+   * Display a selection of available fields
+   *
+   * options:
+   *  - model: Civi.Designer.PaletteFieldCollection
+   */
+  Civi.Designer.PaletteView = Backbone.View.extend({
+    initialize: function() {
+      this.model.on('add', this.render, this);
+      this.model.on('remove', this.render, this);
+    },
+    render: function() {
+      var palette_template = _.template($('#palette_template').html(), {
+        sections: this.model.getSections(),
+        fieldsByEntitySection: this.model.getFieldsByEntitySection()
+      });
+      this.$el.html(palette_template);
+      var $acc = this.$('.crm-designer-palette-acc');
+      $acc.accordion({
+        heightStyle: 'fill',
+        autoHeight: false,
+        clearStyle: true
+      });
+      $acc.find('.crm-designer-palette-field').draggable({
+        appendTo: "#crm-designer-designer",
+        zIndex: $(this.$el).zIndex() + 5000,
+        helper: "clone",
+        connectToSortable: '.crm-designer-fields' // FIXME: tight canvas/palette coupling
+      });
+
+      // FIXME: tight canvas/palette coupling
+      this.$(".crm-designer-fields").droppable({
+        activeClass: "ui-state-default",
+        hoverClass: "ui-state-hover",
+        accept: ":not(.ui-sortable-helper)"
+      });
+    }
+  });
+
+  /**
+   * Display all FieldModel objects in a FormModel.
+   *
+   * options:
+   *  - model: Civi.Form.FormModel
+   *  - paletteFieldCollection: Civi.Designer.PaletteFieldCollection
+   */
+  Civi.Designer.FieldCanvasView = Backbone.View.extend({
+    initialize: function() {
+      this.model.get('fieldCollection').on('add', this.updatePlaceholder, this);
+      this.model.get('fieldCollection').on('remove', this.updatePlaceholder, this);
+    },
+    render: function() {
+      var designerView = this;
+      this.$el.html(_.template($('#field_canvas_view_template').html()));
+
+      // BOTTOM: Setup field-level editing
+      var $fields = this.$('.crm-designer-fields');
+      this.updatePlaceholder();
+      var formFieldModels = this.model.get('fieldCollection').sortBy(function(formFieldModel) {
+        return formFieldModel.get('weight');
+      });
+      _.each(formFieldModels, function(formFieldModel) {
+        var paletteFieldModel = designerView.options.paletteFieldCollection.getFieldByName(formFieldModel.get('entity_name'), formFieldModel.get('field_name'));
+        var formFieldView = new Civi.Designer.FieldView({
+          el: $("<div></div>"),
+          model: formFieldModel,
+          paletteFieldModel: paletteFieldModel
+        });
+        formFieldView.render();
+        formFieldView.$el.appendTo($fields);
+      });
+      this.$(".crm-designer-fields").sortable({
+        placeholder: 'crm-designer-row-placeholder',
+        forcePlaceholderSize: true,
+        receive: function(event, ui) {
+          var paletteFieldModel = designerView.options.paletteFieldCollection.getByCid(ui.item.attr('data-plm-cid'));
+          var formFieldModel = paletteFieldModel.createFormFieldModel();
+          designerView.model.get('fieldCollection').add(formFieldModel);
+
+          var formFieldView = new Civi.Designer.FieldView({
+            el: $("<div></div>"),
+            model: formFieldModel,
+            paletteFieldModel: paletteFieldModel
+          });
+          formFieldView.render();
+          designerView.$('.crm-designer-fields .ui-draggable').replaceWith(formFieldView.$el);
+        },
+        update: function() {
+          designerView.updateWeights();
+        }
+      });
+    },
+    /** Determine visual order of fields and set the model values for "weight" */
+    updateWeights: function() {
+      var designerView = this;
+      var weight = 1;
+      var rows = this.$('.crm-designer-row').each(function(key, row) {
+        if ($(row).hasClass('placeholder')) {
+          return;
+        }
+        var formFieldCid = $(row).attr('data-field-cid');
+        var formFieldModel = designerView.model.get('fieldCollection').getByCid(formFieldCid);
+        formFieldModel.set('weight', weight);
+        weight++;
+      });
+    },
+    updatePlaceholder: function() {
+      if (this.model.get('fieldCollection').isEmpty()) {
+        this.$('.placeholder').show();
+      } else {
+        this.$('.placeholder').hide();
+      }
+    }
+  });
+
+  /**
    * options:
    * - model: Civi.Form.FieldModel
    * - paletteFieldModel: Civi.Designer.PaletteFieldModel
@@ -148,175 +320,4 @@
     }
   });
 
-  /**
-   * Display a selection of available fields
-   *
-   * options:
-   *  - model: Civi.Designer.PaletteFieldCollection
-   */
-  Civi.Designer.PaletteView = Backbone.View.extend({
-    initialize: function() {
-      this.model.on('add', this.render, this);
-      this.model.on('remove', this.render, this);
-    },
-    render: function() {
-      var palette_template = _.template($('#palette_template').html(), {
-        sections: this.model.getSections(),
-        fieldsByEntitySection: this.model.getFieldsByEntitySection()
-      });
-      this.$el.html(palette_template);
-      var $acc = this.$('.crm-designer-palette-acc');
-      $acc.accordion({
-        heightStyle: 'fill',
-        autoHeight: false,
-        clearStyle: true
-      });
-      $acc.find('.crm-designer-palette-field').draggable({
-        appendTo: "#crm-designer-designer",
-        zIndex: $(this.$el).zIndex() + 5000,
-        helper: "clone",
-        connectToSortable: '.crm-designer-fields' // FIXME: tight canvas/palette coupling
-      });
-
-      // FIXME: tight canvas/palette coupling
-      this.$(".crm-designer-fields").droppable({
-        activeClass: "ui-state-default",
-        hoverClass: "ui-state-hover",
-        accept: ":not(.ui-sortable-helper)"
-      });
-    }
-  });
-
-  /**
-   * Display a complete form-editing UI, including canvas, palette, and
-   * buttons.
-   *
-   * options:
-   *  - model: Civi.Form.FormModel
-   *  - paletteFieldCollection: Civi.Designer.PaletteFieldCollection
-   */
-  Civi.Designer.DesignerLayout = Backbone.Marionette.Layout.extend({
-    serializeData: extendedSerializeData,
-    template: '#designer_template',
-    regions: {
-      buttons: '.crm-designer-buttonset-region',
-      palette: '.crm-designer-palette-region',
-      form: '.crm-designer-form-region',
-      fields: '.crm-designer-fields-region'
-    },
-    onRender: function() {
-      this.buttons.show(new Civi.Designer.ToolbarView());
-
-      this.palette.show(new Civi.Designer.PaletteView({
-        model: this.options.paletteFieldCollection
-      }));
-
-      this.form.show(new Civi.Designer.FormView({
-        model: this.model
-      }));
-
-      var fieldCanvasView = new Civi.Designer.FieldCanvasView({
-        model: this.model,
-        paletteFieldCollection: this.options.paletteFieldCollection
-      });
-      this.fields.show(fieldCanvasView);
-    }
-  });
-
-  Civi.Designer.ToolbarView = Backbone.Marionette.ItemView.extend({
-    serializeData: extendedSerializeData,
-    template: '#designer_buttons_template',
-    events: {
-      'click .crm-designer-save': 'doSave',
-      'click .crm-designer-preview': 'doPreview'
-    },
-    onRender: function() {
-      this.$('.crm-designer-save').button();
-      this.$('.crm-designer-preview').button();
-    },
-    doSave: function(event) {
-      // CRM.api('UFField', 'replace', {uf_group_id: ufId, values:});
-      $("#crm-designer-dialog").dialog('close');
-      console.log('save');
-    },
-    doPreview: function(event) {
-      console.log('preview');
-    }
-  });
-
-  /**
-   * Display all FieldModel objects in a FormModel.
-   *
-   * options:
-   *  - model: Civi.Form.FormModel
-   *  - paletteFieldCollection: Civi.Designer.PaletteFieldCollection
-   */
-  Civi.Designer.FieldCanvasView = Backbone.View.extend({
-    initialize: function() {
-      this.model.get('fieldCollection').on('add', this.updatePlaceholder, this);
-      this.model.get('fieldCollection').on('remove', this.updatePlaceholder, this);
-    },
-    render: function() {
-      var designerView = this;
-      this.$el.html(_.template($('#field_canvas_view_template').html()));
-
-      // BOTTOM: Setup field-level editing
-      var $fields = this.$('.crm-designer-fields');
-      this.updatePlaceholder();
-      var formFieldModels = this.model.get('fieldCollection').sortBy(function(formFieldModel) {
-        return formFieldModel.get('weight');
-      });
-      _.each(formFieldModels, function(formFieldModel) {
-        var paletteFieldModel = designerView.options.paletteFieldCollection.getFieldByName(formFieldModel.get('entity_name'), formFieldModel.get('field_name'));
-        var formFieldView = new Civi.Designer.FieldView({
-          el: $("<div></div>"),
-          model: formFieldModel,
-          paletteFieldModel: paletteFieldModel
-        });
-        formFieldView.render();
-        formFieldView.$el.appendTo($fields);
-      });
-      this.$(".crm-designer-fields").sortable({
-        placeholder: 'crm-designer-row-placeholder',
-        forcePlaceholderSize: true,
-        receive: function(event, ui) {
-          var paletteFieldModel = designerView.options.paletteFieldCollection.getByCid(ui.item.attr('data-plm-cid'));
-          var formFieldModel = paletteFieldModel.createFormFieldModel();
-          designerView.model.get('fieldCollection').add(formFieldModel);
-
-          var formFieldView = new Civi.Designer.FieldView({
-            el: $("<div></div>"),
-            model: formFieldModel,
-            paletteFieldModel: paletteFieldModel
-          });
-          formFieldView.render();
-          designerView.$('.crm-designer-fields .ui-draggable').replaceWith(formFieldView.$el);
-        },
-        update: function() {
-          designerView.updateWeights();
-        }
-      });
-    },
-    /** Determine visual order of fields and set the model values for "weight" */
-    updateWeights: function() {
-      var designerView = this;
-      var weight = 1;
-      var rows = this.$('.crm-designer-row').each(function(key, row) {
-        if ($(row).hasClass('placeholder')) {
-          return;
-        }
-        var formFieldCid = $(row).attr('data-field-cid');
-        var formFieldModel = designerView.model.get('fieldCollection').getByCid(formFieldCid);
-        formFieldModel.set('weight', weight);
-        weight++;
-      });
-    },
-    updatePlaceholder: function() {
-      if (this.model.get('fieldCollection').isEmpty()) {
-        this.$('.placeholder').show();
-      } else {
-        this.$('.placeholder').hide();
-      }
-    }
-  });
 })();
