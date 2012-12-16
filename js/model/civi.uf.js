@@ -75,13 +75,13 @@
     model: Civi.UF.UFFieldModel,
     initialize: function() {
     },
-    findByEntityField: function(entityName, fieldName) {
+    getFieldByName: function(entityName, fieldName) {
       return this.find(function(ufFieldModel) {
         return (ufFieldModel.get('entity_name') == entityName && ufFieldModel.get('field_name') == fieldName);
       });
     },
     isAddable: function(ufFieldModel) {
-      if (this.findByEntityField(ufFieldModel.get('entity_name'), ufFieldModel.get('field_name'))) {
+      if (this.getFieldByName(ufFieldModel.get('entity_name'), ufFieldModel.get('field_name'))) {
         return false;
       } else {
         return true;
