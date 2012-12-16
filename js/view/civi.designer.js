@@ -153,7 +153,19 @@
         receive: function(event, ui) {
           var paletteFieldModel = ufFieldCanvasView.options.paletteFieldCollection.getByCid(ui.item.attr('data-plm-cid'));
           var ufFieldModel = paletteFieldModel.createUFFieldModel();
-          ufFieldCanvasView.model.get('ufFieldCollection').add(ufFieldModel);
+          var ufFieldCollection = ufFieldCanvasView.model.get('ufFieldCollection');
+          if (!ufFieldCollection.isAddable(ufFieldModel)) {
+            cj().crmAlert(
+              ts('The field "%1" is already included.', {
+                1: paletteFieldModel.get('label')
+              }),
+              ts('Duplicate'),
+              'alert'
+            );
+            ufFieldCanvasView.$('.crm-designer-fields .ui-draggable').remove();
+            return;
+          }
+          ufFieldCollection.add(ufFieldModel);
 
           var ufFieldView = new Civi.Designer.UFFieldView({
             el: $("<div></div>"),
@@ -234,7 +246,7 @@
       this.detail.$el.toggle('blind', 250);
     },
     doRemove: function(event) {
-      this.model.destroy();
+      this.model.destroyLocal();
       this.remove();
     }
   });

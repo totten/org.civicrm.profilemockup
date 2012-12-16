@@ -54,6 +54,17 @@
     },
     initialize: function() {
       this.set('entity_name', Civi.UF.guessEntityName(this.get('field_type')));
+    },
+
+    /**
+     * This is like destroy(), but it only destroys the item on the client-side;
+     * it does not trigger REST or Backbone.sync() operations.
+     *
+     * @return {Boolean}
+     */
+    destroyLocal: function() {
+      this.trigger('destroy', this, this.collection, {});
+      return false;
     }
   });
 
@@ -63,6 +74,18 @@
   Civi.UF.UFFieldCollection = Backbone.Collection.extend({
     model: Civi.UF.UFFieldModel,
     initialize: function() {
+    },
+    findByEntityField: function(entityName, fieldName) {
+      return this.find(function(ufFieldModel) {
+        return (ufFieldModel.get('entity_name') == entityName && ufFieldModel.get('field_name') == fieldName);
+      });
+    },
+    isAddable: function(ufFieldModel) {
+      if (this.findByEntityField(ufFieldModel.get('entity_name'), ufFieldModel.get('field_name'))) {
+        return false;
+      } else {
+        return true;
+      }
     }
   });
 
