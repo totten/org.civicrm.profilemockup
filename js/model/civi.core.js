@@ -1,51 +1,51 @@
-(function(){
-    var Civi = (window.Civi) ? (window.Civi) : (window.Civi={});
-    if (!Civi.Core) Civi.Core = {};
+(function() {
+  var Civi = (window.Civi) ? (window.Civi) : (window.Civi = {});
+  if (!Civi.Core) Civi.Core = {};
 
-    /**
-     * Civi data models require more attributes than basic Backbone models:
-     *  - sections: array of field-groupings
-     *  - schema: array of fields, keyed by field name, per backbone-forms
-     *
-     * @see https://github.com/powmedia/backbone-forms
-     */
+  /**
+   * Civi data models require more attributes than basic Backbone models:
+   *  - sections: array of field-groupings
+   *  - schema: array of fields, keyed by field name, per backbone-forms
+   *
+   * @see https://github.com/powmedia/backbone-forms
+   */
 
-    Civi.Core.IndividualModel = Backbone.Model.extend({
-        sections: {
-            'default': {title: 'Individual'},
-            'custom1': {title: 'Individual: Favorite Things', is_addable: true},
-            'custom2': {title: 'Individual: Custom Things', is_addable: true}
-        },
-        schema: {
-            first_name: { type: 'Text', title: 'First name', civiFieldType: 'Individual' },
-            last_name: { type: 'Text', title: 'Last name', civiFieldType: 'Individual' },
-            legal_name: { type: 'Text', title: 'Legal name', civiFieldType: 'Contact' },
-            email: { validators: ['required', 'email'], title: 'Email', civiFieldType: 'Contact' },
-            custom_123: { type: 'Checkbox', section: 'custom1', title: 'Likes whiskers on kittens', civiFieldType: 'Individual'},
-            custom_456: { type: 'Checkbox', section: 'custom1', title: 'Likes dog bites', civiFieldType: 'Individual' },
-            custom_789: { type: 'Checkbox', section: 'custom1', title: 'Likes bee stings', civiFieldType: 'Individual' },
-            custom_012: { type: 'Text', section: 'custom2', title: 'Pass phrase', civiFieldType: 'Contact' }
-        },
-        initialize: function(){
-        }
-    });
+  Civi.Core.IndividualModel = Backbone.Model.extend({
+    sections: {
+      'default': {title: 'Individual'},
+      'custom1': {title: 'Individual: Favorite Things', is_addable: true},
+      'custom2': {title: 'Individual: Custom Things', is_addable: true}
+    },
+    schema: {
+      first_name: { type: 'Text', title: 'First name', civiFieldType: 'Individual' },
+      last_name: { type: 'Text', title: 'Last name', civiFieldType: 'Individual' },
+      legal_name: { type: 'Text', title: 'Legal name', civiFieldType: 'Contact' },
+      email: { validators: ['required', 'email'], title: 'Email', civiFieldType: 'Contact' },
+      custom_123: { type: 'Checkbox', section: 'custom1', title: 'Likes whiskers on kittens', civiFieldType: 'Individual'},
+      custom_456: { type: 'Checkbox', section: 'custom1', title: 'Likes dog bites', civiFieldType: 'Individual' },
+      custom_789: { type: 'Checkbox', section: 'custom1', title: 'Likes bee stings', civiFieldType: 'Individual' },
+      custom_012: { type: 'Text', section: 'custom2', title: 'Pass phrase', civiFieldType: 'Contact' }
+    },
+    initialize: function() {
+    }
+  });
 
 
-    Civi.Core.ActivityModel = Backbone.Model.extend({
-        sections: {
-            'default': {title: 'Activity'},
-            'custom3': {title: 'Activity: Questions', is_addable: true}
-        },
-        schema: {
-            subject: { type: 'Text', title: 'Subject', civiFieldType: 'Activity' },
-            location: { type: 'Text', title: 'Location', civiFieldType: 'Activity' },
-            activity_date_time: { type: 'DateTime', title: 'Date-Time', civiFieldType: 'Activity' },
-            custom_789: { type: 'Select', section: 'custom3', title: 'How often do you eat cheese?',
-              options: ['Never', 'Sometimes', 'Often'],
-              civiFieldType: 'Activity'
-            }
-        },
-        initialize: function(){
-        }
-    });
+  Civi.Core.ActivityModel = Backbone.Model.extend({
+    sections: {
+      'default': {title: 'Activity'},
+      'custom3': {title: 'Activity: Questions', is_addable: true}
+    },
+    schema: {
+      subject: { type: 'Text', title: 'Subject', civiFieldType: 'Activity' },
+      location: { type: 'Text', title: 'Location', civiFieldType: 'Activity' },
+      activity_date_time: { type: 'DateTime', title: 'Date-Time', civiFieldType: 'Activity' },
+      custom_789: { type: 'Select', section: 'custom3', title: 'How often do you eat cheese?',
+        options: ['Never', 'Sometimes', 'Often'],
+        civiFieldType: 'Activity'
+      }
+    },
+    initialize: function() {
+    }
+  });
 })();
