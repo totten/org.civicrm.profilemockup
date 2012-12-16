@@ -207,8 +207,7 @@
             'click .crm-designer-save': 'doSave',
             'click .crm-designer-preview': 'doPreview'
         },
-        render: function() {
-            Backbone.Marionette.ItemView.prototype.render.apply(this);
+        onRender: function() {
             this.$('.crm-designer-save').button();
             this.$('.crm-designer-preview').button();
         },
