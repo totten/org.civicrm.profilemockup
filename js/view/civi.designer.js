@@ -75,13 +75,15 @@
      * - model: Civi.Form.FieldModel
      */
     Civi.Designer.FieldDetailView = Backbone.View.extend({
-        render: function(){
-            var form = new Backbone.Form({
+        initialize: function() {
+            this.form = new Backbone.Form({
                 model: this.model,
                 fields: ['label', 'field_name', 'field_type', 'entity_name', 'is_active']
             });
-            form.on('change', form.commit, form);
-            this.$el.html(form.render().el);
+            this.form.on('change', this.form.commit, this.form);
+        },
+        render: function() {
+            this.$el.html(this.form.render().el);
         }
     });
 
