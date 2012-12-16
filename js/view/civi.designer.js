@@ -35,10 +35,6 @@
             "click .crm-designer-action-settings": 'doToggleForm',
             "click .crm-designer-action-remove": 'doRemove'
         },
-        initialize: function() {
-            Backbone.Marionette.Layout.prototype.initialize.apply(this);
-            this.render();
-        },
         onRender: function() {
             this.summary.show(new Civi.Designer.FieldSummaryView({
                 model: this.model,
@@ -79,9 +75,6 @@
      * - model: Civi.Form.FieldModel
      */
     Civi.Designer.FieldDetailView = Backbone.View.extend({
-        initialize: function(){
-            this.render();
-        },
         render: function(){
             var form = new Backbone.Form({
                 model: this.model,
@@ -257,6 +250,7 @@
                     model: formFieldModel,
                     paletteFieldModel: paletteFieldModel
                 });
+                formFieldView.render();
                 formFieldView.$el.appendTo($fields);
             });
             this.$(".crm-designer-fields").sortable({
@@ -272,6 +266,7 @@
                         model: formFieldModel,
                         paletteFieldModel: paletteFieldModel
                     });
+                    formFieldView.render();
                     designerView.$('.crm-designer-fields .ui-draggable').replaceWith(formFieldView.$el);
                 },
                 update: function() {
