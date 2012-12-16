@@ -3,9 +3,14 @@
   if (!Civi.Designer) Civi.Designer = {};
 
   /**
-   * A variation on Marionette.ItemView's serializeData() -- in addition to creating
-   * variables for each model-property, the model and view objects are also exposed
-   * as _view, _model, _collection, and _options.
+   * When rendering a template with Marionette.ItemView, the list of variables is determined by
+   * serializeData(). The normal behavior is to map each property of this.model to a template
+   * variable.
+   *
+   * This function extends that practice by exporting variables "_view", "_model", "_collection",
+   * and "_options". This makes it easier for the template to, e.g., access computed properties of
+   * a model (by calling "_model.getComputedProperty"), or to access constructor options (by
+   * calling "_options.myoption").
    *
    * @return {*}
    */
