@@ -28,7 +28,7 @@
    * buttons.
    *
    * options:
-   *  - model: Civi.Form.UFGroupModel
+   *  - model: Civi.UF.UFGroupModel
    *  - paletteFieldCollection: Civi.Designer.PaletteFieldCollection
    */
   Civi.Designer.DesignerLayout = Backbone.Marionette.Layout.extend({
@@ -119,7 +119,7 @@
    * Display all UFFieldModel objects in a UFGroupModel.
    *
    * options:
-   *  - model: Civi.Form.UFGroupModel
+   *  - model: Civi.UF.UFGroupModel
    *  - paletteFieldCollection: Civi.Designer.PaletteFieldCollection
    */
   Civi.Designer.UFFieldCanvasView = Backbone.View.extend({
@@ -193,7 +193,7 @@
 
   /**
    * options:
-   * - model: Civi.Form.UFFieldModel
+   * - model: Civi.UF.UFFieldModel
    * - paletteFieldModel: Civi.Designer.PaletteFieldModel
    */
   Civi.Designer.UFFieldView = Backbone.Marionette.Layout.extend({
@@ -232,7 +232,7 @@
 
   /**
    * options:
-   * - model: Civi.Form.UFFieldModel
+   * - model: Civi.UF.UFFieldModel
    * - paletteFieldModel: Civi.Designer.PaletteFieldModel
    */
   Civi.Designer.UFFieldSummaryView = Backbone.Marionette.ItemView.extend({
@@ -245,7 +245,7 @@
 
   /**
    * options:
-   * - model: Civi.Form.UFFieldModel
+   * - model: Civi.UF.UFFieldModel
    */
   Civi.Designer.UFFieldDetailView = Backbone.View.extend({
     initialize: function() {
@@ -262,7 +262,7 @@
 
   /**
    * options:
-   * - model: Civi.Form.UFGroupModel
+   * - model: Civi.UF.UFGroupModel
    */
   Civi.Designer.UFGroupView = Backbone.Marionette.Layout.extend({
     serializeData: extendedSerializeData,
@@ -294,7 +294,7 @@
 
   /**
    * options:
-   * - model: Civi.Form.UFGroupModel
+   * - model: Civi.UF.UFGroupModel
    */
   Civi.Designer.UFGroupSummaryView = Backbone.Marionette.ItemView.extend({
     serializeData: extendedSerializeData,
@@ -306,7 +306,7 @@
 
   /**
    * options:
-   * - model: Civi.Form.UFGroupModel
+   * - model: Civi.UF.UFGroupModel
    */
   Civi.Designer.UFGroupDetailView = Backbone.View.extend({
     initialize: function() {

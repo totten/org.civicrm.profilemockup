@@ -44,7 +44,7 @@
       return this.get('modelClass').prototype.sections[this.get('sectionName')];
     },
     createUFFieldModel: function() {
-      var model = new Civi.Form.UFFieldModel({
+      var model = new Civi.UF.UFFieldModel({
         is_active: 1,
         label: this.get('label'),
         entity_name: this.get('entityName'),

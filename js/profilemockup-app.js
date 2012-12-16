@@ -40,8 +40,8 @@ cj(document).ready(function($) {
         CRM.api('UFGroup', 'getsingle', {id: ufId}, {success: function(data) {
           var formData = data;
           CRM.api('UFField', 'get', {uf_group_id: ufId}, {success: function(data) {
-            formData.ufFieldCollection = new Civi.Form.UFFieldCollection(_.values(data.values));
-            var ufGroupModel = new Civi.Form.UFGroupModel(formData);
+            formData.ufFieldCollection = new Civi.UF.UFFieldCollection(_.values(data.values));
+            var ufGroupModel = new Civi.UF.UFGroupModel(formData);
             launchDesigner(ufGroupModel);
           }
           });
@@ -51,8 +51,8 @@ cj(document).ready(function($) {
       else {
         // Initialize new UF group
         var formData = {};
-        formData.ufFieldCollection = new Civi.Form.UFFieldCollection();
-        var ufGroupModel = new Civi.Form.UFGroupModel(formData);
+        formData.ufFieldCollection = new Civi.UF.UFFieldCollection();
+        var ufGroupModel = new Civi.UF.UFGroupModel(formData);
         launchDesigner(ufGroupModel);
       }
     });
