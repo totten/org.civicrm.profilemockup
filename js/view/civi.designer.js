@@ -231,10 +231,11 @@
       if (!this.expanded) {
         this.detail.$el.hide();
       }
+      var that = this;
       CRM.designerApp.vent.on('formOpened', function(event) {
-        if (this.expanded && event != this.cid) {
-          this.expanded = false;
-          this.detail.$el.hide('blind', 250);
+        if (that.expanded && event != that.cid) {
+          that.expanded = false;
+          that.detail.$el.hide('blind', 250);
         }
       });
     },
