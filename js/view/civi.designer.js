@@ -29,6 +29,7 @@
    *
    * options:
    *  - model: Civi.UF.UFGroupModel
+   *  - ufFieldCollection: Civi.UF.UFFieldCollection
    *  - paletteFieldCollection: Civi.Designer.PaletteFieldCollection
    */
   Civi.Designer.DesignerLayout = Backbone.Marionette.Layout.extend({
@@ -50,6 +51,7 @@
       }));
       this.fields.show(new Civi.Designer.UFFieldCanvasView({
         model: this.model,
+        ufFieldCollection: this.options.ufFieldCollection,
         paletteFieldCollection: this.options.paletteFieldCollection
       }));
     }
@@ -120,12 +122,13 @@
    *
    * options:
    *  - model: Civi.UF.UFGroupModel
+   *  - ufFieldCollection: Civi.UF.UFFieldCollection
    *  - paletteFieldCollection: Civi.Designer.PaletteFieldCollection
    */
   Civi.Designer.UFFieldCanvasView = Backbone.View.extend({
     initialize: function() {
-      this.model.get('ufFieldCollection').on('add', this.updatePlaceholder, this);
-      this.model.get('ufFieldCollection').on('remove', this.updatePlaceholder, this);
+      this.options.ufFieldCollection.on('add', this.updatePlaceholder, this);
+      this.options.ufFieldCollection.on('remove', this.updatePlaceholder, this);
     },
     render: function() {
       var ufFieldCanvasView = this;
@@ -134,7 +137,7 @@
       // BOTTOM: Setup field-level editing
       var $fields = this.$('.crm-designer-fields');
       this.updatePlaceholder();
-      var ufFieldModels = this.model.get('ufFieldCollection').sortBy(function(ufFieldModel) {
+      var ufFieldModels = this.options.ufFieldCollection.sortBy(function(ufFieldModel) {
         return ufFieldModel.get('weight');
       });
       _.each(ufFieldModels, function(ufFieldModel) {
@@ -153,7 +156,7 @@
         receive: function(event, ui) {
           var paletteFieldModel = ufFieldCanvasView.options.paletteFieldCollection.getByCid(ui.item.attr('data-plm-cid'));
           var ufFieldModel = paletteFieldModel.createUFFieldModel();
-          var ufFieldCollection = ufFieldCanvasView.model.get('ufFieldCollection');
+          var ufFieldCollection = ufFieldCanvasView.options.ufFieldCollection;
           if (!ufFieldCollection.isAddable(ufFieldModel)) {
             cj().crmAlert(
               ts('The field "%1" is already included.', {
@@ -189,13 +192,13 @@
           return;
         }
         var ufFieldCid = $(row).attr('data-field-cid');
-        var ufFieldModel = ufFieldCanvasView.model.get('ufFieldCollection').getByCid(ufFieldCid);
+        var ufFieldModel = ufFieldCanvasView.options.ufFieldCollection.getByCid(ufFieldCid);
         ufFieldModel.set('weight', weight);
         weight++;
       });
     },
     updatePlaceholder: function() {
-      if (this.model.get('ufFieldCollection').isEmpty()) {
+      if (this.options.ufFieldCollection.isEmpty()) {
         this.$('.placeholder').show();
       } else {
         this.$('.placeholder').hide();

@@ -9,7 +9,7 @@ cj(document).ready(function($) {
     paletteFieldCollection.addEntity('contact_1', Civi.Core.IndividualModel);
     paletteFieldCollection.addEntity('activity_1', Civi.Core.ActivityModel);
 
-    var launchDesigner = function(ufGroupModel) {
+    var launchDesigner = function(ufGroupModel, ufFieldCollection) {
       window.tmpPaletteFieldCollection = paletteFieldCollection; // temporary; for debugging
       window.tmpUFGroupModel = ufGroupModel; // temporary; for debugging
 
@@ -23,6 +23,7 @@ cj(document).ready(function($) {
         open: function() {
           var designerLayout = new Civi.Designer.DesignerLayout({
             model: ufGroupModel,
+            ufFieldCollection: ufFieldCollection,
             paletteFieldCollection: paletteFieldCollection
           });
           CRM.designerApp.designerRegion.show(designerLayout);
@@ -39,9 +40,9 @@ cj(document).ready(function($) {
         // Retrieve UF group and fields from the api
         CRM.api('UFGroup', 'getsingle', {id: ufId}, {success: function(formData) {
           CRM.api('UFField', 'get', {uf_group_id: ufId}, {success: function(data) {
-            formData.ufFieldCollection = new Civi.UF.UFFieldCollection(_.values(data.values));
+            var ufFieldCollection = new Civi.UF.UFFieldCollection(_.values(data.values));
             var ufGroupModel = new Civi.UF.UFGroupModel(formData);
-            launchDesigner(ufGroupModel);
+            launchDesigner(ufGroupModel, ufFieldCollection);
           }
           });
         }

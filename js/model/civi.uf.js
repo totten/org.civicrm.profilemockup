@@ -91,9 +91,6 @@
 
   /**
    * Represents a customizable form
-   *
-   * options:
-   *  - ufFieldCollection: Civi.UF.UFFieldCollection
    */
   Civi.UF.UFGroupModel = Backbone.Model.extend({
     schema: {
