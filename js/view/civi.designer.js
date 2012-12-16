@@ -5,12 +5,11 @@
     /**
      * options:
      * - model: Civi.Form.FieldModel
-     * - paletteField: Civi.Designer.PaletteFieldModel
+     * - paletteFieldModel: Civi.Designer.PaletteFieldModel
      */
     Civi.Designer.FieldView = Backbone.View.extend({
         initialize: function(){
             this.render();
-            this.model.on('change', this.renderSummary, this);
         },
         events: {
             "click .crm-designer-action-settings": 'doToggleForm',
@@ -27,11 +26,12 @@
             this.renderDetail();
         },
         renderSummary: function() {
-            var field_summary_template = _.template($('#field_summary_template').html(), {
-              formField: this.model,
-              paletteField: this.options.paletteFieldModel
+            this.summaryView = new Civi.Designer.FieldSummaryView({
+                el: this.$('.crm-designer-field-summary'),
+                model: this.model,
+                paletteFieldModel: this.options.paletteFieldModel
             });
-            this.$('.crm-designer-field-summary').html(field_summary_template);
+            this.summaryView.render();
         },
         renderDetail: function() {
             this.detailView = new Civi.Designer.FieldDetailView({
@@ -44,9 +44,26 @@
             this.$('.crm-designer-field-detail').toggle('blind', 250);
         },
         doRemove: function(event) {
-          this.model.off('change', this.render, this);
           this.model.destroy();
           this.remove();
+        }
+    });
+
+    /**
+     * options:
+     * - model: Civi.Form.FieldModel
+     * - paletteFieldModel: Civi.Designer.PaletteFieldModel
+     */
+    Civi.Designer.FieldSummaryView = Backbone.Marionette.ItemView.extend({
+        template: '#field_summary_template',
+        modelEvents: {
+            'change': 'render'
+        },
+        serializeData: function() {
+            return {
+                formField: this.model,
+                paletteField: this.options.paletteFieldModel
+            };
         }
     });
 
