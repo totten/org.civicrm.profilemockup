@@ -222,7 +222,10 @@
     },
     doToggleForm: function(event) {
       this.expanded = !this.expanded;
-      this.detail.$el.toggle('blind', 250);
+      $('.crm-designer-field-detail:visible').hide('blind', 250);
+      if (this.expanded) {
+        this.detail.$el.show('blind', 250);
+      }
     },
     doRemove: function(event) {
       this.model.destroy();

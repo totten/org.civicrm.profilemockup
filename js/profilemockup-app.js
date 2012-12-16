@@ -37,8 +37,7 @@ cj(document).ready(function($) {
       var ufId = $('#test-profile-id').val();
       if (ufId) {
         // Retrieve UF group and fields from the api
-        CRM.api('UFGroup', 'getsingle', {id: ufId}, {success: function(data) {
-          var formData = data;
+        CRM.api('UFGroup', 'getsingle', {id: ufId}, {success: function(formData) {
           CRM.api('UFField', 'get', {uf_group_id: ufId}, {success: function(data) {
             formData.ufFieldCollection = new Civi.UF.UFFieldCollection(_.values(data.values));
             var ufGroupModel = new Civi.UF.UFGroupModel(formData);

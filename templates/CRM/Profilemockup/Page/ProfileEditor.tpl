@@ -48,23 +48,23 @@
  *}
 {literal}
 <script type="text/template" id="palette_template">
-<div class="crm-designer-palette">
-  <div class="crm-designer-palette-acc">
-    <% _.each(sections, function(section, sectionId){ %>
-      <h3><%= section.title %></h3>
-      <div>
+  <div class="crm-designer-palette">
+    <div class="crm-designer-palette-acc">
+      <% _.each(sections, function(section, sectionId){ %>
+        <h3><%= section.title %></h3>
         <div>
-        <% _.each(fieldsByEntitySection[sectionId], function(paletteFieldModel){ %>
-          <div class="crm-designer-palette-field" data-plm-cid="<%= paletteFieldModel.cid %>"><%= paletteFieldModel.get('label') %></div>
-        <%}); %>
+          <div>
+          <% _.each(fieldsByEntitySection[sectionId], function(paletteFieldModel){ %>
+            <div class="crm-designer-palette-field" data-plm-cid="<%= paletteFieldModel.cid %>"><%= paletteFieldModel.get('label') %></div>
+          <%}); %>
+          </div>
+          <% if (section.is_addable) { %>
+            <button type="button" class="crm-add-custom">Add</button>
+          <% } %>
         </div>
-        <% if (section.is_addable) { %>
-          <button type="button" class="crm-add-custom">Add</button>
-        <% } %>
-      </div>
-    <% }); %>
+      <% }); %>
+    </div>
   </div>
-</div>
 </script>
 {/literal}
 
@@ -114,15 +114,15 @@
 {literal}
 <script type="text/template" id="form_summary_template">
   <span><%= title %></span>
-  <span class="crm-designer-buttons">
+  <div class="crm-designer-buttons">
     <a class="crm-designer-action-settings ui-icon ui-icon-pencil" title="{ts}Settings{/ts}"></a>
-  </span>
+  </div>
 </script>
 {/literal}
 
 <script type="text/template" id="designer_buttons_template">
-    <button class="crm-designer-save">{ts}Save{/ts}</button>
-    <button class="crm-designer-preview">{ts}Preview{/ts}</button>
+  <button class="crm-designer-save">{ts}Save{/ts}</button>
+  <button class="crm-designer-preview">{ts}Preview{/ts}</button>
 </script>
 
 <script type="text/template" id="field_canvas_view_template">

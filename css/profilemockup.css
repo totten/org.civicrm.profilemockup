@@ -42,14 +42,19 @@
   min-height:100px;
 }
 
-.crm-designer-row .crm-designer-buttons a {
+.crm-designer-row .crm-designer-buttons {
   float: right;
-  cursor: pointer;
-  visibility: hidden;
+  display: none;
+  height: 20px;
 }
 
-.crm-designer-row:hover .crm-designer-buttons a {
-  visibility: visible;
+.crm-designer-row:hover .crm-designer-buttons {
+  display: block;
+}
+
+.crm-designer-row .crm-designer-buttons a {
+  cursor: pointer;
+  display: inline-block;
 }
 
 .crm-designer-row, .crm-designer-row-placeholder {
