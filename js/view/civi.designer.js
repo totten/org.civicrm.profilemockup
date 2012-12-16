@@ -210,6 +210,8 @@
             this.$('.crm-designer-preview').button();
         },
         doSave: function(event) {
+            // CRM.api('UFField', 'replace', {uf_group_id: ufId, values:});
+            $("#crm-designer-dialog").dialog('close');
             console.log('save');
         },
         doPreview: function(event) {
