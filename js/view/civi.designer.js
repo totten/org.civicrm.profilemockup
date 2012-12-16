@@ -221,7 +221,7 @@
     },
     events: {
       "click .crm-designer-action-settings": 'doToggleForm',
-      "click .crm-designer-action-remove": 'doRemove',
+      "click .crm-designer-action-remove": 'doRemove'
     },
     onRender: function() {
       this.summary.show(new Civi.Designer.UFFieldSummaryView({
