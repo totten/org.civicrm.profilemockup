@@ -69,11 +69,12 @@
 {/literal}
 
 {**
- * @param Civi.Form.FieldModel formField
+ * Template for Civi.Form.FieldModel, Civi.Designer.FieldView
+ * @see extendedSerializeData()
  *}
 {literal}
 <script type="text/template" id="field_row_template">
-  <div class="crm-designer-row" data-field-cid="<%= formField.cid %>">
+  <div class="crm-designer-row" data-field-cid="<%= _model.cid %>">
     <div class="crm-designer-field-summary"></div>
     <div class="crm-designer-field-detail"></div>
   </div>
@@ -81,13 +82,13 @@
 {/literal}
 
 {**
- * @param Civi.Form.FieldModel formField
- * @param Civi.Designer.PaletteFieldModel paletteField
+ * Template for Civi.Form.FieldModel, Civi.Designer.FieldSummaryView
+ * @see extendedSerializeData()
  *}
 {literal}
 <script type="text/template" id="field_summary_template">
-  <%= formField.get('label') %>
-  <span class="crm-designer-field-binding">(<%= paletteField.getSection().title %>: <%= formField.get('field_name') %>)</span>
+  <%= label %>
+  <span class="crm-designer-field-binding">(<%= _options.paletteFieldModel.getSection().title %>: <%= field_name %>)</span>
   <span class="crm-designer-buttons">
     <a class="ui-icon ui-icon-pencil crm-designer-action-settings" title="{/literal}{ts}Settings{/ts}{literal}"></a>
     <a class="ui-icon ui-icon-trash crm-designer-action-remove" title="{/literal}{ts}Remove{/ts}{literal}"></a>

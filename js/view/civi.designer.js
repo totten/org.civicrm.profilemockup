@@ -3,13 +3,30 @@
     if (!Civi.Designer) Civi.Designer = {};
 
     /**
+     * A variation on Marionette.ItemView's serializeData() -- in addition to creating
+     * variables for each model-property, the model and view objects are also exposed
+     * as _view, _model, _collection, and _options.
+     *
+     * @return {*}
+     */
+    var extendedSerializeData = function() {
+        var result = Marionette.ItemView.prototype.serializeData.apply(this);
+        result._view = this;
+        result._model = this.model;
+        result._collection = this.collection;
+        result._options = this.options;
+        return result;
+    }
+
+    /**
      * options:
      * - model: Civi.Form.FieldModel
      * - paletteFieldModel: Civi.Designer.PaletteFieldModel
      */
     Civi.Designer.FieldView = Backbone.Marionette.Layout.extend({
+        serializeData: extendedSerializeData,
         template: '#field_row_template',
-        expanded: false, // TODO test me
+        expanded: false,
         regions: {
             summary: '.crm-designer-field-summary',
             detail: '.crm-designer-field-detail'
@@ -34,11 +51,6 @@
                 this.detail.$el.hide();
             }
         },
-        serializeData: function() {
-            return {
-                formField: this.model
-            };
-        },
         doToggleForm: function(event) {
             this.expanded = !this.expanded;
             this.detail.$el.toggle('blind', 250);
@@ -55,15 +67,10 @@
      * - paletteFieldModel: Civi.Designer.PaletteFieldModel
      */
     Civi.Designer.FieldSummaryView = Backbone.Marionette.ItemView.extend({
+        serializeData: extendedSerializeData,
         template: '#field_summary_template',
         modelEvents: {
             'change': 'render'
-        },
-        serializeData: function() {
-            return {
-                formField: this.model,
-                paletteField: this.options.paletteFieldModel
-            };
         }
     });
 
@@ -90,6 +97,7 @@
      * - model: Civi.Form.FormModel
      */
     Civi.Designer.FormView = Backbone.Marionette.Layout.extend({
+        serializeData: extendedSerializeData,
         template: '#form_row_template',
         expanded: false,
         regions: {
@@ -121,6 +129,7 @@
      * - model: Civi.Form.FormModel
      */
     Civi.Designer.FormSummaryView = Backbone.Marionette.ItemView.extend({
+        serializeData: extendedSerializeData,
         template: '#form_summary_template',
         modelEvents: {
             'change': 'render'
@@ -188,6 +197,7 @@
     });
 
     Civi.Designer.DesignerLayout = Backbone.Marionette.Layout.extend({
+        serializeData: extendedSerializeData,
         template: '#designer_template',
         regions: {
             buttons: '.crm-designer-buttonset-region',
@@ -198,6 +208,7 @@
     });
 
     Civi.Designer.ToolbarView = Backbone.Marionette.ItemView.extend({
+        serializeData: extendedSerializeData,
         template: '#designer_buttons_template',
         events: {
             'click .crm-designer-save': 'doSave',
