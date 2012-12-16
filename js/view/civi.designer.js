@@ -74,6 +74,7 @@
      */
     Civi.Designer.FormView = Backbone.Marionette.Layout.extend({
         template: '#form_row_template',
+        expanded: false,
         regions: {
             summary: '.crm-designer-form-summary',
             detail: '.crm-designer-form-detail'
