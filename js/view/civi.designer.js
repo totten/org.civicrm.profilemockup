@@ -42,20 +42,16 @@
     },
     onRender: function() {
       this.buttons.show(new Civi.Designer.ToolbarView());
-
       this.palette.show(new Civi.Designer.PaletteView({
         model: this.options.paletteFieldCollection
       }));
-
       this.form.show(new Civi.Designer.FormView({
         model: this.model
       }));
-
-      var fieldCanvasView = new Civi.Designer.FieldCanvasView({
+      this.fields.show(new Civi.Designer.FieldCanvasView({
         model: this.model,
         paletteFieldCollection: this.options.paletteFieldCollection
-      });
-      this.fields.show(fieldCanvasView);
+      }));
     }
   });
 
