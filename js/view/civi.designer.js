@@ -206,7 +206,7 @@
     },
     events: {
       "click .crm-designer-action-settings": 'doToggleForm',
-      "click .crm-designer-action-remove": 'doRemove'
+      "click .crm-designer-action-remove": 'doRemove',
     },
     onRender: function() {
       this.summary.show(new Civi.Designer.UFFieldSummaryView({
@@ -219,13 +219,19 @@
       if (!this.expanded) {
         this.detail.$el.hide();
       }
+      CRM.designerApp.vent.on('formOpened', function(event) {
+        if (this.expanded && event != this.cid) {
+          this.expanded = false;
+          this.detail.$el.hide('blind', 250);
+        }
+      });
     },
     doToggleForm: function(event) {
       this.expanded = !this.expanded;
-      $('.crm-designer-field-detail:visible').hide('blind', 250);
       if (this.expanded) {
-        this.detail.$el.show('blind', 250);
+        CRM.designerApp.vent.trigger('formOpened', this.cid);
       }
+      this.detail.$el.toggle('blind', 250);
     },
     doRemove: function(event) {
       this.model.destroy();

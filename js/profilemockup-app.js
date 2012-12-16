@@ -1,7 +1,7 @@
 cj(document).ready(function($) {
   { // placeholder to keep indentation
-    var designerApp = new Backbone.Marionette.Application();
-    designerApp.addRegions({
+    CRM.designerApp = new Backbone.Marionette.Application();
+    CRM.designerApp.addRegions({
       designerRegion: '#crm-designer-designer'
     });
     // Prepare data to pass into application
@@ -25,10 +25,10 @@ cj(document).ready(function($) {
             model: ufGroupModel,
             paletteFieldCollection: paletteFieldCollection
           });
-          designerApp.designerRegion.show(designerLayout);
+          CRM.designerApp.designerRegion.show(designerLayout);
         },
         close: function() {
-          designerApp.designerRegion.close();
+          CRM.designerApp.designerRegion.close();
         }
       });
     };
