@@ -128,7 +128,7 @@
       this.model.get('fieldCollection').on('remove', this.updatePlaceholder, this);
     },
     render: function() {
-      var designerView = this;
+      var fieldCanvasView = this;
       this.$el.html(_.template($('#field_canvas_view_template').html()));
 
       // BOTTOM: Setup field-level editing
@@ -138,7 +138,7 @@
         return formFieldModel.get('weight');
       });
       _.each(formFieldModels, function(formFieldModel) {
-        var paletteFieldModel = designerView.options.paletteFieldCollection.getFieldByName(formFieldModel.get('entity_name'), formFieldModel.get('field_name'));
+        var paletteFieldModel = fieldCanvasView.options.paletteFieldCollection.getFieldByName(formFieldModel.get('entity_name'), formFieldModel.get('field_name'));
         var formFieldView = new Civi.Designer.FieldView({
           el: $("<div></div>"),
           model: formFieldModel,
@@ -151,9 +151,9 @@
         placeholder: 'crm-designer-row-placeholder',
         forcePlaceholderSize: true,
         receive: function(event, ui) {
-          var paletteFieldModel = designerView.options.paletteFieldCollection.getByCid(ui.item.attr('data-plm-cid'));
+          var paletteFieldModel = fieldCanvasView.options.paletteFieldCollection.getByCid(ui.item.attr('data-plm-cid'));
           var formFieldModel = paletteFieldModel.createFormFieldModel();
-          designerView.model.get('fieldCollection').add(formFieldModel);
+          fieldCanvasView.model.get('fieldCollection').add(formFieldModel);
 
           var formFieldView = new Civi.Designer.FieldView({
             el: $("<div></div>"),
@@ -161,23 +161,23 @@
             paletteFieldModel: paletteFieldModel
           });
           formFieldView.render();
-          designerView.$('.crm-designer-fields .ui-draggable').replaceWith(formFieldView.$el);
+          fieldCanvasView.$('.crm-designer-fields .ui-draggable').replaceWith(formFieldView.$el);
         },
         update: function() {
-          designerView.updateWeights();
+          fieldCanvasView.updateWeights();
         }
       });
     },
     /** Determine visual order of fields and set the model values for "weight" */
     updateWeights: function() {
-      var designerView = this;
+      var fieldCanvasView = this;
       var weight = 1;
       var rows = this.$('.crm-designer-row').each(function(key, row) {
         if ($(row).hasClass('placeholder')) {
           return;
         }
         var formFieldCid = $(row).attr('data-field-cid');
-        var formFieldModel = designerView.model.get('fieldCollection').getByCid(formFieldCid);
+        var formFieldModel = fieldCanvasView.model.get('fieldCollection').getByCid(formFieldCid);
         formFieldModel.set('weight', weight);
         weight++;
       });
