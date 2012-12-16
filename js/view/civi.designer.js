@@ -187,6 +187,14 @@
         }
     });
 
+    /**
+     * Display a complete form-editing UI, including canvas, palette, and
+     * buttons.
+     *
+     * options:
+     *  - model: Civi.Form.FormModel
+     *  - paletteFieldCollection: Civi.Designer.PaletteFieldCollection
+     */
     Civi.Designer.DesignerLayout = Backbone.Marionette.Layout.extend({
         serializeData: extendedSerializeData,
         template: '#designer_template',
@@ -195,6 +203,23 @@
             palette: '.crm-designer-palette-region',
             form: '.crm-designer-form-region',
             fields: '.crm-designer-fields-region'
+        },
+        onRender: function() {
+            this.buttons.show(new Civi.Designer.ToolbarView());
+
+            this.palette.show(new Civi.Designer.PaletteView({
+                model: this.options.paletteFieldCollection
+            }));
+
+            this.form.show(new Civi.Designer.FormView({
+                model: this.model
+            }));
+
+            var fieldCanvasView = new Civi.Designer.FieldCanvasView({
+                model: this.model,
+                paletteFieldCollection: this.options.paletteFieldCollection
+            });
+            this.fields.show(fieldCanvasView);
         }
     });
 
@@ -218,8 +243,7 @@
     });
 
     /**
-     * Display a complete form-editing UI, including canvas, palette, and
-     * buttons.
+     * Display all FieldModel objects in a FormModel.
      *
      * options:
      *  - model: Civi.Form.FormModel

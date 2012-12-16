@@ -21,27 +21,11 @@ cj(document).ready(function($){
             minWidth: 500,
             minHeight: 600,
             open: function() {
-                var designerLayout = new Civi.Designer.DesignerLayout({});
-                designerApp.designerRegion.show(designerLayout);
-
-                designerLayout.buttons.show(new Civi.Designer.ToolbarView());
-
-                designerLayout.palette.show(new Civi.Designer.PaletteView({
-                    model: paletteFieldCollection
-                }));
-
-                designerLayout.form.show(new Civi.Designer.FormView({
-                    model: formModel
-                }));
-
-                var fieldCanvasView = new Civi.Designer.FieldCanvasView({
+                var designerLayout = new Civi.Designer.DesignerLayout({
                     model: formModel,
                     paletteFieldCollection: paletteFieldCollection
                 });
-                designerLayout.fields.show(fieldCanvasView);
-                window.tmpDesignerView = fieldCanvasView; // temporary; for debugging
-                //designerLayout.fields.show(new Civi.Designer.ToolbarView());
-
+                designerApp.designerRegion.show(designerLayout);
             },
             close: function() {
               designerApp.designerRegion.close();
