@@ -240,7 +240,7 @@
       }
     },
     doRemove: function(event) {
-      this.model.destroy();
+      this.model.destroyLocal();
       this.remove();
     }
   });

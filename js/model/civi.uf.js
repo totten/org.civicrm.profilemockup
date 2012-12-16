@@ -54,6 +54,17 @@
     },
     initialize: function() {
       this.set('entity_name', Civi.UF.guessEntityName(this.get('field_type')));
+    },
+
+    /**
+     * This is like destroy(), but it only destroys the item on the client-side;
+     * it does not trigger REST or Backbone.sync() operations.
+     *
+     * @return {Boolean}
+     */
+    destroyLocal: function() {
+      this.trigger('destroy', this, this.collection, {});
+      return false;
     }
   });
 
