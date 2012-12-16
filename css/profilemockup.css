@@ -59,7 +59,7 @@
   margin: auto;
 }
 
-.crm-designer-row:hover {
+.crm-designer-fields-region .crm-designer-row:hover {
   border: 1px dashed gray;
   cursor: move;
 }
