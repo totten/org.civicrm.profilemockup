@@ -7,45 +7,45 @@
      * - model: Civi.Form.FieldModel
      * - paletteFieldModel: Civi.Designer.PaletteFieldModel
      */
-    Civi.Designer.FieldView = Backbone.View.extend({
-        initialize: function(){
-            this.render();
+    Civi.Designer.FieldView = Backbone.Marionette.Layout.extend({
+        template: '#field_row_template',
+        expanded: false, // TODO test me
+        regions: {
+            summary: '.crm-designer-field-summary',
+            detail: '.crm-designer-field-detail'
         },
         events: {
             "click .crm-designer-action-settings": 'doToggleForm',
             "click .crm-designer-action-remove": 'doRemove'
         },
-        render: function(){
-            var field_row_template = _.template($('#field_row_template').html(), {
-              formField: this.model,
-              paletteField: this.options.paletteFieldModel
-            });
-            this.$el.html(field_row_template);
-
-            this.renderSummary();
-            this.renderDetail();
+        initialize: function() {
+            Backbone.Marionette.Layout.prototype.initialize.apply(this);
+            this.render();
         },
-        renderSummary: function() {
-            this.summaryView = new Civi.Designer.FieldSummaryView({
-                el: this.$('.crm-designer-field-summary'),
+        onRender: function() {
+            this.summary.show(new Civi.Designer.FieldSummaryView({
                 model: this.model,
                 paletteFieldModel: this.options.paletteFieldModel
-            });
-            this.summaryView.render();
-        },
-        renderDetail: function() {
-            this.detailView = new Civi.Designer.FieldDetailView({
-                el: this.$el.find('.crm-designer-field-detail'),
+            }));
+            this.detail.show(new Civi.Designer.FieldDetailView({
                 model: this.model
-            });
-            this.detailView.$el.hide();
+            }));
+            if (!this.expanded) {
+                this.detail.$el.hide();
+            }
+        },
+        serializeData: function() {
+            return {
+                formField: this.model
+            };
         },
         doToggleForm: function(event) {
-            this.$('.crm-designer-field-detail').toggle('blind', 250);
+            this.expanded = !this.expanded;
+            this.detail.$el.toggle('blind', 250);
         },
         doRemove: function(event) {
-          this.model.destroy();
-          this.remove();
+            this.model.destroy();
+            this.remove();
         }
     });
 
