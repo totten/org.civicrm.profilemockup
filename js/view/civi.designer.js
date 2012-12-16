@@ -184,9 +184,6 @@
                 hoverClass: "ui-state-hover",
                 accept: ":not(.ui-sortable-helper)"
             });
-        },
-        destroy: function() {
-            this.$('.crm-designer-palette-acc').accordion('destroy');
         }
     });
 
