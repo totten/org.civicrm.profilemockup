@@ -4,11 +4,7 @@ require_once 'CRM/Core/Page.php';
 
 class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
   function run() {
-    // Example: Set the page-title dynamically; alternatively, declare a static title in xml/Menu/*.xml
-    CRM_Utils_System::setTitle(ts('ProfileEditor'));
 
-    // Example: Assign a variable for use in a template
-    $this->assign('currentTime', date('Y-m-d H:i:s'));
     CRM_Core_Resources::singleton()
       ->addSetting(array('civiCoreModels' => $this->getModels()))
       // TODO think of a way extensions can include jQuery plugins
