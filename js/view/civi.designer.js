@@ -237,14 +237,13 @@
       var that = this;
       CRM.designerApp.vent.on('formOpened', function(event) {
         if (that.expanded && event != that.cid) {
-          that.expanded = false;
-          that.detail.$el.hide('blind', 250);
+          that.doToggleForm(false);
         }
       });
     },
     doToggleForm: function(event) {
       this.expanded = !this.expanded;
-      if (this.expanded) {
+      if (this.expanded && event !== false) {
         CRM.designerApp.vent.trigger('formOpened', this.cid);
       }
       this.detail.$el.toggle('blind', 250);
