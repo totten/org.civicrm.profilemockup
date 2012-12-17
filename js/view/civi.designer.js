@@ -42,7 +42,9 @@
       fields: '.crm-designer-fields-region'
     },
     onRender: function() {
-      this.buttons.show(new Civi.Designer.ToolbarView());
+      this.buttons.show(new Civi.Designer.ToolbarView({
+        ufFieldCollection: this.options.ufFieldCollection
+      }));
       this.palette.show(new Civi.Designer.PaletteView({
         model: this.options.paletteFieldCollection
       }));
@@ -69,9 +71,11 @@
       this.$('.crm-designer-preview').button();
     },
     doSave: function(event) {
-      // CRM.api('UFField', 'replace', {uf_group_id: ufId, values:});
+      var fields = _.pluck(this.options.ufFieldCollection.models, 'attributes');
+      CRM.api('UFGroup', 'create', CRM.designerApp.designerRegion.currentView.model.attributes, {success: function(data) {
+        CRM.api('UFField', 'replace', {uf_group_id: data.id, values: _.sortBy(fields, 'weight')});
+      }});
       $("#crm-designer-dialog").dialog('close');
-      console.log('save');
     },
     doPreview: function(event) {
       console.log('preview');
