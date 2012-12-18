@@ -104,7 +104,7 @@
       _.each(this.model.getFieldsByEntitySection(), function(values, key) {
         var items = [];
         _.each(values, function(vals, k) {
-          items.push({data: vals.attributes.label, attr: {"data-cid": vals.cid}});
+          items.push({data: vals.get('label'), attr: {"data-plm-cid": vals.cid}});
         });
         treeData.push({data: sections[key].title, children: items});
       });
@@ -117,7 +117,7 @@
         },
         'plugins': ['themes', 'json_data', 'ui', 'search']
       }).bind("loaded.jstree", function () {
-        $('.jstree-leaf a', this).draggable({
+        $('.jstree-leaf', this).draggable({
           appendTo: "#crm-designer-designer",
           zIndex: $(this.$el).zIndex() + 5000,
           helper: "clone",
