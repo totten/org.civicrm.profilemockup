@@ -41,21 +41,22 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
   function getModels() {
     // FIXME: Depending on context (eg civicrm/profile/create vs search-columns), it may be appropriate to
     // pick importable or exportable fields
+    $availableFields = CRM_Core_BAO_UFField::getAvailableFieldsFlat();
 
     $extends = array('Individual', 'Contact');
     $civiCoreModels['IndividualModel'] = $this->convertCiviModelToBackboneModel(
-      'Individual',
       ts('Individual'),
       CRM_Contact_BAO_Contact::importableFields('Individual', FALSE, FALSE, TRUE, TRUE, TRUE),
-      CRM_Core_BAO_CustomGroup::getGroupDetail(NULL, NULL, $extends)
+      CRM_Core_BAO_CustomGroup::getGroupDetail(NULL, NULL, $extends),
+      $availableFields
     );
 
     $extends = array('Activity');
     $civiCoreModels['ActivityModel'] = $this->convertCiviModelToBackboneModel(
-      'Activity',
       ts('Activity'),
       CRM_Activity_BAO_Activity::importableFields('Activity'),
-      CRM_Core_BAO_CustomGroup::getGroupDetail(NULL, NULL, $extends)
+      CRM_Core_BAO_CustomGroup::getGroupDetail(NULL, NULL, $extends),
+      $availableFields
     );
 
     return $civiCoreModels;
@@ -69,11 +70,12 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
    * @param string $title a string to use in section headers
    * @param array $fields list of all core and custom fields which should be displayed
    * @param array $customGroups list of custom groups produced by getGroupDetail()
+   * @param array $availableFields list of fields that are allowed in profiles, e.g. $availableFields['my_field']['field_type']
    * @return array with keys 'sections' and 'schema'
    * @see js/model/crm.core.js
    * @see js/model/crm.mappedcore.js
    */
-  function convertCiviModelToBackboneModel($fixmeCiviFieldType, $title, $fields, $customGroupTree) {
+  function convertCiviModelToBackboneModel($title, $fields, $customGroupTree, $availableFields) {
     $result = array(
       'schema' => array(),
       'sections' => array(),
@@ -84,10 +86,13 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
       if (!isset($field['type']) && !isset($field['html_type'])) {
         continue;
       }
+      if (!isset($availableFields[$fieldName])) {
+        continue;
+      }
       $result['schema'][$fieldName] = array(
         'type' => 'Text', // FIXME,
         'title' => $field['title'],
-        'civiFieldType' => $fixmeCiviFieldType, // FIXME
+        'civiFieldType' => $availableFields[$fieldName]['field_type'],
       );
     }
 
