@@ -96,18 +96,21 @@
       this.model.on('remove', this.render, this);
     },
     render: function() {
-      var palette_template = _.template($('#palette_template').html(), {
-        sections: this.model.getSections(),
-        fieldsByEntitySection: this.model.getFieldsByEntitySection()
-      });
       this.$el.html(palette_template);
-      var $acc = this.$('.crm-designer-palette-acc');
-      $acc.accordion({
-        heightStyle: 'fill',
-        autoHeight: false,
-        clearStyle: true
+
+      // Prepare data for jstree
+      var treeData = {};
+      _.each(this.model.getSections(), function(vals, key) {
+        treeData[key] = {data: vals.title, children: []};
       });
-      $acc.find('.crm-designer-palette-field').draggable({
+      _.each(this.model.getFieldsByEntitySection(), function(values, key) {
+        _.each(values, function(vals, k) {
+          treeData[key].children.push({data: vals.attributes.label, attr: {"data-cid": vals.cid, class: 'crm-designer-palette-field'}});
+        });
+      });
+      var $tree = this.$('.crm-designer-palette-tree');
+
+      $tree.find('.crm-designer-palette-field').draggable({
         appendTo: "#crm-designer-designer",
         zIndex: $(this.$el).zIndex() + 5000,
         helper: "clone",

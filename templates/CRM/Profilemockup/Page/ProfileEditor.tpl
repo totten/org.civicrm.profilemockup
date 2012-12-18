@@ -49,20 +49,11 @@
 {literal}
 <script type="text/template" id="palette_template">
   <div class="crm-designer-palette">
-    <div class="crm-designer-palette-acc">
-      <% _.each(sections, function(section, sectionId){ %>
-        <h3><%= section.title %></h3>
-        <div>
-          <div>
-          <% _.each(fieldsByEntitySection[sectionId], function(paletteFieldModel){ %>
-            <div class="crm-designer-palette-field" data-plm-cid="<%= paletteFieldModel.cid %>"><%= paletteFieldModel.get('label') %></div>
-          <%}); %>
-          </div>
-          <% if (section.is_addable) { %>
-            <button type="button" class="crm-add-custom">Add</button>
-          <% } %>
-        </div>
-      <% }); %>
+    <div class="crm-designer-palette-search">
+      <input type="text" placeholder="{ts}Search{/ts}" />
+      <button type="button">X</button>
+    </div>
+    <div class="crm-designer-palette-tree">
     </div>
   </div>
 </script>
