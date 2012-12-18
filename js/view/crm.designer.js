@@ -99,30 +99,30 @@
     },
     onRender: function() {
       // Prepare data for jstree
-      var treeData = {};
-      _.each(this.model.getSections(), function(vals, key) {
-        treeData[key] = {data: vals.title, children: []};
-      });
+      var treeData = [];
+      var sections = this.model.getSections();
       _.each(this.model.getFieldsByEntitySection(), function(values, key) {
+        var items = [];
         _.each(values, function(vals, k) {
-          treeData[key].children.push({data: vals.attributes.label, attr: {"data-cid": vals.cid}});
+          items.push({data: vals.attributes.label, attr: {"data-cid": vals.cid}});
         });
+        treeData.push({data: sections[key].title, children: items});
       });
       var $tree = this.$('.crm-designer-palette-tree');
       $tree.jstree({ 
-        "json_data": {data: _.toArray(treeData)},
-        "search": {
-          "case_insensitive" : true,
-          "show_only_matches": true,
+        'json_data': {data: treeData},
+        'search': {
+          'case_insensitive' : true,
+          'show_only_matches': true,
         },
-        "plugins": [ "themes", "json_data", "ui", "search" ]
-      });
-
-      $tree.find('.jstree-leaf a').draggable({
-        appendTo: "#crm-designer-designer",
-        zIndex: $(this.$el).zIndex() + 5000,
-        helper: "clone",
-        connectToSortable: '.crm-designer-fields' // FIXME: tight canvas/palette coupling
+        'plugins': ['themes', 'json_data', 'ui', 'search']
+      }).bind("loaded.jstree", function () {
+        $('.jstree-leaf a', this).draggable({
+          appendTo: "#crm-designer-designer",
+          zIndex: $(this.$el).zIndex() + 5000,
+          helper: "clone",
+          connectToSortable: '.crm-designer-fields' // FIXME: tight canvas/palette coupling
+        });
       });
 
       // FIXME: tight canvas/palette coupling
@@ -137,6 +137,7 @@
     },
     clearSearch: function(event) {
       $('.crm-designer-palette-search input').val('').keyup();
+      return false;
     }
   });
 

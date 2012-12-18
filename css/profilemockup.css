@@ -11,13 +11,13 @@
   height: 20em;
 }
 
-.crm-designer-palette-field {
+.jstree-leaf a {
   padding: 1px;
   border: 1px solid white;
   cursor: move;
 }
 
-.crm-designer-palette-field:hover {
+.jstree-leaf a:hover {
   border: 1px dashed gray;
 }
 

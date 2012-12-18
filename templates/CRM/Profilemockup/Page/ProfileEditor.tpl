@@ -41,16 +41,13 @@
 </script>
 
 {**
- * Render a palette of available fields
- *
- * @param array<string,PaletteFieldModel> fieldsByEntitySection
- * @param array<string,sectionData> sections
+ * Render the field-palette container
  *}
 <script type="text/template" id="palette_template">
   <div class="crm-designer-palette">
     <div class="crm-designer-palette-search">
       <input type="text" placeholder="{ts}Search{/ts}" />
-      <a class="button" title="{ts}clear search{/ts}">X</a>
+      <a class="button" href="#" title="{ts}Clear search{/ts}">X</a>
     </div>
     <div class="crm-designer-palette-tree">
     </div>
