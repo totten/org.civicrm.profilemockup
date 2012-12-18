@@ -71,11 +71,13 @@
       this.$('.crm-designer-preview').button();
     },
     doSave: function(event) {
+      $("#crm-designer-dialog").block({message: 'Saving...', theme: true});
       var fields = _.pluck(this.options.ufFieldCollection.models, 'attributes');
-      CRM.api('UFGroup', 'create', CRM.designerApp.designerRegion.currentView.model.attributes, {success: function(data) {
-        CRM.api('UFField', 'replace', {uf_group_id: data.id, values: _.sortBy(fields, 'weight')});
+      var profile = CRM.designerApp.designerRegion.currentView.model.attributes;
+      profile["api.UFField.replace"] = {values: _.sortBy(fields, 'weight')};
+      CRM.api('UFGroup', 'create', profile, {success: function(data) {
+        $("#crm-designer-dialog").unblock().dialog('close');
       }});
-      $("#crm-designer-dialog").dialog('close');
     },
     doPreview: function(event) {
       console.log('preview');
