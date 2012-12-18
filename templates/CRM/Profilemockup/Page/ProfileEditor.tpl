@@ -46,18 +46,16 @@
  * @param array<string,PaletteFieldModel> fieldsByEntitySection
  * @param array<string,sectionData> sections
  *}
-{literal}
 <script type="text/template" id="palette_template">
   <div class="crm-designer-palette">
     <div class="crm-designer-palette-search">
       <input type="text" placeholder="{ts}Search{/ts}" />
-      <button type="button">X</button>
+      <a class="button" title="{ts}clear search{/ts}">X</a>
     </div>
     <div class="crm-designer-palette-tree">
     </div>
   </div>
 </script>
-{/literal}
 
 {**
  * Template for CRM.UF.UFFieldModel, CRM.Designer.UFFieldView

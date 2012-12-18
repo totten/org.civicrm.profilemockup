@@ -90,14 +90,14 @@
    * options:
    *  - model: CRM.Designer.PaletteFieldCollection
    */
-  CRM.Designer.PaletteView = Backbone.View.extend({
-    initialize: function() {
-      this.model.on('add', this.render, this);
-      this.model.on('remove', this.render, this);
+  CRM.Designer.PaletteView = Backbone.Marionette.ItemView.extend({
+    serializeData: extendedSerializeData,
+    template: '#palette_template',
+    events: {
+      'keyup .crm-designer-palette-search input': 'doSearch',
+      'click .crm-designer-palette-search a': 'clearSearch'
     },
-    render: function() {
-      this.$el.html(palette_template);
-
+    onRender: function() {
       // Prepare data for jstree
       var treeData = {};
       _.each(this.model.getSections(), function(vals, key) {
@@ -105,12 +105,20 @@
       });
       _.each(this.model.getFieldsByEntitySection(), function(values, key) {
         _.each(values, function(vals, k) {
-          treeData[key].children.push({data: vals.attributes.label, attr: {"data-cid": vals.cid, class: 'crm-designer-palette-field'}});
+          treeData[key].children.push({data: vals.attributes.label, attr: {"data-cid": vals.cid}});
         });
       });
       var $tree = this.$('.crm-designer-palette-tree');
+      $tree.jstree({ 
+        "json_data": {data: _.toArray(treeData)},
+        "search": {
+          "case_insensitive" : true,
+          "show_only_matches": true,
+        },
+        "plugins": [ "themes", "json_data", "ui", "search" ]
+      });
 
-      $tree.find('.crm-designer-palette-field').draggable({
+      $tree.find('.jstree-leaf a').draggable({
         appendTo: "#crm-designer-designer",
         zIndex: $(this.$el).zIndex() + 5000,
         helper: "clone",
@@ -123,6 +131,12 @@
         hoverClass: "ui-state-hover",
         accept: ":not(.ui-sortable-helper)"
       });
+    },
+    doSearch: function(event) {
+      $('.crm-designer-palette-tree').jstree("search", $('.crm-designer-palette-search input').val());
+    },
+    clearSearch: function(event) {
+      $('.crm-designer-palette-search input').val('').keyup();
     }
   });
 
