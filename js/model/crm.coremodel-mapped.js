@@ -2,8 +2,8 @@
  * Dynamically-generated alternative to civi.core.js
  */
 (function() {
-  var Civi = (window.Civi) ? (window.Civi) : (window.Civi = {});
-  if (!Civi.Core) Civi.Core = {};
+  var CRM = (window.CRM) ? (window.CRM) : (window.CRM = {});
+  if (!CRM.CoreModel) CRM.CoreModel = {};
 
   /**
    * Data models used by the Civi form designer require more attributes than basic Backbone models:
@@ -15,11 +15,11 @@
    * @see https://github.com/powmedia/backbone-forms
    */
 
-  Civi.Core.BaseModel = Backbone.Model.extend({
+  CRM.CoreModel.BaseModel = Backbone.Model.extend({
     initialize: function() {
     }
   });
   _.each(CRM.civiCoreModels, function(value, key, list) {
-    Civi.Core[key] = Civi.Core.BaseModel.extend(value);
+    CRM.CoreModel[key] = CRM.CoreModel.BaseModel.extend(value);
   });
 })();

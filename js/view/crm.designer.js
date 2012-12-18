@@ -1,6 +1,6 @@
 (function() {
-  var Civi = (window.Civi) ? (window.Civi) : (window.Civi = {});
-  if (!Civi.Designer) Civi.Designer = {};
+  var CRM = (window.CRM) ? (window.CRM) : (window.CRM = {});
+  if (!CRM.Designer) CRM.Designer = {};
 
   /**
    * When rendering a template with Marionette.ItemView, the list of variables is determined by
@@ -28,11 +28,11 @@
    * buttons.
    *
    * options:
-   *  - model: Civi.UF.UFGroupModel
-   *  - ufFieldCollection: Civi.UF.UFFieldCollection
-   *  - paletteFieldCollection: Civi.Designer.PaletteFieldCollection
+   *  - model: CRM.UF.UFGroupModel
+   *  - ufFieldCollection: CRM.UF.UFFieldCollection
+   *  - paletteFieldCollection: CRM.Designer.PaletteFieldCollection
    */
-  Civi.Designer.DesignerLayout = Backbone.Marionette.Layout.extend({
+  CRM.Designer.DesignerLayout = Backbone.Marionette.Layout.extend({
     serializeData: extendedSerializeData,
     template: '#designer_template',
     regions: {
@@ -42,16 +42,16 @@
       fields: '.crm-designer-fields-region'
     },
     onRender: function() {
-      this.buttons.show(new Civi.Designer.ToolbarView({
+      this.buttons.show(new CRM.Designer.ToolbarView({
         ufFieldCollection: this.options.ufFieldCollection
       }));
-      this.palette.show(new Civi.Designer.PaletteView({
+      this.palette.show(new CRM.Designer.PaletteView({
         model: this.options.paletteFieldCollection
       }));
-      this.form.show(new Civi.Designer.UFGroupView({
+      this.form.show(new CRM.Designer.UFGroupView({
         model: this.model
       }));
-      this.fields.show(new Civi.Designer.UFFieldCanvasView({
+      this.fields.show(new CRM.Designer.UFFieldCanvasView({
         model: this.model,
         ufFieldCollection: this.options.ufFieldCollection,
         paletteFieldCollection: this.options.paletteFieldCollection
@@ -59,7 +59,7 @@
     }
   });
 
-  Civi.Designer.ToolbarView = Backbone.Marionette.ItemView.extend({
+  CRM.Designer.ToolbarView = Backbone.Marionette.ItemView.extend({
     serializeData: extendedSerializeData,
     template: '#designer_buttons_template',
     events: {
@@ -88,9 +88,9 @@
    * Display a selection of available fields
    *
    * options:
-   *  - model: Civi.Designer.PaletteFieldCollection
+   *  - model: CRM.Designer.PaletteFieldCollection
    */
-  Civi.Designer.PaletteView = Backbone.View.extend({
+  CRM.Designer.PaletteView = Backbone.View.extend({
     initialize: function() {
       this.model.on('add', this.render, this);
       this.model.on('remove', this.render, this);
@@ -127,11 +127,11 @@
    * Display all UFFieldModel objects in a UFGroupModel.
    *
    * options:
-   *  - model: Civi.UF.UFGroupModel
-   *  - ufFieldCollection: Civi.UF.UFFieldCollection
-   *  - paletteFieldCollection: Civi.Designer.PaletteFieldCollection
+   *  - model: CRM.UF.UFGroupModel
+   *  - ufFieldCollection: CRM.UF.UFFieldCollection
+   *  - paletteFieldCollection: CRM.Designer.PaletteFieldCollection
    */
-  Civi.Designer.UFFieldCanvasView = Backbone.View.extend({
+  CRM.Designer.UFFieldCanvasView = Backbone.View.extend({
     initialize: function() {
       this.options.ufFieldCollection.on('add', this.updatePlaceholder, this);
       this.options.ufFieldCollection.on('remove', this.updatePlaceholder, this);
@@ -148,7 +148,7 @@
       });
       _.each(ufFieldModels, function(ufFieldModel) {
         var paletteFieldModel = ufFieldCanvasView.options.paletteFieldCollection.getFieldByName(ufFieldModel.get('entity_name'), ufFieldModel.get('field_name'));
-        var ufFieldView = new Civi.Designer.UFFieldView({
+        var ufFieldView = new CRM.Designer.UFFieldView({
           el: $("<div></div>"),
           model: ufFieldModel,
           paletteFieldModel: paletteFieldModel
@@ -176,7 +176,7 @@
           }
           ufFieldCollection.add(ufFieldModel);
 
-          var ufFieldView = new Civi.Designer.UFFieldView({
+          var ufFieldView = new CRM.Designer.UFFieldView({
             el: $("<div></div>"),
             model: ufFieldModel,
             paletteFieldModel: paletteFieldModel
@@ -214,10 +214,10 @@
 
   /**
    * options:
-   * - model: Civi.UF.UFFieldModel
-   * - paletteFieldModel: Civi.Designer.PaletteFieldModel
+   * - model: CRM.UF.UFFieldModel
+   * - paletteFieldModel: CRM.Designer.PaletteFieldModel
    */
-  Civi.Designer.UFFieldView = Backbone.Marionette.Layout.extend({
+  CRM.Designer.UFFieldView = Backbone.Marionette.Layout.extend({
     serializeData: extendedSerializeData,
     template: '#field_row_template',
     expanded: false,
@@ -230,11 +230,11 @@
       "click .crm-designer-action-remove": 'doRemove'
     },
     onRender: function() {
-      this.summary.show(new Civi.Designer.UFFieldSummaryView({
+      this.summary.show(new CRM.Designer.UFFieldSummaryView({
         model: this.model,
         paletteFieldModel: this.options.paletteFieldModel
       }));
-      this.detail.show(new Civi.Designer.UFFieldDetailView({
+      this.detail.show(new CRM.Designer.UFFieldDetailView({
         model: this.model
       }));
       if (!this.expanded) {
@@ -262,10 +262,10 @@
 
   /**
    * options:
-   * - model: Civi.UF.UFFieldModel
-   * - paletteFieldModel: Civi.Designer.PaletteFieldModel
+   * - model: CRM.UF.UFFieldModel
+   * - paletteFieldModel: CRM.Designer.PaletteFieldModel
    */
-  Civi.Designer.UFFieldSummaryView = Backbone.Marionette.ItemView.extend({
+  CRM.Designer.UFFieldSummaryView = Backbone.Marionette.ItemView.extend({
     serializeData: extendedSerializeData,
     template: '#field_summary_template',
     modelEvents: {
@@ -275,9 +275,9 @@
 
   /**
    * options:
-   * - model: Civi.UF.UFFieldModel
+   * - model: CRM.UF.UFFieldModel
    */
-  Civi.Designer.UFFieldDetailView = Backbone.View.extend({
+  CRM.Designer.UFFieldDetailView = Backbone.View.extend({
     initialize: function() {
       this.form = new Backbone.Form({
         model: this.model,
@@ -292,9 +292,9 @@
 
   /**
    * options:
-   * - model: Civi.UF.UFGroupModel
+   * - model: CRM.UF.UFGroupModel
    */
-  Civi.Designer.UFGroupView = Backbone.Marionette.Layout.extend({
+  CRM.Designer.UFGroupView = Backbone.Marionette.Layout.extend({
     serializeData: extendedSerializeData,
     template: '#form_row_template',
     expanded: false,
@@ -306,10 +306,10 @@
       "click .crm-designer-action-settings": 'doToggleForm'
     },
     onRender: function() {
-      this.summary.show(new Civi.Designer.UFGroupSummaryView({
+      this.summary.show(new CRM.Designer.UFGroupSummaryView({
         model: this.model
       }));
-      this.detail.show(new Civi.Designer.UFGroupDetailView({
+      this.detail.show(new CRM.Designer.UFGroupDetailView({
         model: this.model
       }));
       if (!this.expanded) {
@@ -324,9 +324,9 @@
 
   /**
    * options:
-   * - model: Civi.UF.UFGroupModel
+   * - model: CRM.UF.UFGroupModel
    */
-  Civi.Designer.UFGroupSummaryView = Backbone.Marionette.ItemView.extend({
+  CRM.Designer.UFGroupSummaryView = Backbone.Marionette.ItemView.extend({
     serializeData: extendedSerializeData,
     template: '#form_summary_template',
     modelEvents: {
@@ -336,9 +336,9 @@
 
   /**
    * options:
-   * - model: Civi.UF.UFGroupModel
+   * - model: CRM.UF.UFGroupModel
    */
-  Civi.Designer.UFGroupDetailView = Backbone.View.extend({
+  CRM.Designer.UFGroupDetailView = Backbone.View.extend({
     initialize: function() {
       this.form = new Backbone.Form({
         model: this.model,

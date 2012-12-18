@@ -1,11 +1,11 @@
 (function() {
-  var Civi = (window.Civi) ? (window.Civi) : (window.Civi = {});
-  if (!Civi.Designer) Civi.Designer = {};
+  var CRM = (window.CRM) ? (window.CRM) : (window.CRM = {});
+  if (!CRM.Designer) CRM.Designer = {};
 
-  Civi.Designer.PaletteFieldModel = Backbone.Model.extend({
+  CRM.Designer.PaletteFieldModel = Backbone.Model.extend({
     defaults: {
       /**
-       * @var {class} required; eg Civi.Core.ActivityModel
+       * @var {class} required; eg CRM.CoreModel.ActivityModel
        */
       modelClass: null,
 
@@ -44,7 +44,7 @@
       return this.get('modelClass').prototype.sections[this.get('sectionName')];
     },
     createUFFieldModel: function() {
-      var model = new Civi.UF.UFFieldModel({
+      var model = new CRM.UF.UFFieldModel({
         is_active: 1,
         label: this.get('label'),
         entity_name: this.get('entityName'),
@@ -55,14 +55,14 @@
     }
   });
 
-  Civi.Designer.PaletteFieldCollection = Backbone.Collection.extend({
-    model: Civi.Designer.PaletteFieldModel,
+  CRM.Designer.PaletteFieldCollection = Backbone.Collection.extend({
+    model: CRM.Designer.PaletteFieldModel,
     initialize: function() {
     },
     addEntity: function(entityName, modelClass, options) {
       var collection = this;
       _.each(modelClass.prototype.schema, function(value, key, list) {
-        var model = new Civi.Designer.PaletteFieldModel({
+        var model = new CRM.Designer.PaletteFieldModel({
           modelClass: modelClass,
           entityName: entityName,
           fieldName: key
@@ -76,7 +76,7 @@
      *
      * @param entityName
      * @param fieldName
-     * @return {Civi.Designer.PaletteFieldModel}
+     * @return {CRM.Designer.PaletteFieldModel}
      */
     getFieldByName: function(entityName, fieldName) {
       return this.find(function(paletteFieldModel) {
@@ -87,7 +87,7 @@
     /**
      * Get a list of all fields, grouped into sections by "entityName+sectionName".
      *
-     * @return {Object} keys are sections ("entityName+sectionName"); values are Civi.Designer.PaletteFieldModel
+     * @return {Object} keys are sections ("entityName+sectionName"); values are CRM.Designer.PaletteFieldModel
      */
     getFieldsByEntitySection: function() {
       // TODO cache

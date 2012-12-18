@@ -1,6 +1,6 @@
 (function() {
-  var Civi = (window.Civi) ? (window.Civi) : (window.Civi = {});
-  if (!Civi.UF) Civi.UF = {};
+  var CRM = (window.CRM) ? (window.CRM) : (window.CRM = {});
+  if (!CRM.UF) CRM.UF = {};
 
   var YESNO = [
     {val: 0, label: ts('No')},
@@ -14,7 +14,7 @@
    * @param {string} field_type
    * @return {string}
    */
-  Civi.UF.guessEntityName = function(field_type) {
+  CRM.UF.guessEntityName = function(field_type) {
     switch (field_type) {
       case 'Contact':
       case 'Individual':
@@ -30,7 +30,7 @@
   /**
    * Represents a field in a customizable form.
    */
-  Civi.UF.UFFieldModel = Backbone.Model.extend({
+  CRM.UF.UFFieldModel = Backbone.Model.extend({
     schema: {
       'id': {type: 'Number'},
       'uf_group_id': {type: 'Number'},
@@ -53,7 +53,7 @@
       'is_multi_summary': {type: 'Select', options: YESNO}
     },
     initialize: function() {
-      this.set('entity_name', Civi.UF.guessEntityName(this.get('field_type')));
+      this.set('entity_name', CRM.UF.guessEntityName(this.get('field_type')));
     },
 
     /**
@@ -71,8 +71,8 @@
   /**
    * Represents a list of fields in a customizable form
    */
-  Civi.UF.UFFieldCollection = Backbone.Collection.extend({
-    model: Civi.UF.UFFieldModel,
+  CRM.UF.UFFieldCollection = Backbone.Collection.extend({
+    model: CRM.UF.UFFieldModel,
     initialize: function() {
     },
     getFieldByName: function(entityName, fieldName) {
@@ -92,7 +92,7 @@
   /**
    * Represents a customizable form
    */
-  Civi.UF.UFGroupModel = Backbone.Model.extend({
+  CRM.UF.UFGroupModel = Backbone.Model.extend({
     schema: {
       'id': {type: 'Number'},
       'title': {type: 'Text'},
