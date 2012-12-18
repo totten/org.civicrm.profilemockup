@@ -20,11 +20,11 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
       ->addStyleFile('org.civicrm.profilemockup', 'css/profilemockup.css', 140)
       //->addScriptFile('org.civicrm.profilemockup', 'js/person-app.js', 200)
       //->addScriptFile('org.civicrm.profilemockup', 'js/form-app.js', 200)
-      //->addScriptFile('org.civicrm.profilemockup', 'js/model/civi.core.js', 200)
-      ->addScriptFile('org.civicrm.profilemockup', 'js/model/civi.mappedcore.js', 200)
-      ->addScriptFile('org.civicrm.profilemockup', 'js/model/civi.uf.js', 200)
-      ->addScriptFile('org.civicrm.profilemockup', 'js/model/civi.designer.js', 200)
-      ->addScriptFile('org.civicrm.profilemockup', 'js/view/civi.designer.js', 200)
+      //->addScriptFile('org.civicrm.profilemockup', 'js/model/crm.coremodel.js', 200)
+      ->addScriptFile('org.civicrm.profilemockup', 'js/model/crm.coremodel-mapped.js', 200)
+      ->addScriptFile('org.civicrm.profilemockup', 'js/model/crm.uf.js', 200)
+      ->addScriptFile('org.civicrm.profilemockup', 'js/model/crm.designer.js', 200)
+      ->addScriptFile('org.civicrm.profilemockup', 'js/view/crm.designer.js', 200)
       ->addScriptFile('org.civicrm.profilemockup', 'js/profilemockup-app.js', 250)
       ;
 
@@ -35,8 +35,8 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
    * Get a list of Backbone-Form models
    *
    * @return array; keys are model names ("IndividualModel") and values describe 'sections' and 'schema'
-   * @see js/model/civi.core.js
-   * @see js/model/civi.mappedcore.js
+   * @see js/model/crm.core.js
+   * @see js/model/crm.mappedcore.js
    */
   function getModels() {
     // FIXME: Depending on context (eg civicrm/profile/create vs search-columns), it may be appropriate to
@@ -70,8 +70,8 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
    * @param array $fields list of all core and custom fields which should be displayed
    * @param array $customGroups list of custom groups produced by getGroupDetail()
    * @return array with keys 'sections' and 'schema'
-   * @see js/model/civi.core.js
-   * @see js/model/civi.mappedcore.js
+   * @see js/model/crm.core.js
+   * @see js/model/crm.mappedcore.js
    */
   function convertCiviModelToBackboneModel($fixmeCiviFieldType, $title, $fields, $customGroupTree) {
     $result = array(
