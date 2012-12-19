@@ -108,19 +108,18 @@
         });
         treeData.push({data: sections[key].title, children: items});
       });
-      var $tree = this.$('.crm-designer-palette-tree');
-      $tree.jstree({ 
+      this.$('.crm-designer-palette-tree').jstree({ 
         'json_data': {data: treeData},
         'search': {
           'case_insensitive' : true,
           'show_only_matches': true,
         },
         'plugins': ['themes', 'json_data', 'ui', 'search']
-      }).bind("loaded.jstree", function () {
+      }).bind('loaded.jstree', function () {
         $('.jstree-leaf', this).draggable({
-          appendTo: "#crm-designer-designer",
+          appendTo: '#crm-designer-designer',
           zIndex: $(this.$el).zIndex() + 5000,
-          helper: "clone",
+          helper: 'clone',
           connectToSortable: '.crm-designer-fields' // FIXME: tight canvas/palette coupling
         });
       });
