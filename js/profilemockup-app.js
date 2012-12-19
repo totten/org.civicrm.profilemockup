@@ -31,6 +31,7 @@ cj(document).ready(function($) {
         autoOpen: true, // note: affects accordion height
         title: 'Edit Profile',
         width: '75%',
+        height: 600,
         minWidth: 500,
         minHeight: 600,
         open: function() {

@@ -47,8 +47,13 @@
   <div class="crm-designer-palette">
     <div class="crm-designer-palette-search">
       <input type="text" placeholder="{ts}Search{/ts}" />
-      <a class="button" href="#" title="{ts}Clear search{/ts}">X</a>
+      <a class="crm-designer-palette-clear-search" href="#" title="{ts}Clear search{/ts}">X</a>
+      <div class="crm-designer-palette-controls">
+        <a href="#" rel="open_all">{ts}Open All{/ts}</a>&nbsp; | &nbsp;
+        <a href="#" rel="close_all">{ts}Close All{/ts}</a>
+      </div>
     </div>
+
     <div class="crm-designer-palette-tree">
     </div>
   </div>

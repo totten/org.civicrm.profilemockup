@@ -95,7 +95,8 @@
     template: '#palette_template',
     events: {
       'keyup .crm-designer-palette-search input': 'doSearch',
-      'click .crm-designer-palette-search a': 'clearSearch'
+      'click .crm-designer-palette-clear-search': 'clearSearch',
+      'click .crm-designer-palette-controls a': 'toggleAll'
     },
     onRender: function() {
       // Prepare data for jstree
@@ -132,10 +133,14 @@
       });
     },
     doSearch: function(event) {
-      $('.crm-designer-palette-tree').jstree("search", $('.crm-designer-palette-search input').val());
+      $('.crm-designer-palette-tree').jstree("search", $(event.target).val());
     },
     clearSearch: function(event) {
       $('.crm-designer-palette-search input').val('').keyup();
+      return false;
+    },
+    toggleAll: function(event) {
+      $('.crm-designer-palette-tree').jstree($(event.target).attr('rel'));
       return false;
     }
   });
