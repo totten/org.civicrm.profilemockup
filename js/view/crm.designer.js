@@ -187,7 +187,7 @@
           var ufFieldModel = paletteFieldModel.createUFFieldModel();
           var ufFieldCollection = ufFieldCanvasView.options.ufFieldCollection;
           if (!ufFieldCollection.isAddable(ufFieldModel)) {
-            cj().crmAlert(
+            CRM.alert(
               ts('The field "%1" is already included.', {
                 1: paletteFieldModel.get('label')
               }),
