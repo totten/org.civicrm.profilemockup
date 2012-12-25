@@ -1,10 +1,13 @@
 .crm-designer-toolbar {
-  width: 25%;
-  float: right;
+  width: 290px;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
-.crm-designer-palette > div {
-  padding: 10px;
+.crm-designer-toolbar hr,
+.crm-designer-palette-search {
+  margin: 0.5em 0;
 }
 
 .crm-designer-palette {
@@ -26,8 +29,7 @@
 }
 
 .crm-designer-canvas {
-  width: 73%;
-  float: left;
+  margin-right: 300px;
 }
 
 .crm-designer-buttonset-region {
@@ -78,6 +80,23 @@
   visibility: visible !important;
   background: #EFEFFF;
   height: 1em;
+}
+
+#crm-designer-dialog {
+  overflow: visible;
+}
+
+#crm-designer-dialog .full-height {
+  height: 100%;
+}
+
+#crm-designer {
+  position: relative;
+}
+
+#crm-designer .scroll {
+  overflow-x: auto;
+  overflow-y: scroll;
 }
 
 /* fixme proper theming */

@@ -2,7 +2,7 @@ cj(document).ready(function($) {
   { // placeholder to keep indentation
     CRM.designerApp = new Backbone.Marionette.Application();
     CRM.designerApp.addRegions({
-      designerRegion: '#crm-designer-designer'
+      designerRegion: '#crm-designer'
     });
     // Prepare data to pass into application
     var paletteFieldCollection = new CRM.Designer.PaletteFieldCollection();
@@ -18,12 +18,21 @@ cj(document).ready(function($) {
 
       var designerLayout = new CRM.Designer.DesignerLayout({
         model: ufGroupModel,
+        el: '<div class="full-height"></div>',
         ufFieldCollection: ufFieldCollection,
         paletteFieldCollection: paletteFieldCollection
       });
       $("#crm-designer-dialog").unblock();
       CRM.designerApp.designerRegion.show(designerLayout);
+      handleSize();
     };
+
+    var handleSize = function() {
+      var pos = $('.crm-designer-palette-tree').position();
+      var cont = $('#crm-designer').height();
+      var height = cont - pos.top;
+      $('.crm-designer-palette-tree').css({height: height});
+    }
 
     $('.crm-designer-open').click(function() {
       // Open dialog
@@ -57,7 +66,8 @@ cj(document).ready(function($) {
         },
         close: function() {
           CRM.designerApp.designerRegion.close();
-        }
+        },
+        resize: handleSize
       });
     });
   }

@@ -93,6 +93,7 @@
   CRM.Designer.PaletteView = Backbone.Marionette.ItemView.extend({
     serializeData: extendedSerializeData,
     template: '#palette_template',
+    el: '<div class="full-height"></div>',
     events: {
       'keyup .crm-designer-palette-search input': 'doSearch',
       'click .crm-designer-palette-clear-search': 'clearSearch',
@@ -118,7 +119,7 @@
         'plugins': ['themes', 'json_data', 'ui', 'search']
       }).bind('loaded.jstree', function () {
         $('.jstree-leaf', this).draggable({
-          appendTo: '#crm-designer-designer',
+          appendTo: '#crm-designer',
           zIndex: $(this.$el).zIndex() + 5000,
           helper: 'clone',
           connectToSortable: '.crm-designer-fields' // FIXME: tight canvas/palette coupling

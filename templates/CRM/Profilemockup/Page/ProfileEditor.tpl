@@ -13,7 +13,7 @@
 </select>
 <button class="crm-designer-open">Edit Profile</button>
 <div id="crm-designer-dialog">
-  <div id="crm-designer-designer" class="crm-clearfix">
+  <div id="crm-designer" class="full-height">
   </div>
 </div>
 
@@ -23,19 +23,18 @@
  * Outer Region
  *}
 <script type="text/template" id="designer_template">
-  <div class="crm-designer">
-    <div class="crm-designer-toolbar">
-      <div class="crm-designer-buttonset-region">
-      </div>
-      <div class="crm-designer-palette-region">
-      </div>
+  <div class="crm-designer-toolbar full-height">
+    <div class="crm-designer-buttonset-region">
     </div>
-    <div class="crm-designer-canvas">
-      <div class="crm-designer-form-region">
-      </div>
-      <hr />
-      <div class="crm-designer-fields-region">
-      </div>
+    <hr />
+    <div class="crm-designer-palette-region full-height">
+    </div>
+  </div>
+  <div class="crm-designer-canvas full-height scroll">
+    <div class="crm-designer-form-region">
+    </div>
+    <hr />
+    <div class="crm-designer-fields-region">
     </div>
   </div>
 </script>
@@ -54,7 +53,7 @@
       </div>
     </div>
 
-    <div class="crm-designer-palette-tree">
+    <div class="crm-designer-palette-tree scroll">
     </div>
   </div>
 </script>
