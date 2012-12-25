@@ -27,12 +27,14 @@ cj(document).ready(function($) {
       handleSize();
     };
 
+    /**
+     * Set height of palette
+     */
     var handleSize = function() {
       var pos = $('.crm-designer-palette-tree').position();
-      var cont = $('#crm-designer').height();
-      var height = cont - pos.top;
-      $('.crm-designer-palette-tree').css({height: height});
-    }
+      var div = $('#crm-designer').height();
+      $('.crm-designer-palette-tree').css({height: div - pos.top});
+    };
 
     $('.crm-designer-open').click(function() {
       // Open dialog
