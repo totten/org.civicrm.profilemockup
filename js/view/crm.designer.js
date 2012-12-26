@@ -72,7 +72,7 @@
     },
     doSave: function(event) {
       $("#crm-designer-dialog").block({message: 'Saving...', theme: true});
-      var profile = CRM.designerApp.designerRegion.currentView.model.attributes;
+      var profile = this.options.ufGroupModel.toJSON();
       profile["api.UFField.replace"] = {values: this.options.ufFieldCollection.toSortedJSON()};
       CRM.api('UFGroup', 'create', profile, {success: function(data) {
         $("#crm-designer-dialog").unblock().dialog('close');

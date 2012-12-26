@@ -53,7 +53,8 @@ cj(document).ready(function($) {
             CRM.api('UFGroup', 'getsingle', {id: ufId, "api.UFField.get": 1}, {
               success: function(formData) {
                 var ufFieldCollection = new CRM.UF.UFFieldCollection(_.values(formData["api.UFField.get"].values));
-                var ufGroupModel = new CRM.UF.UFGroupModel(formData);
+                // Note: With chaining, API returns some extraneous keys that aren't part of UFGroupModel
+                var ufGroupModel = new CRM.UF.UFGroupModel(_.pick(formData, _.keys(CRM.UF.UFGroupModel.prototype.schema)));
                 launchDesigner(ufGroupModel, ufFieldCollection);
               }
             });

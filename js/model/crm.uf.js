@@ -100,11 +100,28 @@
   CRM.UF.UFGroupModel = Backbone.Model.extend({
     schema: {
       'id': {type: 'Number'},
+      'name': {type: 'Text'},
       'title': {type: 'Text'},
+      'group_type': {type: 'Text'},
+
+      'add_captcha': {type: 'Select', options: YESNO},
+      'add_to_group_id': {type: 'Number'},
+      'cancel_URL': {type: 'Text'},
+      'created_date': {type: 'Text'}, // FIXME
+      'created_id': {type: 'Number'},
+      'help_post': {type: 'TextArea'},
+      'help_pre': {type: 'TextArea'},
       'is_active': {type: 'Select', options: YESNO},
-      'help_pre': {type: 'Text'},
-      'help_post': {type: 'Text'}
-      // TODO
+      'is_cms_user': {type: 'Select', options: YESNO},
+      'is_edit_link': {type: 'Select', options: YESNO},
+      'is_map': {type: 'Select', options: YESNO},
+      'is_proximity_search': {type: 'Select', options: YESNO},
+      'is_reserved': {type: 'Select', options: YESNO},
+      'is_uf_link': {type: 'Select', options: YESNO},
+      'is_update_dupe': {type: 'Select', options: YESNO},
+      'limit_listings_group_id': {type: 'Number'},
+      'notify': {type: 'TextArea'},
+      'post_URL': {type: 'Text'}
     },
     initialize: function() {
     }
