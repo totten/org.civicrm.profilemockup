@@ -72,15 +72,41 @@
     },
     doSave: function(event) {
       $("#crm-designer-dialog").block({message: 'Saving...', theme: true});
-      var fields = _.pluck(this.options.ufFieldCollection.models, 'attributes');
       var profile = CRM.designerApp.designerRegion.currentView.model.attributes;
-      profile["api.UFField.replace"] = {values: _.sortBy(fields, 'weight')};
+      profile["api.UFField.replace"] = {values: this.options.ufFieldCollection.toSortedJSON()};
       CRM.api('UFGroup', 'create', profile, {success: function(data) {
         $("#crm-designer-dialog").unblock().dialog('close');
       }});
     },
     doPreview: function(event) {
       console.log('preview');
+      var toolbarView = this;
+      var $dialog = $('<div><div class="crm-designer-preview-body"></div></div>');
+      $dialog.appendTo('body');
+      $dialog.dialog({
+        autoOpen: true,
+        title: 'Preview',
+        width: '75%',
+        height: 600,
+        minWidth: 500,
+        minHeight: 600,
+        open: function() {
+          // $dialog.html('<h1>Hello</h1>');
+          $dialog.block({message: 'Loading...', theme: true});
+          $.ajax({
+            url: CRM.url("civicrm/profile-editor/preview"),
+            type: 'POST',
+            data: JSON.stringify(toolbarView.options.ufFieldCollection.toSortedJSON())
+          }).done(function(data) {
+              $dialog.unblock();
+              $dialog.find('.crm-designer-preview-body').html(data);
+          });
+        },
+        close: function() {
+          $dialog.remove();
+        }
+      });
+
     }
   });
 
@@ -110,7 +136,7 @@
         });
         treeData.push({data: sections[key].title, children: items});
       });
-      this.$('.crm-designer-palette-tree').jstree({ 
+      this.$('.crm-designer-palette-tree').jstree({
         'json_data': {data: treeData},
         'search': {
           'case_insensitive' : true,

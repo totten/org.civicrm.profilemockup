@@ -80,6 +80,11 @@
         return (ufFieldModel.get('entity_name') == entityName && ufFieldModel.get('field_name') == fieldName);
       });
     },
+    toSortedJSON: function() {
+      var fields = _.pluck(this.models, 'attributes');
+      // Why call 'attributes' instead of 'toJSON'
+      return _.sortBy(fields, 'weight');
+    },
     isAddable: function(ufFieldModel) {
       if (this.getFieldByName(ufFieldModel.get('entity_name'), ufFieldModel.get('field_name'))) {
         return false;

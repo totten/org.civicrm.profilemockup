@@ -6,4 +6,10 @@
     <title>ProfileEditor</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/profile-editor/preview</path>
+    <page_callback>CRM_Profilemockup_Page_Preview</page_callback>
+    <title>Preview</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>
