@@ -43,6 +43,7 @@
     },
     onRender: function() {
       this.buttons.show(new CRM.Designer.ToolbarView({
+        ufGroupModel: this.model,
         ufFieldCollection: this.options.ufFieldCollection
       }));
       this.palette.show(new CRM.Designer.PaletteView({
@@ -59,6 +60,13 @@
     }
   });
 
+  /**
+   * Display toolbar with working button
+   *
+   * options:
+   *  - ufGroupModel: CRM.UF.UFGroupModel
+   *  - ufFieldCollection: CRM.UF.UFFieldCollection
+   */
   CRM.Designer.ToolbarView = Backbone.Marionette.ItemView.extend({
     serializeData: extendedSerializeData,
     template: '#designer_buttons_template',
@@ -96,7 +104,10 @@
           $.ajax({
             url: CRM.url("civicrm/profile-editor/preview"),
             type: 'POST',
-            data: JSON.stringify(toolbarView.options.ufFieldCollection.toSortedJSON())
+            data: JSON.stringify({
+              ufGroup: toolbarView.options.ufGroupModel.toJSON(),
+              ufFieldCollection: toolbarView.options.ufFieldCollection.toSortedJSON()
+            })
           }).done(function(data) {
               $dialog.unblock();
               $dialog.find('.crm-designer-preview-body').html(data);
