@@ -102,7 +102,7 @@
           // $dialog.html('<h1>Hello</h1>');
           $dialog.block({message: 'Loading...', theme: true});
           $.ajax({
-            url: CRM.url("civicrm/profile-editor/preview"),
+            url: CRM.url("civicrm/profile-editor/preview?snippet=1"),
             type: 'POST',
             data: JSON.stringify({
               ufGroup: toolbarView.options.ufGroupModel.toJSON(),
