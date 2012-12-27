@@ -151,7 +151,7 @@
         'json_data': {data: treeData},
         'search': {
           'case_insensitive' : true,
-          'show_only_matches': true,
+          'show_only_matches': true
         },
         'plugins': ['themes', 'json_data', 'ui', 'search']
       }).bind('loaded.jstree', function () {
