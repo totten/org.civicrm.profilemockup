@@ -339,9 +339,11 @@
    */
   CRM.Designer.UFFieldDetailView = Backbone.View.extend({
     initialize: function() {
+      // FIXME: hide/display 'in_selector' if 'visibility' is one of the public options
+      // FIXME: is_multi_summary, is_reserved, is_searchable, location_type_id, phone_type_id
       this.form = new Backbone.Form({
         model: this.model,
-        fields: ['label', 'field_name', 'field_type', 'entity_name', 'is_active']
+        fields: ['label', 'is_required', 'is_view', 'visibility', 'help_pre', 'help_post', 'is_active']
       });
       this.form.on('change', this.form.commit, this.form);
     },

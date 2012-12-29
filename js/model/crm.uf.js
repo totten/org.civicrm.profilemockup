@@ -7,6 +7,12 @@
     {val: 1, label: ts('Yes')}
   ];
 
+  var VISIBILITY = [
+    {val: 'User and User Admin Only', label: ts('User and User Admin Only')},
+    {val: 'Public Pages', label: ts('Public Pages')},
+    {val: 'Public Pages and Listings', label: ts('Public Pages and Listings')}
+  ];
+
   /**
    * This function is a hack for generating simulated values of "entity_name"
    * in the form-field model.
@@ -32,25 +38,89 @@
    */
   CRM.UF.UFFieldModel = Backbone.Model.extend({
     schema: {
-      'id': {type: 'Number'},
-      'uf_group_id': {type: 'Number'},
-      'label': {type: 'Text'},
-      'entity_name': {type: 'Text'}, // pseudo-field
-      'field_type': {type: 'Select', options: ['Contact', 'Individual', 'Organization', 'Contribution', 'Membership', 'Participant', 'Activity']},
-      'field_name': {type: 'Text'},
-      'is_active': {type: 'Select', options: YESNO},
-      'is_view': {type: 'Select', options: YESNO},
-      'is_required': {type: 'Select', options: YESNO},
-      'weight': {type: 'Number'},
-      'help_post': {type: 'Text'},
-      'help_pre': {type: 'Text'},
-      'visibility': {type: 'Select', options: ['User and User Admin Only', 'Public Pages', 'Public Pages and Listings']},
-      'in_selector': {type: 'Select', options: YESNO},
-      'is_searchable': {type: 'Select', options: YESNO},
-      'location_type_id': {type: 'Number'},
-      'phone_type_id': {type: 'Number'},
-      'is_reserved': {type: 'Select', options: YESNO},
-      'is_multi_summary': {type: 'Select', options: YESNO}
+      'id': {
+        type: 'Number'
+      },
+      'uf_group_id': {
+        type: 'Number'
+      },
+      'entity_name': {
+        // pseudo-field
+        type: 'Text'
+      },
+      'field_name': {
+        type: 'Text'
+      },
+      'field_type': {
+        type: 'Select',
+        options: ['Contact', 'Individual', 'Organization', 'Contribution', 'Membership', 'Participant', 'Activity']
+      },
+      'help_post': {
+        title: ts('Field Post Help'),
+        type: 'TextArea',
+        help: ts("Explanatory text displayed to users for this field (can include HTML formatting tags).")
+      },
+      'help_pre': {
+        title: ts('Field Pre Help'),
+        type: 'TextArea',
+        help: ts("Explanatory text displayed to users for this field (can include HTML formatting tags).")
+      },
+      'in_selector': {
+        type: ts('Select'),
+        options: YESNO,
+        help: ts("Is this field included as a column in the search results table? This setting applies only to fields with 'Public Pages' or 'Public Pages and Listings' visibility.")
+      },
+      'is_active': {
+        title: ts('Active?'),
+        type: 'Select',
+        options: YESNO
+      },
+      'is_multi_summary': {
+        type: 'Select',
+        options: YESNO
+      },
+      'is_required': {
+        title: ts('Required?'),
+        type: 'Select',
+        options: YESNO,
+        help: ts("Are users required to complete this field?")
+      },
+      'is_reserved': {
+        type: 'Select',
+        options: YESNO
+      },
+      'is_searchable': {
+        title: ts("Searchable"),
+        type: 'Select',
+        options: YESNO,
+        help: ts("Do you want to include this field in the Profile's Search form?")
+      },
+      'is_view': {
+        title: ts('View Only?'),
+        type: 'Select',
+        options: YESNO,
+        help: ts('If checked, users can view but not edit this field.') + '<br/>'
+          + ts('NOTE: View Only fields can not be included in Profile Search forms.')
+      },
+      'label': {
+        title: ts('Field Label'),
+        type: 'Text'
+      },
+      'location_type_id': {
+        type: 'Number'
+      },
+      'phone_type_id': {
+        type: 'Number'
+      },
+      'visibility': {
+        title: ts('Visibility'),
+        type: 'Select',
+        options: VISIBILITY,
+        help: ts("Is this field hidden from other users ('User and User Admin Only'), or is it visible to others and potentially searchable in the Profile Search form ('Public Pages' or 'Public Pages and Listings')? When visibility is 'Public Pages and Listings', users can also click the field value when viewing a contact in order to locate other contacts with the same value(s) (i.e. other contacts who live in Poland).")
+      },
+      'weight': {
+        type: 'Number'
+      }
     },
     initialize: function() {
       this.set('entity_name', CRM.UF.guessEntityName(this.get('field_type')));
