@@ -53,9 +53,18 @@ class CRM_Profilemockup_Form_Preview extends CRM_UF_Form_AbstractPreview {
    *
    */
   function preProcess() {
-    $gid = 1;
-    $fields = CRM_Core_BAO_UFGroup::getFields($gid);
+    $content = json_decode(file_get_contents("php://input"), TRUE);
+    foreach(array('ufGroup', 'ufFieldCollection') as $key) {
+      if (!is_array($content[$key])) {
+        CRM_Core_Error::fatal("Missing JSON parameter, $key");
+      }
+    }
+    //echo '<pre>'.htmlentities(var_export($content, TRUE)) .'</pre>';
+    //CRM_Utils_System::civiExit();
+    $fields = CRM_Core_BAO_UFGroup::formatUFFields($content['ufGroup'], $content['ufFieldCollection']);
+    //$fields = CRM_Core_BAO_UFGroup::getFields(1);
     $this->setProfile($fields);
+    //echo '<pre>'.htmlentities(var_export($fields, TRUE)) .'</pre>';CRM_Utils_System::civiExit();
   }
 
 }
