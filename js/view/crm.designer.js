@@ -330,6 +330,9 @@
     template: '#field_summary_template',
     modelEvents: {
       'change': 'render'
+    },
+    onRender: function() {
+      this.$el.toggleClass('disabled', this.model.get('is_active') != 1);
     }
   });
 
