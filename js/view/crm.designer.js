@@ -335,6 +335,23 @@
     modelEvents: {
       'change': 'render'
     },
+
+    /**
+     * Compose a printable string which describes the binding of this UFField to the data model
+     * @return {String}
+     */
+    getBindingLabel: function() {
+      var result = this.options.paletteFieldModel.getSection().title + ": " + this.options.paletteFieldModel.get('label');
+      if (this.options.fieldSchema.civiIsPhone) {
+        result = result + '-' + CRM.PseudoConstant.phoneType[this.model.get('phone_type_id')];
+      }
+      if (this.options.fieldSchema.civiIsLocation) {
+        var locType = this.model.get('location_type_id') ? CRM.PseudoConstant.locationType[this.model.get('location_type_id')] : ts('Primary');
+        result = result + ' (' + locType + ')';
+      }
+      return result;
+    },
+
     onRender: function() {
       this.$el.toggleClass('disabled', this.model.get('is_active') != 1);
       if (this.model.get("is_reserved") == 1) {

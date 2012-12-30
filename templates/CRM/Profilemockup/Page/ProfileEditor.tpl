@@ -78,7 +78,7 @@
 {literal}
 <script type="text/template" id="field_summary_template">
   <%= label %>
-  <span class="crm-designer-field-binding">(<%= _options.paletteFieldModel.getSection().title %>: <%= field_name %>)</span>
+  <span class="crm-designer-field-binding"><%= _view.getBindingLabel() %></span>
   <span class="crm-designer-buttons">
     <a class="ui-icon ui-icon-pencil crm-designer-action-settings" title="{/literal}{ts}Settings{/ts}{literal}"></a>
     <a class="ui-icon ui-icon-trash crm-designer-action-remove" title="{/literal}{ts}Remove{/ts}{literal}"></a>
