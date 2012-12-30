@@ -365,9 +365,12 @@
       this.$('.field-is_multi_summary').toggle(this.options.fieldSchema.civiIsMultiple);
       this.$('.field-is_searchable').toggle(this.model.isSearchableAllowed());
 
-      if (!this.model.isSearchableAllowed() && this.model.get('is_searchable') == 1) {
-        this.model.set('is_searchable', 0);
-        this.form.setValue('is_searchable', 0);
+      if (!this.model.isSearchableAllowed() && this.model.get('is_searchable') != "0") {
+        this.model.set('is_searchable', "0");
+        this.form.setValue('is_searchable', "0");
+        // TODO: It might be nicer if we didn't completely discard is_searchable -- e.g.
+        // if the value could be restored when the user isSearchableAllowed becomes true
+        // again. However, I haven't found a simple way to do this.
       }
     }
   });
