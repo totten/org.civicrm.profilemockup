@@ -355,7 +355,7 @@
       // FIXME: is_multi_summary, is_reserved, is_searchable, location_type_id, phone_type_id
       this.form = new Backbone.Form({
         model: this.model,
-        fields: ['label', 'is_multi_summary', 'is_required', 'is_view', 'visibility', 'is_searchable', 'help_pre', 'help_post', 'is_active']
+        fields: ['location_type_id', 'phone_type_id', 'label', 'is_multi_summary', 'is_required', 'is_view', 'visibility', 'is_searchable', 'help_pre', 'help_post', 'is_active']
       });
       this.form.on('change', this.onFormChange, this);
     },
@@ -365,6 +365,8 @@
     },
     onFormChange: function() {
       this.form.commit();
+      this.$('.field-location_type_id').toggle(this.options.fieldSchema.civiIsLocation ? true : false);
+      this.$('.field-phone_type_id').toggle(this.options.fieldSchema.civiIsPhone ? true : false);
       this.$('.field-is_multi_summary').toggle(this.options.fieldSchema.civiIsMultiple);
       this.$('.field-is_searchable').toggle(this.model.isSearchableAllowed());
       // this.$(':input').attr('disabled', this.model.get("is_reserved") == 1);

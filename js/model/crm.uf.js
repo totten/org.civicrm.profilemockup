@@ -13,6 +13,15 @@
     {val: 'Public Pages and Listings', label: ts('Public Pages and Listings'), isSearchableAllowed: true}
   ];
 
+  var LOCATION_TYPES = _.map(CRM.PseudoConstant.locationType, function(value, key) {
+    return {val: key, label: value};
+  });
+  LOCATION_TYPES.unshift({val: '', label: ts('Primary')});
+
+  var PHONE_TYPES = _.map(CRM.PseudoConstant.phoneType, function(value, key) {
+    return {val: key, label: value};
+  });
+
   /**
    * This function is a hack for generating simulated values of "entity_name"
    * in the form-field model.
@@ -108,10 +117,14 @@
         type: 'Text'
       },
       'location_type_id': {
-        type: 'Number'
+        title: ts('Location Type'),
+        type: 'Select',
+        options: LOCATION_TYPES
       },
       'phone_type_id': {
-        type: 'Number'
+        title: ts('Phone Type'),
+        type: 'Select',
+        options: PHONE_TYPES
       },
       'visibility': {
         title: ts('Visibility'),

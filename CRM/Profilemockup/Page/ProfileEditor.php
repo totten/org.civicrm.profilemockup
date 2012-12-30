@@ -6,7 +6,13 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
   function run() {
 
     CRM_Core_Resources::singleton()
-      ->addSetting(array('civiCoreModels' => $this->getModels()))
+      ->addSetting(array(
+        'civiCoreModels' => $this->getModels(),
+        'PseudoConstant' => array(
+          'locationType' => CRM_Core_PseudoConstant::locationType(),
+          'phoneType' => CRM_Core_PseudoConstant::phoneType(),
+        ),
+      ))
       // TODO think of a way extensions can include jQuery plugins
       ->addScript('jQuery = $ = cj;') // HACK - must be removed
       ->addScriptFile('org.civicrm.profilemockup', 'packages/backbone/json2.js', 100)
@@ -76,6 +82,8 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
    * @see js/model/crm.mappedcore.js
    */
   function convertCiviModelToBackboneModel($title, $fields, $customGroupTree, $availableFields) {
+    $locationFields = CRM_Core_BAO_UFGroup::getLocationFields();
+
     $result = array(
       'schema' => array(),
       'sections' => array(),
@@ -94,6 +102,12 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
         'title' => $field['title'],
         'civiFieldType' => $availableFields[$fieldName]['field_type'],
       );
+      if (in_array($fieldName, $locationFields)) {
+        $result['schema'][$fieldName]['civiIsLocation'] = TRUE;
+      }
+      if (in_array($fieldName, array('phone'))) { // FIXME what about phone_ext?
+        $result['schema'][$fieldName]['civiIsPhone'] = TRUE;
+      }
     }
 
     // build section list
