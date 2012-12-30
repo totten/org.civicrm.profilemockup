@@ -119,6 +119,7 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
         if (isset($result['schema'][$fieldName])) {
           $result['schema'][$fieldName]['section'] = $sectionName;
         }
+        $result['schema'][$fieldName]['civiIsMultiple'] = (bool)CRM_Core_BAO_CustomField::isMultiRecordField($field['id']);
       }
     }
     return $result;

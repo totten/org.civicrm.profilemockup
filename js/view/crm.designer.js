@@ -292,10 +292,13 @@
     onRender: function() {
       this.summary.show(new CRM.Designer.UFFieldSummaryView({
         model: this.model,
+        fieldSchema: this.options.paletteFieldModel.get('fieldSchema'),
         paletteFieldModel: this.options.paletteFieldModel
       }));
       this.detail.show(new CRM.Designer.UFFieldDetailView({
-        model: this.model
+        model: this.model,
+        fieldSchema: this.options.paletteFieldModel.get('fieldSchema'),
+        paletteFieldModel: this.options.paletteFieldModel
       }));
       if (!this.expanded) {
         this.detail.$el.hide();
@@ -323,6 +326,7 @@
   /**
    * options:
    * - model: CRM.UF.UFFieldModel
+   * - fieldSchema: (Backbone.Form schema element)
    * - paletteFieldModel: CRM.Designer.PaletteFieldModel
    */
   CRM.Designer.UFFieldSummaryView = Backbone.Marionette.ItemView.extend({
@@ -339,14 +343,21 @@
   /**
    * options:
    * - model: CRM.UF.UFFieldModel
+   * - fieldSchema: (Backbone.Form schema element)
+   * - paletteFieldModel: CRM.Designer.PaletteFieldModel
    */
   CRM.Designer.UFFieldDetailView = Backbone.View.extend({
     initialize: function() {
       // FIXME: hide/display 'in_selector' if 'visibility' is one of the public options
       // FIXME: is_multi_summary, is_reserved, is_searchable, location_type_id, phone_type_id
+      var fields = ['label', 'is_multi_summary', 'is_required', 'is_view', 'visibility', 'help_pre', 'help_post', 'is_active'];
+      if (!this.options.fieldSchema.civiIsMultiple) {
+        fields = _.without(fields, 'is_multi_summary');
+      }
+
       this.form = new Backbone.Form({
         model: this.model,
-        fields: ['label', 'is_required', 'is_view', 'visibility', 'help_pre', 'help_post', 'is_active']
+        fields: fields
       });
       this.form.on('change', this.form.commit, this.form);
     },

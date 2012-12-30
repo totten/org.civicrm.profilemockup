@@ -76,6 +76,7 @@
         options: YESNO
       },
       'is_multi_summary': {
+        title: ts("Include in multi-record listing?"),
         type: 'Select',
         options: YESNO
       },
