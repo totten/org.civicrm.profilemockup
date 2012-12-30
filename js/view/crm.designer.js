@@ -384,7 +384,7 @@
       this.form.commit();
       this.$('.field-location_type_id').toggle(this.options.fieldSchema.civiIsLocation ? true : false);
       this.$('.field-phone_type_id').toggle(this.options.fieldSchema.civiIsPhone ? true : false);
-      this.$('.field-is_multi_summary').toggle(this.options.fieldSchema.civiIsMultiple);
+      this.$('.field-is_multi_summary').toggle(this.options.fieldSchema.civiIsMultiple ? true : false);
       this.$('.field-is_searchable').toggle(this.model.isSearchableAllowed());
       // this.$(':input').attr('disabled', this.model.get("is_reserved") == 1);
 
