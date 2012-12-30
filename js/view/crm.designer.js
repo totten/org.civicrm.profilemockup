@@ -337,7 +337,7 @@
     },
     onRender: function() {
       this.$el.toggleClass('disabled', this.model.get('is_active') != 1);
-      if (this.model.get("is_reserved") != 0) {
+      if (this.model.get("is_reserved") == 1) {
         this.$('.crm-designer-buttons').hide();
       }
     }
