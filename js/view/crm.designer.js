@@ -337,6 +337,9 @@
     },
     onRender: function() {
       this.$el.toggleClass('disabled', this.model.get('is_active') != 1);
+      if (this.model.get("is_reserved") != 0) {
+        this.$('.crm-designer-buttons').hide();
+      }
     }
   });
 
@@ -364,6 +367,7 @@
       this.form.commit();
       this.$('.field-is_multi_summary').toggle(this.options.fieldSchema.civiIsMultiple);
       this.$('.field-is_searchable').toggle(this.model.isSearchableAllowed());
+      // this.$(':input').attr('disabled', this.model.get("is_reserved") == 1);
 
       if (!this.model.isSearchableAllowed() && this.model.get('is_searchable') != "0") {
         this.model.set('is_searchable', "0");
