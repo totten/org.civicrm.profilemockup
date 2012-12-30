@@ -350,19 +350,25 @@
     initialize: function() {
       // FIXME: hide/display 'in_selector' if 'visibility' is one of the public options
       // FIXME: is_multi_summary, is_reserved, is_searchable, location_type_id, phone_type_id
-      var fields = ['label', 'is_multi_summary', 'is_required', 'is_view', 'visibility', 'help_pre', 'help_post', 'is_active'];
-      if (!this.options.fieldSchema.civiIsMultiple) {
-        fields = _.without(fields, 'is_multi_summary');
-      }
-
       this.form = new Backbone.Form({
         model: this.model,
-        fields: fields
+        fields: ['label', 'is_multi_summary', 'is_required', 'is_view', 'visibility', 'is_searchable', 'help_pre', 'help_post', 'is_active']
       });
-      this.form.on('change', this.form.commit, this.form);
+      this.form.on('change', this.onFormChange, this);
     },
     render: function() {
       this.$el.html(this.form.render().el);
+      this.onFormChange();
+    },
+    onFormChange: function() {
+      this.form.commit();
+      this.$('.field-is_multi_summary').toggle(this.options.fieldSchema.civiIsMultiple);
+      this.$('.field-is_searchable').toggle(this.model.isSearchableAllowed());
+
+      if (!this.model.isSearchableAllowed() && this.model.get('is_searchable') == 1) {
+        this.model.set('is_searchable', 0);
+        this.form.setValue('is_searchable', 0);
+      }
     }
   });
 

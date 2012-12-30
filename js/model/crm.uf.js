@@ -8,9 +8,9 @@
   ];
 
   var VISIBILITY = [
-    {val: 'User and User Admin Only', label: ts('User and User Admin Only')},
-    {val: 'Public Pages', label: ts('Public Pages')},
-    {val: 'Public Pages and Listings', label: ts('Public Pages and Listings')}
+    {val: 'User and User Admin Only', label: ts('User and User Admin Only'), isSearchableAllowed: false},
+    {val: 'Public Pages', label: ts('Public Pages'), isSearchableAllowed: true},
+    {val: 'Public Pages and Listings', label: ts('Public Pages and Listings'), isSearchableAllowed: true}
   ];
 
   /**
@@ -125,6 +125,10 @@
     },
     initialize: function() {
       this.set('entity_name', CRM.UF.guessEntityName(this.get('field_type')));
+    },
+    isSearchableAllowed: function() {
+      var visibility = _.first(_.where(VISIBILITY, {val: this.get('visibility')}));
+      return visibility.isSearchableAllowed;
     },
 
     /**
