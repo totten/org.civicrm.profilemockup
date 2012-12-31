@@ -191,10 +191,26 @@
    *  - ufFieldCollection: CRM.UF.UFFieldCollection
    *  - paletteFieldCollection: CRM.Designer.PaletteFieldCollection
    */
-  CRM.Designer.UFFieldCanvasView = Backbone.View.extend({
+  CRM.Designer.UFFieldCanvasView = Backbone.Marionette.View.extend({
     initialize: function() {
       this.options.ufFieldCollection.on('add', this.updatePlaceholder, this);
       this.options.ufFieldCollection.on('remove', this.updatePlaceholder, this);
+      this.options.ufFieldCollection.on('add', this.triggerDuplicateCheck, this);
+      this.options.ufFieldCollection.on('remove', this.triggerDuplicateCheck, this);
+      CRM.designerApp.vent.on('ufFieldDuplicateCheck:'+this.model.get('id'), this.checkDuplicates, this);
+    },
+    onClose: function() {
+      this.options.ufFieldCollection.off('add', this.updatePlaceholder, this);
+      this.options.ufFieldCollection.off('remove', this.updatePlaceholder, this);
+      this.options.ufFieldCollection.off('add', this.triggerDuplicateCheck, this);
+      this.options.ufFieldCollection.off('remove', this.triggerDuplicateCheck, this);
+      CRM.designerApp.vent.off('ufFieldDuplicateCheck:'+this.model.get('id'), this.checkDuplicates, this);
+    },
+    triggerDuplicateCheck: function() {
+      CRM.designerApp.vent.trigger('ufFieldDuplicateCheck:'+this.model.get('id'));
+    },
+    checkDuplicates: function() {
+      console.log('checkDuplicates');
     },
     render: function() {
       var ufFieldCanvasView = this;
@@ -375,6 +391,11 @@
         fields: ['location_type_id', 'phone_type_id', 'label', 'is_multi_summary', 'is_required', 'is_view', 'visibility', 'is_searchable', 'help_pre', 'help_post', 'is_active']
       });
       this.form.on('change', this.onFormChange, this);
+      this.form.on('location_type_id:change', this.triggerDuplicateCheck, this);
+      this.form.on('phone_type_id:change', this.triggerDuplicateCheck, this);
+    },
+    triggerDuplicateCheck: function() {
+      CRM.designerApp.vent.trigger('ufFieldDuplicateCheck:'+this.model.get('uf_group_id'));
     },
     render: function() {
       this.$el.html(this.form.render().el);
