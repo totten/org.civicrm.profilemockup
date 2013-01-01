@@ -238,6 +238,7 @@
         receive: function(event, ui) {
           var paletteFieldModel = ufFieldCanvasView.options.paletteFieldCollection.getByCid(ui.item.attr('data-plm-cid'));
           var ufFieldModel = paletteFieldModel.createUFFieldModel();
+          ufFieldModel.set('uf_group_id', ufFieldCanvasView.model.get('id'));
           var ufFieldCollection = ufFieldCanvasView.options.ufFieldCollection;
           if (!ufFieldCollection.isAddable(ufFieldModel)) {
             CRM.alert(
