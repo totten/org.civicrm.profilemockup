@@ -17,10 +17,12 @@
     return {val: key, label: value};
   });
   LOCATION_TYPES.unshift({val: '', label: ts('Primary')});
+  var DEFAULT_LOCATION_TYPE_ID = '';
 
   var PHONE_TYPES = _.map(CRM.PseudoConstant.phoneType, function(value, key) {
     return {val: key, label: value};
   });
+  var DEFAULT_PHONE_TYPE_ID = PHONE_TYPES[0].val;
 
   /**
    * This function is a hack for generating simulated values of "entity_name"
@@ -144,6 +146,12 @@
       this.set('entity_name', CRM.UF.guessEntityName(this.get('field_type')));
       this.fieldSchema = this.get('fieldSchema');
       this.unset('fieldSchema');
+      if (this.fieldSchema && this.fieldSchema.civiIsLocation && !this.get('location_type_id')) {
+        this.set('location_type_id', DEFAULT_LOCATION_TYPE_ID);
+      }
+      if (this.fieldSchema && this.fieldSchema.civiIsPhone && !this.get('phone_type_id')) {
+        this.set('phone_type_id', DEFAULT_PHONE_TYPE_ID);
+      }
     },
     isSearchableAllowed: function() {
       var visibility = _.first(_.where(VISIBILITY, {val: this.get('visibility')}));
@@ -191,6 +199,21 @@
       } else {
         return (!(this.getFieldByName(ufFieldModel.get('entity_name'), ufFieldModel.get('field_name'))));
       }
+    },
+    /**
+     *
+     * @return {array} each item is an array of UFFieldModels
+     */
+    getDuplicates: function() {
+      var ufFieldModelsByKey = this.groupBy(function(ufFieldModel) {
+        return ufFieldModel.get("entity_name")
+          + '::' + ufFieldModel.get("field_name")
+          + '::' + (ufFieldModel.get("location_type_id") ? ufFieldModel.get("location_type_id") : '')
+          + '::' + (ufFieldModel.get("phone_type_id") ? ufFieldModel.get("phone_type_id") : '');
+      });
+      return _.filter(ufFieldModelsByKey, function(ufFieldModels){
+        return _.size(ufFieldModels) > 1;
+      });
     }
   });
 
