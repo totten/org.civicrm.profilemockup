@@ -334,7 +334,7 @@
       this.detail.$el.toggle('blind', 250);
     },
     onChangeIsDuplicate: function(model, value, options) {
-      this.$el.toggleClass('crm-designer-error', value);
+      this.$el.toggleClass('crm-designer-duplicate', value);
     },
     doRemove: function(event) {
       this.model.destroyLocal();

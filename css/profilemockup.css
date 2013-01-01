@@ -48,8 +48,13 @@
   min-height:100px;
 }
 
-.crm-designer-error .crm-designer-row {
+.crm-designer-duplicate .crm-designer-row {
   background: #fbb;
+}
+
+.crm-designer-duplicate .field-location_type_id,
+.crm-designer-duplicate .field-phone_type_id {
+    color: #f00;
 }
 
 .crm-designer-row .crm-designer-buttons {
