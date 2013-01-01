@@ -2,7 +2,7 @@
   var CRM = (window.CRM) ? (window.CRM) : (window.CRM = {});
   if (!CRM.Designer) CRM.Designer = {};
 
-  CRM.Designer.PaletteFieldModel = Backbone.Model.extend({
+  CRM.Designer.PaletteFieldModel = CRM.Backbone.Model.extend({
     defaults: {
       /**
        * @var {class} required; eg CRM.CoreModel.ActivityModel

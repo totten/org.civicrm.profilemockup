@@ -10,7 +10,7 @@
    * @see https://github.com/powmedia/backbone-forms
    */
 
-  CRM.CoreModel.IndividualModel = Backbone.Model.extend({
+  CRM.CoreModel.IndividualModel = CRM.Backbone.Model.extend({
     sections: {
       'default': {title: 'Individual'},
       'custom1': {title: 'Individual: Favorite Things', is_addable: true},
@@ -32,7 +32,7 @@
   });
 
 
-  CRM.CoreModel.ActivityModel = Backbone.Model.extend({
+  CRM.CoreModel.ActivityModel = CRM.Backbone.Model.extend({
     sections: {
       'default': {title: 'Activity'},
       'custom3': {title: 'Activity: Questions', is_addable: true}

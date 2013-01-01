@@ -15,7 +15,7 @@
    * @see https://github.com/powmedia/backbone-forms
    */
 
-  CRM.CoreModel.BaseModel = Backbone.Model.extend({
+  CRM.CoreModel.BaseModel = CRM.Backbone.Model.extend({
     initialize: function() {
     }
   });

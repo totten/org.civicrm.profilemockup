@@ -47,7 +47,7 @@
   /**
    * Represents a field in a customizable form.
    */
-  CRM.UF.UFFieldModel = Backbone.Model.extend({
+  CRM.UF.UFFieldModel = CRM.Backbone.Model.extend({
     /**
      * Backbone.Form descripton of the field to which this refers
      */
@@ -186,8 +186,9 @@
       });
     },
     toSortedJSON: function() {
-      var fields = _.pluck(this.models, 'attributes');
-      // Why call 'attributes' instead of 'toJSON'
+      var fields = this.map(function(ufFieldModel){
+        return ufFieldModel.toStrictJSON();
+      });
       return _.sortBy(fields, 'weight');
     },
     isAddable: function(ufFieldModel) {
@@ -220,7 +221,7 @@
   /**
    * Represents a customizable form
    */
-  CRM.UF.UFGroupModel = Backbone.Model.extend({
+  CRM.UF.UFGroupModel = CRM.Backbone.Model.extend({
     schema: {
       'id': {type: 'Number'},
       'name': {type: 'Text'},
