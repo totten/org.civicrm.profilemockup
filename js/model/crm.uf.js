@@ -52,6 +52,13 @@
      * Backbone.Form descripton of the field to which this refers
      */
     fieldSchema: null,
+    defaults: {
+      /**
+       * bool, non-persistent indication of whether this field is unique or duplicate
+       * within its UFFieldCollection
+       */
+      is_duplicate: false
+    },
     schema: {
       'id': {
         type: 'Number'
@@ -160,6 +167,18 @@
     getFieldSchema: function() {
       return this.fieldSchema;
     },
+    /**
+     * Create a uniqueness signature. Ideally, each UFField in a UFGroup should
+     * have a unique signature.
+     *
+     * @return {String}
+     */
+    getSignature: function() {
+      return this.get("entity_name")
+        + '::' + this.get("field_name")
+        + '::' + (this.get("location_type_id") ? this.get("location_type_id") : '')
+        + '::' + (this.get("phone_type_id") ? this.get("phone_type_id") : '');
+    },
 
     /**
      * This is like destroy(), but it only destroys the item on the client-side;
@@ -201,19 +220,21 @@
         return (!(this.getFieldByName(ufFieldModel.get('entity_name'), ufFieldModel.get('field_name'))));
       }
     },
+    hasDuplicates: function() {
+
+    },
     /**
      *
-     * @return {array} each item is an array of UFFieldModels
      */
-    getDuplicates: function() {
+    markDuplicates: function() {
       var ufFieldModelsByKey = this.groupBy(function(ufFieldModel) {
-        return ufFieldModel.get("entity_name")
-          + '::' + ufFieldModel.get("field_name")
-          + '::' + (ufFieldModel.get("location_type_id") ? ufFieldModel.get("location_type_id") : '')
-          + '::' + (ufFieldModel.get("phone_type_id") ? ufFieldModel.get("phone_type_id") : '');
+        return ufFieldModel.getSignature();
       });
-      return _.filter(ufFieldModelsByKey, function(ufFieldModels){
-        return _.size(ufFieldModels) > 1;
+      this.each(function(ufFieldModel){
+        var is_duplicate = ufFieldModelsByKey[ufFieldModel.getSignature()].length > 1;
+        if (is_duplicate != ufFieldModel.get('is_duplicate')) {
+          ufFieldModel.set('is_duplicate', is_duplicate);
+        }
       });
     }
   });

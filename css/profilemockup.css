@@ -48,6 +48,10 @@
   min-height:100px;
 }
 
+.crm-designer-error .crm-designer-row {
+  background: #fbb;
+}
+
 .crm-designer-row .crm-designer-buttons {
   float: right;
   display: none;

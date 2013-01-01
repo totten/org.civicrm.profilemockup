@@ -197,20 +197,17 @@
       this.options.ufFieldCollection.on('remove', this.updatePlaceholder, this);
       this.options.ufFieldCollection.on('add', this.triggerDuplicateCheck, this);
       this.options.ufFieldCollection.on('remove', this.triggerDuplicateCheck, this);
-      CRM.designerApp.vent.on('ufFieldDuplicateCheck:'+this.model.get('id'), this.checkDuplicates, this);
+      CRM.designerApp.vent.on('ufFieldDuplicateCheck:'+this.model.get('id'), this.options.ufFieldCollection.markDuplicates, this.options.ufFieldCollection);
     },
     onClose: function() {
       this.options.ufFieldCollection.off('add', this.updatePlaceholder, this);
       this.options.ufFieldCollection.off('remove', this.updatePlaceholder, this);
       this.options.ufFieldCollection.off('add', this.triggerDuplicateCheck, this);
       this.options.ufFieldCollection.off('remove', this.triggerDuplicateCheck, this);
-      CRM.designerApp.vent.off('ufFieldDuplicateCheck:'+this.model.get('id'), this.checkDuplicates, this);
+      CRM.designerApp.vent.off('ufFieldDuplicateCheck:'+this.model.get('id'), this.options.ufFieldCollection.markDuplicates, this.options.ufFieldCollection);
     },
     triggerDuplicateCheck: function() {
       CRM.designerApp.vent.trigger('ufFieldDuplicateCheck:'+this.model.get('id'));
-    },
-    checkDuplicates: function() {
-      console.log('checkDuplicates');
     },
     render: function() {
       var ufFieldCanvasView = this;
@@ -306,6 +303,9 @@
       "click .crm-designer-action-settings": 'doToggleForm',
       "click .crm-designer-action-remove": 'doRemove'
     },
+    modelEvents: {
+      "change:is_duplicate": 'onChangeIsDuplicate'
+    },
     onRender: function() {
       this.summary.show(new CRM.Designer.UFFieldSummaryView({
         model: this.model,
@@ -333,6 +333,9 @@
         CRM.designerApp.vent.trigger('formOpened', this.cid);
       }
       this.detail.$el.toggle('blind', 250);
+    },
+    onChangeIsDuplicate: function(model, value, options) {
+      this.$el.toggleClass('crm-designer-error', value);
     },
     doRemove: function(event) {
       this.model.destroyLocal();
