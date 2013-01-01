@@ -79,6 +79,10 @@
       this.$('.crm-designer-preview').button();
     },
     doSave: function(event) {
+      if (this.options.ufFieldCollection.hasDuplicates()) {
+        CRM.alert(ts('Please correct errors before saving.'), '', 'alert');
+        return;
+      }
       $("#crm-designer-dialog").block({message: 'Saving...', theme: true});
       var profile = this.options.ufGroupModel.toJSON();
       profile["api.UFField.replace"] = {values: this.options.ufFieldCollection.toSortedJSON()};
@@ -87,8 +91,11 @@
       }});
     },
     doPreview: function(event) {
-      console.log('preview');
       var toolbarView = this;
+      if (this.options.ufFieldCollection.hasDuplicates()) {
+        CRM.alert(ts('Please correct errors before previewing.'), '', 'alert');
+        return;
+      }
       var $dialog = $('<div><div class="crm-designer-preview-body"></div></div>');
       $dialog.appendTo('body');
       $dialog.dialog({

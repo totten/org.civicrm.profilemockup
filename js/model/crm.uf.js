@@ -221,7 +221,10 @@
       }
     },
     hasDuplicates: function() {
-
+      var firstDupe = this.find(function(ufFieldModel){
+        return ufFieldModel.get('is_duplicate');
+      });
+      return firstDupe ? true : false;
     },
     /**
      *
