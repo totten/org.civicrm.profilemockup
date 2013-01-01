@@ -385,10 +385,20 @@
   CRM.Designer.UFFieldDetailView = Backbone.View.extend({
     initialize: function() {
       // FIXME: hide/display 'in_selector' if 'visibility' is one of the public options
-      // FIXME: is_multi_summary, is_reserved, is_searchable, location_type_id, phone_type_id
+      var fields = ['location_type_id', 'phone_type_id', 'label', 'is_multi_summary', 'is_required', 'is_view', 'visibility', 'is_searchable', 'help_pre', 'help_post', 'is_active'];
+      if (! this.options.fieldSchema.civiIsLocation) {
+        fields = _.without(fields, 'location_type_id');
+      }
+      if (! this.options.fieldSchema.civiIsPhone) {
+        fields = _.without(fields, 'phone_type_id');
+      }
+      if (!this.options.fieldSchema.civiIsMultiple) {
+        fields = _.without(fields, 'is_multi_summary');
+      }
+
       this.form = new Backbone.Form({
         model: this.model,
-        fields: ['location_type_id', 'phone_type_id', 'label', 'is_multi_summary', 'is_required', 'is_view', 'visibility', 'is_searchable', 'help_pre', 'help_post', 'is_active']
+        fields: fields
       });
       this.form.on('change', this.onFormChange, this);
       this.form.on('location_type_id:change', this.triggerDuplicateCheck, this);
@@ -403,8 +413,6 @@
     },
     onFormChange: function() {
       this.form.commit();
-      this.$('.field-location_type_id').toggle(this.options.fieldSchema.civiIsLocation ? true : false);
-      this.$('.field-phone_type_id').toggle(this.options.fieldSchema.civiIsPhone ? true : false);
       this.$('.field-is_multi_summary').toggle(this.options.fieldSchema.civiIsMultiple ? true : false);
       this.$('.field-is_searchable').toggle(this.model.isSearchableAllowed());
       // this.$(':input').attr('disabled', this.model.get("is_reserved") == 1);
