@@ -45,6 +45,7 @@
     },
     createUFFieldModel: function() {
       var model = new CRM.UF.UFFieldModel({
+        fieldSchema: this.get('fieldSchema'),
         is_active: 1,
         label: this.get('label'),
         entity_name: this.get('entityName'),

@@ -46,6 +46,10 @@
    * Represents a field in a customizable form.
    */
   CRM.UF.UFFieldModel = Backbone.Model.extend({
+    /**
+     * Backbone.Form descripton of the field to which this refers
+     */
+    fieldSchema: null,
     schema: {
       'id': {
         type: 'Number'
@@ -138,10 +142,15 @@
     },
     initialize: function() {
       this.set('entity_name', CRM.UF.guessEntityName(this.get('field_type')));
+      this.fieldSchema = this.get('fieldSchema');
+      this.unset('fieldSchema');
     },
     isSearchableAllowed: function() {
       var visibility = _.first(_.where(VISIBILITY, {val: this.get('visibility')}));
       return visibility.isSearchableAllowed;
+    },
+    getFieldSchema: function() {
+      return this.fieldSchema;
     },
 
     /**
@@ -174,10 +183,13 @@
       return _.sortBy(fields, 'weight');
     },
     isAddable: function(ufFieldModel) {
-      if (this.getFieldByName(ufFieldModel.get('entity_name'), ufFieldModel.get('field_name'))) {
-        return false;
-      } else {
+      if (! ufFieldModel.getFieldSchema()) {
+        throw ('Cannot locate schema for ' + ufFieldModel.get('entity_name') + "." + ufFieldModel.get('field_name'));
+      }
+      if (ufFieldModel.getFieldSchema().civiIsLocation || ufFieldModel.getFieldSchema().civiIsPhone) {
         return true;
+      } else {
+        return (!(this.getFieldByName(ufFieldModel.get('entity_name'), ufFieldModel.get('field_name'))));
       }
     }
   });
