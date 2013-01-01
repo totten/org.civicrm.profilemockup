@@ -198,6 +198,8 @@
   CRM.UF.UFFieldCollection = Backbone.Collection.extend({
     model: CRM.UF.UFFieldModel,
     initialize: function() {
+      this.on('add', this.watchDuplicates, this);
+      this.on('remove', this.unwatchDuplicates, this);
     },
     getFieldByName: function(entityName, fieldName) {
       return this.find(function(ufFieldModel) {
@@ -219,6 +221,16 @@
       } else {
         return (!(this.getFieldByName(ufFieldModel.get('entity_name'), ufFieldModel.get('field_name'))));
       }
+    },
+    watchDuplicates: function(model, collection, options) {
+      model.on('change:location_type_id', this.markDuplicates, this);
+      model.on('change:phone_type_id', this.markDuplicates, this);
+      this.markDuplicates();
+    },
+    unwatchDuplicates: function(model, collection, options) {
+      model.off('change:location_type_id', this.markDuplicates, this);
+      model.off('change:phone_type_id', this.markDuplicates, this);
+      this.markDuplicates();
     },
     hasDuplicates: function() {
       var firstDupe = this.find(function(ufFieldModel){
