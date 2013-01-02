@@ -85,7 +85,7 @@
         return;
       }
       $("#crm-designer-dialog").block({message: 'Saving...', theme: true});
-      var profile = this.options.ufGroupModel.toJSON();
+      var profile = this.options.ufGroupModel.toStrictJSON();
       profile["api.UFField.replace"] = {values: this.options.ufFieldCollection.toSortedJSON()};
       CRM.api('UFGroup', 'create', profile, {success: function(data) {
         $("#crm-designer-dialog").unblock().dialog('close');
@@ -113,7 +113,7 @@
             url: CRM.url("civicrm/profile-editor/preview?snippet=1"),
             type: 'POST',
             data: JSON.stringify({
-              ufGroup: toolbarView.options.ufGroupModel.toJSON(),
+              ufGroup: toolbarView.options.ufGroupModel.toStrictJSON(),
               ufFieldCollection: toolbarView.options.ufFieldCollection.toSortedJSON()
             })
           }).done(function(data) {
@@ -495,6 +495,12 @@
     template: '#form_summary_template',
     modelEvents: {
       'change': 'render'
+    },
+    onRender: function() {
+      this.$el.toggleClass('disabled', this.model.get('is_active') != 1);
+      if (this.model.get("is_reserved") == 1) {
+        this.$('.crm-designer-buttons').hide();
+      }
     }
   });
 
