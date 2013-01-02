@@ -33,6 +33,13 @@
   font-style: normal;
 }
 
+/* Cancel hovering affect from JSTree theme -- we already do this! */
+.crm-designer-palette .jstree-classic .jstree-hovered {
+    background: transparent;
+    border: 1px transparent;
+    padding:1px 2px 0 2px;
+}
+
 .crm-designer-canvas {
   margin-right: 300px;
 }
