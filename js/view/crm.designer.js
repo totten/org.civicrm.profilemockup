@@ -417,7 +417,7 @@
   CRM.Designer.UFFieldDetailView = Backbone.View.extend({
     initialize: function() {
       // FIXME: hide/display 'in_selector' if 'visibility' is one of the public options
-      var fields = ['location_type_id', 'phone_type_id', 'label', 'is_multi_summary', 'is_required', 'is_view', 'visibility', 'in_selector', 'help_pre', 'help_post', 'is_active'];
+      var fields = ['location_type_id', 'phone_type_id', 'label', 'is_multi_summary', 'is_required', 'is_view', 'visibility', 'in_selector', 'is_searchable', 'help_pre', 'help_post', 'is_active'];
       if (! this.options.fieldSchema.civiIsLocation) {
         fields = _.without(fields, 'location_type_id');
       }
