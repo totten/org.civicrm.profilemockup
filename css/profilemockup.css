@@ -33,7 +33,7 @@
   font-style: normal;
 }
 
-.crm-designer-palette .disabled a {
+.crm-designer-palette .disabled a, .crm-designer-palette .jstree-classic .disabled a.jstree-search {
     color: #999;
 }
 
