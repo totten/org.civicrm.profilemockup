@@ -28,6 +28,11 @@
   border: 1px dashed gray;
 }
 
+.crm-designer-palette .jstree-classic a.jstree-search {
+  color: black;
+  font-style: normal;
+}
+
 .crm-designer-canvas {
   margin-right: 300px;
 }
