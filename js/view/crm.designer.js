@@ -160,6 +160,11 @@
           'case_insensitive' : true,
           'show_only_matches': true
         },
+        themes: {
+          "theme": 'classic',
+          "dots": false,
+          "icons": false
+        },
         'plugins': ['themes', 'json_data', 'ui', 'search']
       }).bind('loaded.jstree', function () {
         $('.jstree-leaf', this).draggable({
@@ -168,6 +173,10 @@
           helper: 'clone',
           connectToSortable: '.crm-designer-fields' // FIXME: tight canvas/palette coupling
         });
+      }).bind("select_node.jstree", function (e, data) {
+          console.log('select node');
+        $(this).jstree("toggle_node", data.rslt.obj);
+        $(this).jstree("deselect_node", data.rslt.obj);
       });
 
       // FIXME: tight canvas/palette coupling
