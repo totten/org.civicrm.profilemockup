@@ -201,8 +201,8 @@
       this.on('add', this.watchDuplicates, this);
       this.on('remove', this.unwatchDuplicates, this);
     },
-    getFieldByName: function(entityName, fieldName) {
-      return this.find(function(ufFieldModel) {
+    getFieldsByName: function(entityName, fieldName) {
+      return this.filter(function(ufFieldModel) {
         return (ufFieldModel.get('entity_name') == entityName && ufFieldModel.get('field_name') == fieldName);
       });
     },
@@ -216,11 +216,15 @@
       if (! fieldSchema) {
         throw ('Missing fieldSchema for ' + entity_name + "." + field_name);
       }
-      if (fieldSchema.civiIsLocation || fieldSchema.civiIsPhone) {
-        return true;
-      } else {
-        return (!(this.getFieldByName(entity_name, field_name)));
+      var fields = this.getFieldsByName(entity_name, field_name);
+      var limit = 1;
+      if (fieldSchema.civiIsLocation) {
+        limit *= LOCATION_TYPES.length;
       }
+      if (fieldSchema.civiIsPhone) {
+        limit *= PHONE_TYPES.length;
+      }
+      return fields.length < limit;
     },
     watchDuplicates: function(model, collection, options) {
       model.on('change:location_type_id', this.markDuplicates, this);
