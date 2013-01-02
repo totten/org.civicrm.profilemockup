@@ -417,7 +417,7 @@
   CRM.Designer.UFFieldDetailView = Backbone.View.extend({
     initialize: function() {
       // FIXME: hide/display 'in_selector' if 'visibility' is one of the public options
-      var fields = ['location_type_id', 'phone_type_id', 'label', 'is_multi_summary', 'is_required', 'is_view', 'visibility', 'is_searchable', 'help_pre', 'help_post', 'is_active'];
+      var fields = ['location_type_id', 'phone_type_id', 'label', 'is_multi_summary', 'is_required', 'is_view', 'visibility', 'in_selector', 'help_pre', 'help_post', 'is_active'];
       if (! this.options.fieldSchema.civiIsLocation) {
         fields = _.without(fields, 'location_type_id');
       }
@@ -441,14 +441,14 @@
     onFormChange: function() {
       this.form.commit();
       this.$('.field-is_multi_summary').toggle(this.options.fieldSchema.civiIsMultiple ? true : false);
-      this.$('.field-is_searchable').toggle(this.model.isSearchableAllowed());
+      this.$('.field-in_selector').toggle(this.model.isInSelectorAllowed());
       // this.$(':input').attr('disabled', this.model.get("is_reserved") == 1);
 
-      if (!this.model.isSearchableAllowed() && this.model.get('is_searchable') != "0") {
-        this.model.set('is_searchable', "0");
-        this.form.setValue('is_searchable', "0");
-        // TODO: It might be nicer if we didn't completely discard is_searchable -- e.g.
-        // if the value could be restored when the user isSearchableAllowed becomes true
+      if (!this.model.isInSelectorAllowed() && this.model.get('in_selector') != "0") {
+        this.model.set('in_selector', "0");
+        this.form.setValue('in_selector', "0");
+        // TODO: It might be nicer if we didn't completely discard in_selector -- e.g.
+        // if the value could be restored when the user isInSelectorAllowed becomes true
         // again. However, I haven't found a simple way to do this.
       }
     }

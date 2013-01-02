@@ -8,9 +8,9 @@
   ];
 
   var VISIBILITY = [
-    {val: 'User and User Admin Only', label: ts('User and User Admin Only'), isSearchableAllowed: false},
-    {val: 'Public Pages', label: ts('Public Pages'), isSearchableAllowed: true},
-    {val: 'Public Pages and Listings', label: ts('Public Pages and Listings'), isSearchableAllowed: true}
+    {val: 'User and User Admin Only', label: ts('User and User Admin Only'), isInSelectorAllowed: false},
+    {val: 'Public Pages', label: ts('Public Pages'), isInSelectorAllowed: true},
+    {val: 'Public Pages and Listings', label: ts('Public Pages and Listings'), isInSelectorAllowed: true}
   ];
 
   var LOCATION_TYPES = _.map(CRM.PseudoConstant.locationType, function(value, key) {
@@ -88,6 +88,7 @@
         help: ts("Explanatory text displayed to users for this field (can include HTML formatting tags).")
       },
       'in_selector': {
+        title: ts('Results Columns?'),
         type: ts('Select'),
         options: YESNO,
         help: ts("Is this field included as a column in the search results table? This setting applies only to fields with 'Public Pages' or 'Public Pages and Listings' visibility.")
@@ -160,9 +161,9 @@
         this.set('phone_type_id', DEFAULT_PHONE_TYPE_ID);
       }
     },
-    isSearchableAllowed: function() {
+    isInSelectorAllowed: function() {
       var visibility = _.first(_.where(VISIBILITY, {val: this.get('visibility')}));
-      return visibility.isSearchableAllowed;
+      return visibility.isInSelectorAllowed;
     },
     getFieldSchema: function() {
       return this.fieldSchema;
