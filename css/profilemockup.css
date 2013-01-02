@@ -33,6 +33,10 @@
   font-style: normal;
 }
 
+.crm-designer-palette .disabled a {
+    color: #999;
+}
+
 /* Cancel hovering affect from JSTree theme -- we already do this! */
 .crm-designer-palette .jstree-classic .jstree-hovered {
     background: transparent;

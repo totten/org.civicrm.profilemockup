@@ -47,7 +47,8 @@
         ufFieldCollection: this.options.ufFieldCollection
       }));
       this.palette.show(new CRM.Designer.PaletteView({
-        model: this.options.paletteFieldCollection
+        model: this.options.paletteFieldCollection,
+        ufFieldCollection: this.options.ufFieldCollection
       }));
       this.form.show(new CRM.Designer.UFGroupView({
         model: this.model
@@ -133,6 +134,7 @@
    *
    * options:
    *  - model: CRM.Designer.PaletteFieldCollection
+   *  - ufFieldCollection: CRM.UF.UFFieldCollection
    */
   CRM.Designer.PaletteView = Backbone.Marionette.ItemView.extend({
     serializeData: extendedSerializeData,
@@ -143,7 +145,17 @@
       'click .crm-designer-palette-clear-search': 'clearSearch',
       'click .crm-designer-palette-controls a': 'toggleAll'
     },
+    initialize: function() {
+      this.options.ufFieldCollection.on('add', this.toggleActive, this);
+      this.options.ufFieldCollection.on('remove', this.toggleActive, this);
+    },
+    onClose: function() {
+      this.options.ufFieldCollection.off('add', this.toggleActive, this);
+      this.options.ufFieldCollection.off('remove', this.toggleActive, this);
+    },
     onRender: function() {
+      var paletteView = this;
+
       // Prepare data for jstree
       var treeData = [];
       var sections = this.model.getSections();
@@ -173,8 +185,10 @@
           helper: 'clone',
           connectToSortable: '.crm-designer-fields' // FIXME: tight canvas/palette coupling
         });
+        paletteView.options.ufFieldCollection.each(function(ufFieldModel) {
+          paletteView.toggleActive(ufFieldModel, paletteView.options.ufFieldCollection)
+        });
       }).bind("select_node.jstree", function (e, data) {
-          console.log('select node');
         $(this).jstree("toggle_node", data.rslt.obj);
         $(this).jstree("deselect_node", data.rslt.obj);
       });
@@ -192,6 +206,12 @@
     clearSearch: function(event) {
       $('.crm-designer-palette-search input').val('').keyup();
       return false;
+    },
+    toggleActive: function(ufFieldModel, ufFieldCollection, options) {
+      var paletteFieldCollection = this.model;
+      var paletteFieldModel = paletteFieldCollection.getFieldByName(ufFieldModel.get('entity_name'), ufFieldModel.get('field_name'));
+      var isAddable = ufFieldCollection.isAddable(ufFieldModel.get('entity_name'), ufFieldModel.get('field_name'), paletteFieldModel.get('fieldSchema'));
+      this.$('[data-plm-cid='+paletteFieldModel.cid+']').toggleClass('disabled', !isAddable);
     },
     toggleAll: function(event) {
       $('.crm-designer-palette-tree').jstree($(event.target).attr('rel'));
@@ -244,7 +264,7 @@
           var ufFieldModel = paletteFieldModel.createUFFieldModel();
           ufFieldModel.set('uf_group_id', ufFieldCanvasView.model.get('id'));
           var ufFieldCollection = ufFieldCanvasView.options.ufFieldCollection;
-          if (!ufFieldCollection.isAddable(ufFieldModel)) {
+          if (!ufFieldCollection.isAddable(ufFieldModel.get('entity_name'), ufFieldModel.get('field_name'), ufFieldModel.getFieldSchema())) {
             CRM.alert(
               ts('The field "%1" is already included.', {
                 1: paletteFieldModel.get('label')

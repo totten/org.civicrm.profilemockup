@@ -212,14 +212,14 @@
       });
       return _.sortBy(fields, 'weight');
     },
-    isAddable: function(ufFieldModel) {
-      if (! ufFieldModel.getFieldSchema()) {
-        throw ('Cannot locate schema for ' + ufFieldModel.get('entity_name') + "." + ufFieldModel.get('field_name'));
+    isAddable: function(entity_name, field_name, fieldSchema) {
+      if (! fieldSchema) {
+        throw ('Missing fieldSchema for ' + entity_name + "." + field_name);
       }
-      if (ufFieldModel.getFieldSchema().civiIsLocation || ufFieldModel.getFieldSchema().civiIsPhone) {
+      if (fieldSchema.civiIsLocation || fieldSchema.civiIsPhone) {
         return true;
       } else {
-        return (!(this.getFieldByName(ufFieldModel.get('entity_name'), ufFieldModel.get('field_name'))));
+        return (!(this.getFieldByName(entity_name, field_name)));
       }
     },
     watchDuplicates: function(model, collection, options) {
