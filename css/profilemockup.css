@@ -107,7 +107,7 @@
   height: 1em;
 }
 
-#crm-designer-dialog li.crm-designer-row-placeholder, #crm-designer-dialog li.ui-sortable-helper {
+#crm-designer-dialog li.crm-designer-row-placeholder, #crm-designer-dialog li.ui-draggable-dragging {
     list-style: none;
 }
 
