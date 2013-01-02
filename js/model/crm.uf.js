@@ -264,29 +264,127 @@
    */
   CRM.UF.UFGroupModel = CRM.Backbone.Model.extend({
     schema: {
-      'id': {type: 'Number'},
-      'name': {type: 'Text'},
-      'title': {type: 'Text'},
-      'group_type': {type: 'Text'},
-
-      'add_captcha': {type: 'Select', options: YESNO},
-      'add_to_group_id': {type: 'Number'},
-      'cancel_URL': {type: 'Text'},
-      'created_date': {type: 'Text'}, // FIXME
-      'created_id': {type: 'Number'},
-      'help_post': {type: 'TextArea'},
-      'help_pre': {type: 'TextArea'},
-      'is_active': {type: 'Select', options: YESNO},
-      'is_cms_user': {type: 'Select', options: YESNO},
-      'is_edit_link': {type: 'Select', options: YESNO},
-      'is_map': {type: 'Select', options: YESNO},
-      'is_proximity_search': {type: 'Select', options: YESNO},
-      'is_reserved': {type: 'Select', options: YESNO},
-      'is_uf_link': {type: 'Select', options: YESNO},
-      'is_update_dupe': {type: 'Select', options: YESNO},
-      'limit_listings_group_id': {type: 'Number'},
-      'notify': {type: 'TextArea'},
-      'post_URL': {type: 'Text'}
+      'id': {
+        // title: ts(''),
+        type: 'Number'
+      },
+      'name': {
+        // title: ts(''),
+        type: 'Text'
+      },
+      'title': {
+        title: ts('Profile Name'),
+        help: ts(''),
+        type: 'Text',
+        validators: ['required']
+      },
+      'group_type': {
+        // title: ts(''),
+        type: 'Text'
+      },
+      'add_captcha': {
+        title: ts('Include reCAPTCHA?'),
+        help: ts('FIXME'),
+        type: 'Select',
+        options: YESNO
+      },
+      'add_to_group_id': {
+        title: ts('Add new contacts to a Group?'),
+        help: ts('Select a group if you are using this profile for adding new contacts, AND you want the new contacts to be automatically assigned to a group.'),
+        type: 'Number'
+      },
+      'cancel_URL': {
+        title: ts('Cancel Redirect URL'),
+        help: ts('If you are using this profile as a contact signup or edit form, and want to redirect the user to a static URL if they click the Cancel button - enter the complete URL here. If this field is left blank, the built-in Profile form will be redisplayed.'),
+        type: 'Text'
+      },
+      'created_date': {
+        //title: ts(''),
+        type: 'Text'// FIXME
+      },
+      'created_id': {
+        //title: ts(''),
+        type: 'Number'
+      },
+      'help_post': {
+        title: ts('Post-form Help'),
+        help: ts('Explanatory text displayed at the end of the form.')
+          + ts('Note that this help text is displayed on profile create/edit screens only.'),
+        type: 'TextArea'
+      },
+      'help_pre': {
+        title: ts('Pre-form Help '),
+        help: ts('Explanatory text displayed at the beginning of the form.')
+          + ts('Note that this help text is displayed on profile create/edit screens only.'),
+        type: 'TextArea'
+      },
+      'is_active': {
+        title: ts('Is this CiviCRM Profile active?'),
+        type: 'Select',
+        options: YESNO
+      },
+      'is_cms_user': {
+        title: ts('Drupal user account registration option?'),// FIXME
+        help: ts('FIXME'),
+        type: 'Select',
+        options: YESNO // FIXME
+      },
+      'is_edit_link': {
+        title: ts('Include profile edit links in search results?'),
+        help: ts('Check this box if you want to include a link in the listings to Edit profile fields. Only users with permission to edit the contact will see this link.'),
+        type: 'Select',
+        options: YESNO
+      },
+      'is_map': {
+        title: ts('Enable mapping for this profile?'),
+        help: ts('If enabled, a Map link is included on the profile listings rows and detail screens for any contacts whose records include sufficient location data for your mapping provider.'),
+        type: 'Select',
+        options: YESNO
+      },
+      'is_proximity_search': {
+        title: ts('Proximity search'),
+        help: ts('FIXME'),
+        type: 'Select',
+        options: YESNO // FIXME
+      },
+      'is_reserved': {
+        // title: ts(''),
+        type: 'Select',
+        options: YESNO
+      },
+      'is_uf_link': {
+        title: ts('Include Drupal user account information links in search results?'), // FIXME
+        help: ts('FIXME'),
+        type: 'Select',
+        options: YESNO
+      },
+      'is_update_dupe': {
+        title: ts('What to do upon duplicate match'),
+        help: ts('FIXME'),
+        type: 'Select',
+        options: YESNO // FIXME
+      },
+      'limit_listings_group_id': {
+        title: ts('Limit listings to a specific Group?'),
+        help: ts('Select a group if you are using this profile for search and listings, AND you want to limit the listings to members of a specific group.'),
+        type: 'Number'
+      },
+      'notify': {
+        title: ts('Notify when profile form is submitted?'),
+        help: ts('If you want member(s) of your organization to receive a notification email whenever this Profile form is used to enter or update contact information, enter one or more email addresses here. Multiple email addresses should be separated by a comma (e.g. jane@example.org, paula@example.org). The first email address listed will be used as the FROM address in the notifications.'),
+        type: 'TextArea'
+      },
+      'post_URL': {
+        title: ts('Redirect URL'),
+        help: ts("If you are using this profile as a contact signup or edit form, and want to redirect the user to a static URL after they've submitted the form, you can also use contact tokens in URL - enter the complete URL here. If this field is left blank, the built-in Profile form will be redisplayed with a generic status message - 'Your contact information has been saved.'"),
+        type: 'Text'
+      },
+      'weight': {
+        title: ts('Order'),
+        help: ts('Weight controls the order in which profiles are presented when more than one profile is included in User Registration or My Account screens. Enter a positive or negative integer - lower numbers are displayed ahead of higher numbers.'),
+        type: 'Number'
+        // FIXME positive int
+      }
     },
     initialize: function() {
     }
