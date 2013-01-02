@@ -103,6 +103,10 @@
   height: 1em;
 }
 
+#crm-designer-dialog li.crm-designer-row-placeholder, #crm-designer-dialog li.ui-sortable-helper {
+    list-style: none;
+}
+
 #crm-designer-dialog {
   overflow: visible;
 }
