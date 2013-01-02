@@ -214,7 +214,9 @@
       this.$('[data-plm-cid='+paletteFieldModel.cid+']').toggleClass('disabled', !isAddable);
     },
     toggleAll: function(event) {
-      $('.crm-designer-palette-tree').jstree($(event.target).attr('rel'));
+      if ($('.crm-designer-palette-search input').val() == '') {
+        $('.crm-designer-palette-tree').jstree($(event.target).attr('rel'));
+      }
       return false;
     }
   });

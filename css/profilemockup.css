@@ -14,18 +14,28 @@
   height: 20em;
 }
 
-.crm-designer-palette .jstree-leaf {
+.crm-designer-palette-tree > ul > li > a {
+  font-weight: bold;
+}
+
+.crm-designer-palette .jstree-leaf,
+.crm-designer-palette .jstree-leaf.disabled:hover {
   padding: 1px;
-  border: 1px solid white;
-  cursor: move;
+  border: 1px dashed transparent;
 }
 
 .crm-designer-palette .jstree-leaf a {
   cursor: move;
 }
 
-.crm-designer-palette .jstree-leaf:hover {
+.crm-designer-palette .jstree-leaf.disabled a {
+  cursor: default;
+}
+
+.crm-designer-palette .jstree-leaf:hover,
+.crm-designer-fields-region .crm-designer-row:hover {
   border: 1px dashed gray;
+  cursor: move;
 }
 
 .crm-designer-palette .jstree-classic a.jstree-search {
@@ -34,14 +44,14 @@
 }
 
 .crm-designer-palette .disabled a, .crm-designer-palette .jstree-classic .disabled a.jstree-search {
-    color: #999;
+  color: #999;
 }
 
 /* Cancel hovering affect from JSTree theme -- we already do this! */
 .crm-designer-palette .jstree-classic .jstree-hovered {
-    background: transparent;
-    border: 1px transparent;
-    padding:1px 2px 0 2px;
+  background: transparent;
+  border: 1px transparent;
+  padding:1px 2px 0 2px;
 }
 
 .crm-designer-canvas {
@@ -70,7 +80,7 @@
 
 .crm-designer-duplicate .field-location_type_id,
 .crm-designer-duplicate .field-phone_type_id {
-    color: #f00;
+  color: #f00;
 }
 
 .crm-designer-row .crm-designer-buttons {
@@ -95,11 +105,6 @@
   margin: auto;
 }
 
-.crm-designer-fields-region .crm-designer-row:hover {
-  border: 1px dashed gray;
-  cursor: move;
-}
-
 .crm-designer-row-placeholder {
   border: 1px dashed gray;
   visibility: visible !important;
@@ -107,8 +112,9 @@
   height: 1em;
 }
 
-#crm-designer-dialog li.crm-designer-row-placeholder, #crm-designer-dialog li.ui-draggable-dragging {
-    list-style: none;
+#crm-designer-dialog li.crm-designer-row-placeholder,
+#crm-designer-dialog li.ui-draggable-dragging {
+  list-style: none;
 }
 
 #crm-designer-dialog {

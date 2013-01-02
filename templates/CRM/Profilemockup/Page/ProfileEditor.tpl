@@ -13,7 +13,7 @@
 </select>
 <button class="crm-designer-open">Edit Profile</button>
 <div id="crm-designer-dialog">
-  <div id="crm-designer" class="full-height">
+  <div id="crm-designer" class="crm-container full-height">
   </div>
 </div>
 
@@ -48,7 +48,7 @@
       <input type="text" placeholder="{ts}Search{/ts}" />
       <a class="crm-designer-palette-clear-search" href="#" title="{ts}Clear search{/ts}">X</a>
       <div class="crm-designer-palette-controls">
-        <a href="#" rel="open_all">{ts}Open All{/ts}</a>&nbsp; | &nbsp;
+        <a href="#" rel="open_all">{ts}Open All{/ts}</a>&nbsp; |&nbsp;
         <a href="#" rel="close_all">{ts}Close All{/ts}</a>
       </div>
     </div>
