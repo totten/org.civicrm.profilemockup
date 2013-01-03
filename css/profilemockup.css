@@ -11,10 +11,14 @@
 }
 
 .crm-designer-toolbar .ui-resizable-w {
-  border-left: 4px dotted gray;
+  border-left: 4px dotted #BFBFBF;
   cursor: ew-resize;
   height: 50px;
-  top: 40%;
+  top: 45%;
+}
+
+.crm-designer-toolbar .ui-resizable-w:hover {
+  border-left: 4px dotted #6B6B6B;
 }
 
 .crm-designer-palette {
@@ -105,8 +109,9 @@
   display: inline-block;
 }
 
-.crm-designer-row, .crm-designer-row-placeholder {
-  border: 1px solid white;
+.crm-designer-row,
+.crm-designer-row-placeholder {
+  border: 1px dashed transparent;
   padding: 0.5em;
   width: 80%;
   margin: auto;
@@ -116,7 +121,7 @@
   border: 1px dashed gray;
   visibility: visible !important;
   background: #EFEFFF;
-  height: 1em;
+  height: 1.1em;
 }
 
 #crm-designer-dialog li.crm-designer-row-placeholder,
