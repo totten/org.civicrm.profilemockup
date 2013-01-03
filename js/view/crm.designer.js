@@ -97,7 +97,7 @@
         CRM.alert(ts('Please correct errors before previewing.'), '', 'alert');
         return;
       }
-      var $dialog = $('<div><div class="crm-designer-preview-body"></div></div>');
+      var $dialog = $('<div><div class="crm-designer-preview-body crm-container"></div></div>');
       $dialog.appendTo('body');
       $dialog.dialog({
         autoOpen: true,
@@ -107,7 +107,6 @@
         minWidth: 500,
         minHeight: 600,
         open: function() {
-          // $dialog.html('<h1>Hello</h1>');
           $dialog.block({message: 'Loading...', theme: true});
           $.ajax({
             url: CRM.url("civicrm/profile-editor/preview?snippet=1"),
