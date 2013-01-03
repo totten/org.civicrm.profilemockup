@@ -62,53 +62,45 @@
  * Template for CRM.UF.UFFieldModel, CRM.Designer.UFFieldView
  * @see extendedSerializeData()
  *}
-{literal}
 <script type="text/template" id="field_row_template">
   <div class="crm-designer-row" data-field-cid="<%= _model.cid %>">
     <div class="crm-designer-field-summary"></div>
     <div class="crm-designer-field-detail"></div>
   </div>
 </script>
-{/literal}
 
 {**
  * Template for CRM.UF.UFFieldModel, CRM.Designer.UFFieldSummaryView
  * @see extendedSerializeData()
  *}
-{literal}
 <script type="text/template" id="field_summary_template">
   <%= label %>
   <span class="crm-designer-field-binding"><%= _view.getBindingLabel() %></span>
   <span class="crm-designer-buttons">
-    <a class="ui-icon ui-icon-pencil crm-designer-action-settings" title="{/literal}{ts}Settings{/ts}{literal}"></a>
-    <a class="ui-icon ui-icon-trash crm-designer-action-remove" title="{/literal}{ts}Remove{/ts}{literal}"></a>
+    <a class="ui-icon ui-icon-pencil crm-designer-action-settings" title="{ts}Settings{/ts}"></a>
+    <a class="ui-icon ui-icon-trash crm-designer-action-remove" title="{ts}Remove{/ts}"></a>
   </span>
 </script>
-{/literal}
 
 {**
  * @param CRM.UF.UFGroupModel form
  *}
-{literal}
 <script type="text/template" id="form_row_template">
   <div class="crm-designer-row">
     <div class="crm-designer-form-summary"></div>
     <div class="crm-designer-form-detail"></div>
   </div>
 </script>
-{/literal}
 
 {**
  * Variables correspond to properties of CRM.UF.UFGroupModel
  *}
-{literal}
 <script type="text/template" id="form_summary_template">
   <span><%= title %></span>
   <div class="crm-designer-buttons">
     <a class="crm-designer-action-settings ui-icon ui-icon-pencil" title="{ts}Settings{/ts}"></a>
   </div>
 </script>
-{/literal}
 
 <script type="text/template" id="designer_buttons_template">
   <button class="crm-designer-save">{ts}Save{/ts}</button>

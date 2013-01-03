@@ -32,12 +32,12 @@ cj(document).ready(function($) {
         minWidth: 150,
         resize: function(event, ui) {
           $('.crm-designer-canvas').css('margin-right', (ui.size.width + 10) + 'px');
-          $(this).css('left', '');
+          $(this).css({left: '', height: ''});
         },
         stop: function(event, ui) {
-          $(this).css('left', '');
+          $(this).css({left: '', height: ''});
         }
-      }).css('left', '');
+      }).css({left: '', height: ''});
     };
 
     /**
