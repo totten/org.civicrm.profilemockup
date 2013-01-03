@@ -10,6 +10,13 @@
   margin: 0.5em 0;
 }
 
+.crm-designer-toolbar .ui-resizable-w {
+  border-left: 4px dotted gray;
+  cursor: ew-resize;
+  height: 50px;
+  top: 40%;
+}
+
 .crm-designer-palette {
   height: 20em;
 }

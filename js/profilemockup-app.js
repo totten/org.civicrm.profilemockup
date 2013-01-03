@@ -24,7 +24,20 @@ cj(document).ready(function($) {
       });
       $("#crm-designer-dialog").unblock();
       CRM.designerApp.designerRegion.show(designerLayout);
+      // Resize toolbar
       handleSize();
+      $('.crm-designer-toolbar').resizable({
+        handles: 'w',
+        maxWidth: 400,
+        minWidth: 150,
+        resize: function(event, ui) {
+          $('.crm-designer-canvas').css('margin-right', (ui.size.width + 10) + 'px');
+          $(this).css('left', '');
+        },
+        stop: function(event, ui) {
+          $(this).css('left', '');
+        }
+      }).css('left', '');
     };
 
     /**
