@@ -263,6 +263,14 @@
    * Represents a customizable form
    */
   CRM.UF.UFGroupModel = CRM.Backbone.Model.extend({
+    defaults: {
+      title: ts('Unnamed Form'),
+      is_active: 1,
+      /**
+       * @var CRM.UF.UFFieldCollection non-persistent representation of UFFields in the UFGroup
+       */
+      ufFieldCollection: null
+    },
     schema: {
       'id': {
         // title: ts(''),

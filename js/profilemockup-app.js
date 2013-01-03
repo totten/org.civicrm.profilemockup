@@ -74,10 +74,9 @@ cj(document).ready(function($) {
           }
           else {
             // Initialize new UF group
-            var formData = {};
-            formData.ufFieldCollection = new CRM.UF.UFFieldCollection();
-            var ufGroupModel = new CRM.UF.UFGroupModel(formData);
-            launchDesigner(ufGroupModel);
+            var ufGroupModel = new CRM.UF.UFGroupModel();
+            var ufFieldCollection = new CRM.UF.UFFieldCollection();
+            launchDesigner(ufGroupModel, ufFieldCollection);
           }
         },
         close: function() {
