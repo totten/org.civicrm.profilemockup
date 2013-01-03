@@ -86,7 +86,7 @@
       }
       $("#crm-designer-dialog").block({message: 'Saving...', theme: true});
       var profile = this.options.ufGroupModel.toStrictJSON();
-      profile["api.UFField.replace"] = {values: this.options.ufFieldCollection.toSortedJSON()};
+      profile["api.UFField.replace"] = {values: this.options.ufFieldCollection.toSortedJSON(), 'option.autoweight': 0};
       CRM.api('UFGroup', 'create', profile, {success: function(data) {
         $("#crm-designer-dialog").unblock().dialog('close');
       }});
