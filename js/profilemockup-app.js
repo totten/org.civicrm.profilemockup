@@ -33,9 +33,6 @@ cj(document).ready(function($) {
         resize: function(event, ui) {
           $('.crm-designer-canvas').css('margin-right', (ui.size.width + 10) + 'px');
           $(this).css({left: '', height: ''});
-        },
-        stop: function(event, ui) {
-          $(this).css({left: '', height: ''});
         }
       }).css({left: '', height: ''});
     };

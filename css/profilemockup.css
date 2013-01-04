@@ -146,6 +146,10 @@
   overflow-y: scroll;
 }
 
+.crm-designer-canvas > .crm-container-snippet {
+  padding-right: 1em;
+}
+
 /* fixme proper theming */
 .ui-dialog {
   border: 1px solid black;
