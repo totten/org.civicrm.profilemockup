@@ -106,12 +106,16 @@
       }
       $('#crm-designer-dialog').block({message: 'Loading...', theme: true});
       $.ajax({
-        url: CRM.url("civicrm/profile-editor/preview?snippet=1"),
+        url: CRM.url("civicrm/ajax/inline"),
         type: 'POST',
-        data: JSON.stringify({
-          ufGroup: this.options.ufGroupModel.toStrictJSON(),
-          ufFieldCollection: this.options.ufFieldCollection.toSortedJSON()
-        })
+        data: {
+          'class_name': 'CRM_Profilemockup_Form_Inline_Preview',
+          'snippet': 1,
+          'ufData': JSON.stringify({
+            ufGroup: this.options.ufGroupModel.toStrictJSON(),
+            ufFieldCollection: this.options.ufFieldCollection.toSortedJSON()
+          })
+        }
       }).done(function(data) {
         $('#crm-designer-dialog').unblock();
         $('.crm-designer-canvas > *, .crm-designer-palette-region').hide();

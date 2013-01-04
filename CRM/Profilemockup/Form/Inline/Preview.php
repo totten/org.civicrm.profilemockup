@@ -38,7 +38,7 @@
  * for previewing Civicrm Profile Group
  *
  */
-class CRM_Profilemockup_Form_Preview extends CRM_UF_Form_AbstractPreview {
+class CRM_Profilemockup_Form_Inline_Preview extends CRM_UF_Form_AbstractPreview {
 
   /**
    * pre processing work done here.
@@ -53,7 +53,11 @@ class CRM_Profilemockup_Form_Preview extends CRM_UF_Form_AbstractPreview {
    *
    */
   function preProcess() {
-    $content = json_decode(file_get_contents("php://input"), TRUE);
+    // Inline forms don't get menu-level permission checks
+    if (!CRM_Core_Permission::check('administer CiviCRM')) {
+      CRM_Core_Error::fatal(ts('Permission denied'));
+    }
+    $content = json_decode($_REQUEST['ufData'], TRUE);
     foreach(array('ufGroup', 'ufFieldCollection') as $key) {
       if (!is_array($content[$key])) {
         CRM_Core_Error::fatal("Missing JSON parameter, $key");
