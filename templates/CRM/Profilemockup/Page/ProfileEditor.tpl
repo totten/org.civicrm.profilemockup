@@ -31,6 +31,7 @@
     </div>
   </div>
   <div class="crm-designer-canvas full-height scroll">
+    <div class="crm-designer-preview-canvas"></div>
     <div class="crm-designer-form-region">
     </div>
     <hr />

@@ -95,7 +95,7 @@
     doPreview: function(event) {
       this.previewMode = !this.previewMode;
       if (!this.previewMode) {
-        $('.crm-designer-canvas > .crm-container-snippet').remove();
+        $('.crm-designer-preview-canvas').html('');
         $('.crm-designer-canvas > *, .crm-designer-palette-region').show();
         $('.crm-designer-preview span').html(ts('Preview'));
         return;
@@ -119,7 +119,7 @@
       }).done(function(data) {
         $('#crm-designer-dialog').unblock();
         $('.crm-designer-canvas > *, .crm-designer-palette-region').hide();
-        $('.crm-designer-canvas').prepend(data);
+        $('.crm-designer-preview-canvas').html(data).show();
         $('.crm-designer-preview span').html(ts('Edit'));
       });
     }
