@@ -154,3 +154,8 @@
 .ui-dialog {
   border: 1px solid black;
 }
+
+/* Work-around for BackBone.Form in Garland */
+.bbf-form ul {
+    list-style-image: none;
+}
