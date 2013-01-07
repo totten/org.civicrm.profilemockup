@@ -267,7 +267,7 @@
         placeholder: 'crm-designer-row-placeholder',
         forcePlaceholderSize: true,
         receive: function(event, ui) {
-          var paletteFieldModel = ufFieldCanvasView.options.paletteFieldCollection.getByCid(ui.item.attr('data-plm-cid'));
+          var paletteFieldModel = ufFieldCanvasView.options.paletteFieldCollection.get(ui.item.attr('data-plm-cid'));
           var ufFieldModel = paletteFieldModel.createUFFieldModel();
           ufFieldModel.set('uf_group_id', ufFieldCanvasView.model.get('id'));
           var ufFieldCollection = ufFieldCanvasView.options.ufFieldCollection;
@@ -306,7 +306,7 @@
           return;
         }
         var ufFieldCid = $(row).attr('data-field-cid');
-        var ufFieldModel = ufFieldCanvasView.options.ufFieldCollection.getByCid(ufFieldCid);
+        var ufFieldModel = ufFieldCanvasView.options.ufFieldCollection.get(ufFieldCid);
         ufFieldModel.set('weight', weight);
         weight++;
       });
