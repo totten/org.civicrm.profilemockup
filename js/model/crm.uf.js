@@ -209,7 +209,11 @@
       });
       return _.sortBy(fields, 'weight');
     },
-    isAddable: function(entity_name, field_name, fieldSchema) {
+    isAddable: function(ufFieldModel) {
+      var entity_name = ufFieldModel.get('entity_name'),
+        field_name = ufFieldModel.get('field_name'),
+        fieldSchema = ufFieldModel.getFieldSchema();
+
       if (! fieldSchema) {
         throw ('Missing fieldSchema for ' + entity_name + "." + field_name);
       }

@@ -215,7 +215,11 @@
     toggleActive: function(ufFieldModel, ufFieldCollection, options) {
       var paletteFieldCollection = this.model;
       var paletteFieldModel = paletteFieldCollection.getFieldByName(ufFieldModel.get('entity_name'), ufFieldModel.get('field_name'));
-      var isAddable = ufFieldCollection.isAddable(ufFieldModel.get('entity_name'), ufFieldModel.get('field_name'), paletteFieldModel.get('fieldSchema'));
+      if (!ufFieldModel.getFieldSchema()) {
+        // FIXME: This fills in the 'fieldSchema' property for ufFieldModel, but this is a silly place to do it.
+        ufFieldModel.fieldSchema = paletteFieldModel.get('fieldSchema');
+      }
+      var isAddable = ufFieldCollection.isAddable(ufFieldModel);
       this.$('[data-plm-cid='+paletteFieldModel.cid+']').toggleClass('disabled', !isAddable);
     },
     toggleAll: function(event) {
@@ -271,7 +275,7 @@
           var ufFieldModel = paletteFieldModel.createUFFieldModel();
           ufFieldModel.set('uf_group_id', ufFieldCanvasView.model.get('id'));
           var ufFieldCollection = ufFieldCanvasView.options.ufFieldCollection;
-          if (!ufFieldCollection.isAddable(ufFieldModel.get('entity_name'), ufFieldModel.get('field_name'), ufFieldModel.getFieldSchema())) {
+          if (!ufFieldCollection.isAddable(ufFieldModel)) {
             CRM.alert(
               ts('The field "%1" is already included.', {
                 1: paletteFieldModel.get('label')
