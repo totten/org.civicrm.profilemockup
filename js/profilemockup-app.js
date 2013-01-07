@@ -54,7 +54,7 @@ cj(document).ready(function($) {
         width: '75%',
         height: 600,
         minWidth: 500,
-        minHeight: 600,
+        minHeight: 600, // to allow dropping in big whitespace, coordinate with min-height of .crm-designer-fields
         open: function() {
           $("#crm-designer-dialog").block({message: 'Loading...', theme: true});
           var ufId = $('#test-profile-id').val();

@@ -82,7 +82,8 @@
 
 .crm-designer-fields {
   min-width:100px;
-  min-height:100px;
+  /* to allow dropping in big whitespace, coordinate with min-height of dialog */
+  min-height:500px;
 }
 
 .crm-designer-duplicate .crm-designer-row {
