@@ -267,25 +267,18 @@
         forcePlaceholderSize: true,
         receive: function(event, ui) {
           var paletteFieldModel = ufFieldCanvasView.options.paletteFieldCollection.get(ui.item.attr('data-plm-cid'));
-          var ufFieldModel = paletteFieldModel.createUFFieldModel();
-          ufFieldModel.set('uf_group_id', ufFieldCanvasView.model.get('id'));
-          var ufFieldCollection = ufFieldCanvasView.options.ufFieldCollection;
-          if (!ufFieldCollection.isAddable(ufFieldModel)) {
-            CRM.alert(
-              ts('The field "%1" is already included.', {
-                1: paletteFieldModel.get('label')
-              }),
-              ts('Duplicate'),
-              'alert'
-            );
+          var ufFieldModel = paletteFieldModel.addToUFCollection(
+            ufFieldCanvasView.model.get('id'),
+            ufFieldCanvasView.options.ufFieldCollection,
+            {skipWeights: true}
+          );
+          if (null == ufFieldModel) {
             ufFieldCanvasView.$('.crm-designer-fields .ui-draggable').remove();
-            return;
+          } else {
+            // Move from end to the 'dropped' position
+            var ufFieldViewEl = ufFieldCanvasView.$('div[data-field-cid='+ufFieldModel.cid+']').parent();
+            ufFieldCanvasView.$('.crm-designer-fields .ui-draggable').replaceWith(ufFieldViewEl);
           }
-          ufFieldCollection.add(ufFieldModel, {skipWeights: true});
-
-          // Move from end to the 'dropped' position
-          var ufFieldViewEl = ufFieldCanvasView.$('div[data-field-cid='+ufFieldModel.cid+']').parent();
-          ufFieldCanvasView.$('.crm-designer-fields .ui-draggable').replaceWith(ufFieldViewEl);
           // note: the sortable() update callback will call updateWeight
         },
         update: function() {

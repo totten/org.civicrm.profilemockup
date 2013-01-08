@@ -43,6 +43,32 @@
     getSection: function() {
       return this.get('modelClass').prototype.sections[this.get('sectionName')];
     },
+    /**
+     * Add a new UFField model to a UFFieldCollection (if doing so is legal).
+     * If it fails, display an alert.
+     *
+     * @param {int} ufGroupId
+     * @param {CRM.UF.UFFieldCollection} ufFieldCollection
+     * @param {Object} addOptions
+     * @return {CRM.UF.UFFieldModel} or null (if the field is not addable)
+     */
+    addToUFCollection: function(ufGroupId, ufFieldCollection, addOptions) {
+      var paletteFieldModel = this;
+      var ufFieldModel = paletteFieldModel.createUFFieldModel();
+      ufFieldModel.set('uf_group_id', ufGroupId);
+      if (!ufFieldCollection.isAddable(ufFieldModel)) {
+        CRM.alert(
+          ts('The field "%1" is already included.', {
+            1: paletteFieldModel.get('label')
+          }),
+          ts('Duplicate'),
+          'alert'
+        );
+        return null;
+      }
+      ufFieldCollection.add(ufFieldModel, addOptions);
+      return ufFieldModel;
+    },
     createUFFieldModel: function() {
       var model = new CRM.UF.UFFieldModel({
         fieldSchema: this.get('fieldSchema'),
