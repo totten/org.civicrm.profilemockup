@@ -12,6 +12,7 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
           'locationType' => CRM_Core_PseudoConstant::locationType(),
           'phoneType' => CRM_Core_PseudoConstant::phoneType(),
         ),
+        'profilePreviewKey' => CRM_Core_Key::get('CRM_Core_Controller_Simple', TRUE),
       ))
       // TODO think of a way extensions can include jQuery plugins
       ->addScript('jQuery = $ = cj;') // HACK - must be removed

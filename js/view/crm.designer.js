@@ -118,6 +118,7 @@
         url: CRM.url("civicrm/ajax/inline"),
         type: 'POST',
         data: {
+          'qfKey': CRM.profilePreviewKey,
           'class_name': 'CRM_Profilemockup_Form_Inline_Preview',
           'snippet': 1,
           'ufData': JSON.stringify({
