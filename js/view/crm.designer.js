@@ -190,6 +190,11 @@
           helper: 'clone',
           connectToSortable: '.crm-designer-fields' // FIXME: tight canvas/palette coupling
         });
+        $('.jstree-leaf', this).dblclick(function(event){
+          var paletteFieldModel = paletteView.model.get($(event.currentTarget).attr('data-plm-cid'));
+          paletteFieldModel.addToUFCollection(paletteView.options.ufFieldCollection);
+          event.stopPropagation();
+        });
         paletteView.options.ufFieldCollection.each(function(ufFieldModel) {
           paletteView.toggleActive(ufFieldModel, paletteView.options.ufFieldCollection)
         });
