@@ -262,7 +262,7 @@
       var $fields = this.$('.crm-designer-fields');
       this.updatePlaceholder();
       var ufFieldModels = this.options.ufFieldCollection.sortBy(function(ufFieldModel) {
-        return ufFieldModel.get('weight');
+        return parseInt(ufFieldModel.get('weight'));
       });
       _.each(ufFieldModels, function(ufFieldModel) {
         ufFieldCanvasView.addUFFieldView(ufFieldModel, ufFieldCanvasView.options.ufFieldCollection, {skipWeights: true});

@@ -213,7 +213,9 @@
       var fields = this.map(function(ufFieldModel){
         return ufFieldModel.toStrictJSON();
       });
-      return _.sortBy(fields, 'weight');
+      return _.sortBy(fields, function(ufFieldJSON){
+        return parseInt(ufFieldJSON.weight);
+      });
     },
     isAddable: function(ufFieldModel) {
       var entity_name = ufFieldModel.get('entity_name'),
