@@ -75,12 +75,17 @@
  * @see extendedSerializeData()
  *}
 <script type="text/template" id="field_summary_template">
-  <%= label %>
-  <span class="crm-designer-field-binding"><%= _view.getBindingLabel() %></span>
   <span class="crm-designer-buttons">
     <a class="ui-icon ui-icon-pencil crm-designer-action-settings" title="{ts}Settings{/ts}"></a>
     <a class="ui-icon ui-icon-trash crm-designer-action-remove" title="{ts}Remove{/ts}"></a>
   </span>
+  <div class="description"><%= help_pre %></div>
+  <div class="crm-designer-row-label">
+    <span class="crm-designer-label"><%= label %></span>
+    <%= _view.getRequiredMarker() %>
+    <span class="crm-designer-field-binding"><%= _view.getBindingLabel() %></span>
+  </div>
+  <div class="description"><%= help_post %></div>
 </script>
 
 {**

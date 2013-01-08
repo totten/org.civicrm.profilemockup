@@ -374,14 +374,18 @@
       if (this.expanded && event !== false) {
         CRM.designerApp.vent.trigger('formOpened', this.cid);
       }
+      this.$el.toggleClass('crm-designer-open', this.expanded);
       this.detail.$el.toggle('blind', 250);
     },
     onChangeIsDuplicate: function(model, value, options) {
       this.$el.toggleClass('crm-designer-duplicate', value);
     },
     doRemove: function(event) {
-      this.model.destroyLocal();
-      this.remove();
+      var that = this;
+      this.$el.hide(250, function() {
+        that.model.destroyLocal();
+        that.remove();
+      });
     }
   });
 
@@ -411,8 +415,18 @@
         var locType = this.model.get('location_type_id') ? CRM.PseudoConstant.locationType[this.model.get('location_type_id')] : ts('Primary');
         result = result + ' (' + locType + ')';
       }
-      // result = '<' + this.model.get('weight') + '>' + result;
       return result;
+    },
+
+    /**
+     * Return a string marking if the field is required
+     * @return {String}
+     */
+    getRequiredMarker: function() {
+      if (this.model.get('is_required') == 1) {
+        return ' <span class="crm-marker">*</span> ';
+      }
+      return '';
     },
 
     onRender: function() {
@@ -497,6 +511,7 @@
     },
     doToggleForm: function(event) {
       this.expanded = !this.expanded;
+      this.$el.toggleClass('crm-designer-open', this.expanded);
       this.detail.$el.toggle('blind', 250);
     }
   });
