@@ -292,7 +292,6 @@
     },
     /** Determine visual order of fields and set the model values for "weight" */
     updateWeights: function() {
-      console.log('updateWeights');
       var ufFieldCanvasView = this;
       var weight = 1;
       var rows = this.$('.crm-designer-row').each(function(key, row) {
@@ -306,7 +305,6 @@
       });
     },
     addUFFieldView: function(ufFieldModel, ufFieldCollection, options) {
-      console.log('addUFFieldView', ufFieldModel.toJSON());
       var paletteFieldModel = this.options.paletteFieldCollection.getFieldByName(ufFieldModel.get('entity_name'), ufFieldModel.get('field_name'));
       var ufFieldView = new CRM.Designer.UFFieldView({
         el: $("<div></div>"),
