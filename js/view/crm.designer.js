@@ -225,6 +225,7 @@
       newPFC.addEntity('contact_1', CRM.CoreModel.IndividualModel);
       newPFC.addEntity('activity_1', CRM.CoreModel.ActivityModel);
       this.model.reset(newPFC.models);
+      return false;
     },
     clearSearch: function(event) {
       $('.crm-designer-palette-search input').val('').keyup();
@@ -520,9 +521,18 @@
       if (!this.expanded) {
         this.detail.$el.hide();
       }
+      var that = this;
+      CRM.designerApp.vent.on('formOpened', function(event) {
+        if (that.expanded && event !== 0) {
+          that.doToggleForm(false);
+        }
+      });
     },
     doToggleForm: function(event) {
       this.expanded = !this.expanded;
+      if (this.expanded && event !== false) {
+        CRM.designerApp.vent.trigger('formOpened', 0);
+      }
       this.$el.toggleClass('crm-designer-open', this.expanded);
       this.detail.$el.toggle('blind', 250);
     }

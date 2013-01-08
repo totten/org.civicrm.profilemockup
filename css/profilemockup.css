@@ -33,6 +33,7 @@
 .crm-designer-palette .jstree-leaf.disabled:hover {
   padding: 1px;
   border: 1px dashed transparent;
+  background-color: transparent;
 }
 
 .crm-designer-palette .jstree-leaf a {
@@ -48,6 +49,7 @@
 .crm-designer-open .crm-designer-row {
   border: 1px dashed gray;
   cursor: move;
+  background-color: #E9E9F5;
 }
 
 .crm-designer-palette .jstree-classic a.jstree-search {
@@ -116,7 +118,12 @@
   cursor: pointer;
   display: inline-block;
   border-radius: 4px;
-  border: 1px solid #DCDCDC;
+  border: 1px solid #D7D7D7;
+}
+
+.crm-designer-row .crm-designer-buttons a:hover,
+#crm-designer button:hover {
+  box-shadow: 1px 1px 2px #7D7C8C;
 }
 
 .crm-designer-row .crm-designer-buttons a.crm-designer-action-settings:hover {
@@ -154,7 +161,6 @@
   margin: 0px 2em 0px 0px;
 }
 
-#crm-designer-dialog .crm-designer-open .description,
 #crm-designer-dialog .disabled .description {
   display: none;
 }
@@ -192,5 +198,5 @@
 
 /* Work-around for BackBone.Form in Garland */
 .bbf-form ul {
-    list-style-image: none;
+  list-style-image: none;
 }
