@@ -268,7 +268,6 @@
         receive: function(event, ui) {
           var paletteFieldModel = ufFieldCanvasView.options.paletteFieldCollection.get(ui.item.attr('data-plm-cid'));
           var ufFieldModel = paletteFieldModel.addToUFCollection(
-            ufFieldCanvasView.model.get('id'),
             ufFieldCanvasView.options.ufFieldCollection,
             {skipWeights: true}
           );

@@ -191,10 +191,16 @@
 
   /**
    * Represents a list of fields in a customizable form
+   *
+   * options:
+   *  - uf_group_id: int
    */
   CRM.UF.UFFieldCollection = Backbone.Collection.extend({
     model: CRM.UF.UFFieldModel,
-    initialize: function() {
+    uf_group_id: null, // int
+    initialize: function(models, options) {
+      options = options || {};
+      this.uf_group_id = options.uf_group_id;
       this.on('add', this.watchDuplicates, this);
       this.on('remove', this.unwatchDuplicates, this);
     },

@@ -52,10 +52,10 @@
      * @param {Object} addOptions
      * @return {CRM.UF.UFFieldModel} or null (if the field is not addable)
      */
-    addToUFCollection: function(ufGroupId, ufFieldCollection, addOptions) {
+    addToUFCollection: function(ufFieldCollection, addOptions) {
       var paletteFieldModel = this;
       var ufFieldModel = paletteFieldModel.createUFFieldModel();
-      ufFieldModel.set('uf_group_id', ufGroupId);
+      ufFieldModel.set('uf_group_id', ufFieldCollection.uf_group_id);
       if (!ufFieldCollection.isAddable(ufFieldModel)) {
         CRM.alert(
           ts('The field "%1" is already included.', {
