@@ -57,6 +57,8 @@
      */
     fieldSchema: null,
     defaults: {
+      help_pre: '',
+      help_post: '',
       /**
        * bool, non-persistent indication of whether this field is unique or duplicate
        * within its UFFieldCollection
