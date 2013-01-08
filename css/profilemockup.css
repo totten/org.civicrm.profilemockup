@@ -46,7 +46,8 @@
 
 .crm-designer-palette .jstree-leaf:hover,
 .crm-designer-fields-region .crm-designer-row:hover,
-.crm-designer-open .crm-designer-row {
+.crm-designer-open .crm-designer-row,
+.crm-designer-row-placeholder {
   border: 1px dashed gray;
   cursor: move;
   background-color: #E9E9F5;
@@ -126,6 +127,11 @@
   box-shadow: 1px 1px 2px #7D7C8C;
 }
 
+.ui-sortable-helper > .crm-designer-row {
+  box-shadow: 2px 2px 5px #C5C5C5;
+  opacity: 0.8;
+}
+
 .crm-designer-row .crm-designer-buttons a.crm-designer-action-settings:hover {
   background-color: #71D46E;
 }
@@ -151,10 +157,8 @@
 }
 
 .crm-designer-row-placeholder {
-  border: 1px dashed gray;
   visibility: visible !important;
-  background: #EFEFFF;
-  height: 1.1em;
+  height: 2em;
 }
 
 #crm-designer-dialog .description {
@@ -166,7 +170,9 @@
 }
 
 #crm-designer-dialog li.crm-designer-row-placeholder,
-#crm-designer-dialog li.ui-draggable-dragging {
+#crm-designer-dialog li.ui-draggable-dragging,
+#crm-designer-dialog .bbf-form ul {
+  list-style-image: none;
   list-style: none;
 }
 
@@ -194,9 +200,4 @@
 /* fixme proper theming */
 .ui-dialog {
   border: 1px solid black;
-}
-
-/* Work-around for BackBone.Form in Garland */
-.bbf-form ul {
-  list-style-image: none;
 }
