@@ -41,9 +41,7 @@ cj(document).ready(function($) {
      * Set height of palette
      */
     var handleSize = function() {
-      var pos = $('.crm-designer-palette-tree').position();
-      var div = $('#crm-designer').height();
-      $('.crm-designer-palette-tree').css({height: div - pos.top});
+      CRM.designerApp.vent.trigger('resize');
     };
 
     $('.crm-designer-open').click(function() {

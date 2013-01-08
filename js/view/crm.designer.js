@@ -149,15 +149,20 @@
     events: {
       'keyup .crm-designer-palette-search input': 'doSearch',
       'click .crm-designer-palette-clear-search': 'clearSearch',
-      'click .crm-designer-palette-controls a': 'toggleAll'
+      'click .crm-designer-palette-refresh': 'doRefresh',
+      'click .crm-designer-palette-toggle': 'toggleAll'
     },
     initialize: function() {
       this.options.ufFieldCollection.on('add', this.toggleActive, this);
       this.options.ufFieldCollection.on('remove', this.toggleActive, this);
+      this.model.on('reset', this.render, this);
+      CRM.designerApp.vent.on('resize', this.onResize, this);
     },
     onClose: function() {
       this.options.ufFieldCollection.off('add', this.toggleActive, this);
       this.options.ufFieldCollection.off('remove', this.toggleActive, this);
+      this.model.off('reset', this.render, this);
+      CRM.designerApp.vent.off('resize', this.onResize, this);
     },
     onRender: function() {
       var paletteView = this;
@@ -210,9 +215,25 @@
         hoverClass: "ui-state-hover",
         accept: ":not(.ui-sortable-helper)"
       });
+
+      this.onResize();
+    },
+    onResize: function() {
+      var pos = this.$('.crm-designer-palette-tree').position();
+      var div = this.$('.crm-designer-palette-tree').closest('.crm-container').height();
+      this.$('.crm-designer-palette-tree').css({height: div - pos.top});
     },
     doSearch: function(event) {
       $('.crm-designer-palette-tree').jstree("search", $(event.target).val());
+    },
+    doRefresh: function(event) {
+      console.log('doRefresh');
+
+      // FIXME get new data
+      var newPFC = new CRM.Designer.PaletteFieldCollection();
+      newPFC.addEntity('contact_1', CRM.CoreModel.IndividualModel);
+      newPFC.addEntity('activity_1', CRM.CoreModel.ActivityModel);
+      this.model.reset(newPFC.models);
     },
     clearSearch: function(event) {
       $('.crm-designer-palette-search input').val('').keyup();
