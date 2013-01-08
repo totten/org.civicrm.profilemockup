@@ -53,6 +53,11 @@ class CRM_Profilemockup_Form_Inline_Preview extends CRM_UF_Form_AbstractPreview 
    *
    */
   function preProcess() {
+    if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+      // CRM_Core_Controller validates qfKey for POST requests, but not necessarily
+      // for GET requests. Allowing GET would therefore be CSRF vulnerability.
+      CRM_Core_Error::fatal(ts('Preview only supports HTTP POST'));
+    }
     // Inline forms don't get menu-level permission checks
     if (!CRM_Core_Permission::check('administer CiviCRM')) {
       CRM_Core_Error::fatal(ts('Permission denied'));
