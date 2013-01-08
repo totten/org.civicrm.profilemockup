@@ -3,15 +3,6 @@
   if (!CRM.Designer) CRM.Designer = {};
 
   /**
-   * Add our templates to Backbone.Forms
-   *
-  var templates = {
-    form: _.template($('#crm_form_template').html()),
-    field: _.template($('#crm_form_field_template').html())
-  };
-  Backbone.Form.setTemplates(templates);
-
-  /**
    * When rendering a template with Marionette.ItemView, the list of variables is determined by
    * serializeData(). The normal behavior is to map each property of this.model to a template
    * variable.

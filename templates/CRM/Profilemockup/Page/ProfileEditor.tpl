@@ -102,7 +102,7 @@
  * Variables correspond to properties of CRM.UF.UFGroupModel
  *}
 <script type="text/template" id="form_summary_template">
-  <span><%= title %></span>
+  <h3><%= title %></h3>
   <div class="crm-designer-buttons">
     <a class="crm-designer-action-settings ui-icon ui-icon-pencil" title="{ts}Settings{/ts}"></a>
   </div>
@@ -116,21 +116,5 @@
 <script type="text/template" id="field_canvas_view_template">
   <div class="crm-designer-fields">
     <div class="crm-designer-row placeholder">{ts}Drag a field from the palette to add it to this form.{/ts}</div>
-  </div>
-</script>
-
-{**
- * Template overrides for backbone forms
- *}
-<script type="text/template" id="crm_form_template">
-  <form class="crm-form-block"><%= fieldsets %></form>
-</script>
-
-<script type="text/template" id="crm_form_field_template">
-  <div class="crm-cow field-<%= key %>">
-    <label for="<%= id %>"><%= title %></label>
-    <div class="bbf-editor"><%= editor %></div>
-    <div class="bbf-help"><%= help %></div>
-    <div class="bbf-error"><%= error %></div>
   </div>
 </script>
