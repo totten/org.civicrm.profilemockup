@@ -242,10 +242,12 @@
     initialize: function() {
       this.options.ufFieldCollection.on('add', this.updatePlaceholder, this);
       this.options.ufFieldCollection.on('remove', this.updatePlaceholder, this);
+      this.options.ufFieldCollection.on('add', this.addUFFieldView, this);
     },
     onClose: function() {
       this.options.ufFieldCollection.off('add', this.updatePlaceholder, this);
       this.options.ufFieldCollection.off('remove', this.updatePlaceholder, this);
+      this.options.ufFieldCollection.off('add', this.addUFFieldView, this);
     },
     render: function() {
       var ufFieldCanvasView = this;
@@ -258,14 +260,7 @@
         return ufFieldModel.get('weight');
       });
       _.each(ufFieldModels, function(ufFieldModel) {
-        var paletteFieldModel = ufFieldCanvasView.options.paletteFieldCollection.getFieldByName(ufFieldModel.get('entity_name'), ufFieldModel.get('field_name'));
-        var ufFieldView = new CRM.Designer.UFFieldView({
-          el: $("<div></div>"),
-          model: ufFieldModel,
-          paletteFieldModel: paletteFieldModel
-        });
-        ufFieldView.render();
-        ufFieldView.$el.appendTo($fields);
+        ufFieldCanvasView.addUFFieldView(ufFieldModel, ufFieldCanvasView.options.ufFieldCollection, {skipWeights: true});
       });
       this.$(".crm-designer-fields").sortable({
         placeholder: 'crm-designer-row-placeholder',
@@ -286,15 +281,12 @@
             ufFieldCanvasView.$('.crm-designer-fields .ui-draggable').remove();
             return;
           }
-          ufFieldCollection.add(ufFieldModel);
+          ufFieldCollection.add(ufFieldModel, {skipWeights: true});
 
-          var ufFieldView = new CRM.Designer.UFFieldView({
-            el: $("<div></div>"),
-            model: ufFieldModel,
-            paletteFieldModel: paletteFieldModel
-          });
-          ufFieldView.render();
-          ufFieldCanvasView.$('.crm-designer-fields .ui-draggable').replaceWith(ufFieldView.$el);
+          // Move from end to the 'dropped' position
+          var ufFieldViewEl = ufFieldCanvasView.$('div[data-field-cid='+ufFieldModel.cid+']').parent();
+          ufFieldCanvasView.$('.crm-designer-fields .ui-draggable').replaceWith(ufFieldViewEl);
+          // note: the sortable() update callback will call updateWeight
         },
         update: function() {
           ufFieldCanvasView.updateWeights();
@@ -303,6 +295,7 @@
     },
     /** Determine visual order of fields and set the model values for "weight" */
     updateWeights: function() {
+      console.log('updateWeights');
       var ufFieldCanvasView = this;
       var weight = 1;
       var rows = this.$('.crm-designer-row').each(function(key, row) {
@@ -314,6 +307,20 @@
         ufFieldModel.set('weight', weight);
         weight++;
       });
+    },
+    addUFFieldView: function(ufFieldModel, ufFieldCollection, options) {
+      console.log('addUFFieldView', ufFieldModel.toJSON());
+      var paletteFieldModel = this.options.paletteFieldCollection.getFieldByName(ufFieldModel.get('entity_name'), ufFieldModel.get('field_name'));
+      var ufFieldView = new CRM.Designer.UFFieldView({
+        el: $("<div></div>"),
+        model: ufFieldModel,
+        paletteFieldModel: paletteFieldModel
+      });
+      ufFieldView.render();
+      this.$('.crm-designer-fields').append(ufFieldView.$el);
+      if (! (options && options.skipWeights)) {
+        this.updateWeights();
+      }
     },
     updatePlaceholder: function() {
       if (this.options.ufFieldCollection.isEmpty()) {
@@ -408,6 +415,7 @@
         var locType = this.model.get('location_type_id') ? CRM.PseudoConstant.locationType[this.model.get('location_type_id')] : ts('Primary');
         result = result + ' (' + locType + ')';
       }
+      // result = '<' + this.model.get('weight') + '>' + result;
       return result;
     },
 
