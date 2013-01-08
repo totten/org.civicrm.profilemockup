@@ -49,8 +49,9 @@
       <input type="text" placeholder="{ts}Search{/ts}" />
       <a class="crm-designer-palette-clear-search" href="#" title="{ts}Clear search{/ts}">X</a>
       <div class="crm-designer-palette-controls">
-        <a href="#" rel="open_all">{ts}Open All{/ts}</a>&nbsp; |&nbsp;
-        <a href="#" rel="close_all">{ts}Close All{/ts}</a>
+        <a href="#" class="crm-designer-palette-toggle" rel="open_all">{ts}Open All{/ts}</a>&nbsp; |&nbsp;
+        <a href="#" class="crm-designer-palette-toggle" rel="close_all">{ts}Close All{/ts}</a>&nbsp; |&nbsp;
+        <a href="#" class="crm-designer-palette-refresh">{ts}Refresh{/ts}</a>
       </div>
     </div>
 
