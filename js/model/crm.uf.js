@@ -60,6 +60,11 @@
       help_pre: '',
       help_post: '',
       /**
+       * @var {UFGroupModel} non-persistent link to the group which contains this field
+       * see also: uf_group_id
+       */
+      ufGroupModel: null,
+      /**
        * @var bool, non-persistent indication of whether this field is unique or duplicate
        * within its UFFieldCollection
        */
@@ -200,9 +205,16 @@
   CRM.UF.UFFieldCollection = Backbone.Collection.extend({
     model: CRM.UF.UFFieldModel,
     uf_group_id: null, // int
+    /**
+     * @var {UFGroupModel}
+     */
+    ufGroupModel: null,
     initialize: function(models, options) {
       options = options || {};
       this.uf_group_id = options.uf_group_id;
+      this.ufGroupModel = options.ufGroupModel;
+      this.on('reset', this._relateAll, this);
+      this.on('add', this._relate, this);
       this.on('add', this.watchDuplicates, this);
       this.on('remove', this.unwatchDuplicates, this);
     },
@@ -218,6 +230,15 @@
       return _.sortBy(fields, function(ufFieldJSON){
         return parseInt(ufFieldJSON.weight);
       });
+    },
+    _relateAll: function() {
+      var ufGroupModel = this.ufGroupModel;
+      this.each(function(model) {
+        model.set('ufGroupModel', ufGroupModel);
+      });
+    },
+    _relate: function(ufFieldModel) {
+      ufFieldModel.set('ufGroupModel', this.ufGroupModel);
     },
     isAddable: function(ufFieldModel) {
       var entity_name = ufFieldModel.get('entity_name'),
@@ -297,14 +318,14 @@
    * Represents a list of entities in a customizable form
    *
    * options:
-   *  - ufGroup: UFGroupModel
+   *  - ufGroupModel: UFGroupModel
    */
   CRM.UF.UFEntityCollection = Backbone.Collection.extend({
     model: CRM.UF.UFEntityModel,
     byName: {},
     initialize: function(models, options) {
       options = options || {};
-      this.ufGroup = options.ufGroup;
+      this.ufGroupModel = options.ufGroupModel;
     },
     /**
      *
@@ -464,9 +485,14 @@
         {entity_name: 'contact_1', entity_type: 'IndividualModel'},
         {entity_name: 'activity_1', entity_type: 'ActivityModel'}
       ], {
-        ufGroup: this
+        ufGroupModel: this
       });
       this.set('ufEntityCollection', ufEntityCollection);
+      var ufFieldCollection = new CRM.UF.UFFieldCollection([], {
+        uf_group_id: this.id,
+        ufGroupModel: this
+      });
+      this.set('ufFieldCollection', ufFieldCollection);
     },
     getFieldSchema: function(entity_name, field_name) {
       var ufEntity = this.get('ufEntityCollection').getByName(entity_name);

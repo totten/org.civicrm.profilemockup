@@ -84,20 +84,17 @@ cj(document).ready(function($) {
             // Retrieve UF group and fields from the api
             CRM.api('UFGroup', 'getsingle', {id: ufId, "api.UFField.get": 1}, {
               success: function(formData) {
-                var ufFieldCollection = new CRM.UF.UFFieldCollection(_.values(formData["api.UFField.get"].values), {
-                  uf_group_id: ufId
-                });
                 // Note: With chaining, API returns some extraneous keys that aren't part of UFGroupModel
                 var ufGroupModel = new CRM.UF.UFGroupModel(_.pick(formData, _.keys(CRM.UF.UFGroupModel.prototype.schema)));
-                launchDesigner(ufGroupModel, ufFieldCollection);
+                ufGroupModel.get('ufFieldCollection').reset(_.values(formData["api.UFField.get"].values));
+                launchDesigner(ufGroupModel, ufGroupModel.get('ufFieldCollection'));
               }
             });
           }
           else {
             // Initialize new UF group
             var ufGroupModel = new CRM.UF.UFGroupModel();
-            var ufFieldCollection = new CRM.UF.UFFieldCollection();
-            launchDesigner(ufGroupModel, ufFieldCollection);
+            launchDesigner(ufGroupModel, ufGroupModel.get('ufFieldCollection'));
           }
         },
         close: function() {
