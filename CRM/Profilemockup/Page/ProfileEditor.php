@@ -7,7 +7,7 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
 
     CRM_Core_Resources::singleton()
       ->addSetting(array(
-        'civiCoreModels' => $this->getModels(),
+        'civiCoreModels' => self::getModels(),
         'PseudoConstant' => array(
           'locationType' => CRM_Core_PseudoConstant::locationType(),
           'phoneType' => CRM_Core_PseudoConstant::phoneType(),
@@ -40,19 +40,27 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
   }
 
   /**
+   * AJAX callback
+   */
+  static function getModelsJSON() {
+    echo json_encode(self::getModels());
+    CRM_Utils_System::civiExit();
+  }
+
+  /**
    * Get a list of Backbone-Form models
    *
    * @return array; keys are model names ("IndividualModel") and values describe 'sections' and 'schema'
    * @see js/model/crm.core.js
    * @see js/model/crm.mappedcore.js
    */
-  function getModels() {
+  static function getModels() {
     // FIXME: Depending on context (eg civicrm/profile/create vs search-columns), it may be appropriate to
     // pick importable or exportable fields
     $availableFields = CRM_Core_BAO_UFField::getAvailableFieldsFlat();
 
     $extends = array('Individual', 'Contact');
-    $civiCoreModels['IndividualModel'] = $this->convertCiviModelToBackboneModel(
+    $civiCoreModels['IndividualModel'] = self::convertCiviModelToBackboneModel(
       ts('Individual'),
       CRM_Contact_BAO_Contact::importableFields('Individual', FALSE, FALSE, TRUE, TRUE, TRUE),
       CRM_Core_BAO_CustomGroup::getGroupDetail(NULL, NULL, $extends),
@@ -60,7 +68,7 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
     );
 
     $extends = array('Activity');
-    $civiCoreModels['ActivityModel'] = $this->convertCiviModelToBackboneModel(
+    $civiCoreModels['ActivityModel'] = self::convertCiviModelToBackboneModel(
       ts('Activity'),
       CRM_Activity_BAO_Activity::importableFields('Activity'),
       CRM_Core_BAO_CustomGroup::getGroupDetail(NULL, NULL, $extends),
@@ -83,7 +91,7 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
    * @see js/model/crm.core.js
    * @see js/model/crm.mappedcore.js
    */
-  function convertCiviModelToBackboneModel($title, $fields, $customGroupTree, $availableFields) {
+  static function convertCiviModelToBackboneModel($title, $fields, $customGroupTree, $availableFields) {
     $locationFields = CRM_Core_BAO_UFGroup::getLocationFields();
 
     $result = array(

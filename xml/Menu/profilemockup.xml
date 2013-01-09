@@ -1,9 +1,15 @@
 <?xml version="1.0"?>
 <menu>
-  <item>
-    <path>civicrm/profile-editor</path>
-    <page_callback>CRM_Profilemockup_Page_ProfileEditor</page_callback>
-    <title>ProfileEditor</title>
-    <access_arguments>access CiviCRM</access_arguments>
-  </item>
+    <item>
+        <path>civicrm/profile-editor</path>
+        <page_callback>CRM_Profilemockup_Page_ProfileEditor</page_callback>
+        <title>ProfileEditor</title>
+        <access_arguments>access CiviCRM</access_arguments>
+    </item>
+    <item>
+        <path>civicrm/profile-editor/models</path>
+        <page_callback>CRM_Profilemockup_Page_ProfileEditor::getModelsJSON</page_callback>
+        <title>ProfileEditor</title>
+        <access_arguments>access CiviCRM</access_arguments>
+    </item>
 </menu>
