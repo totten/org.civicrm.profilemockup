@@ -500,10 +500,13 @@
       };
       this.setRel('paletteFieldCollection', paletteFieldCollection);
     },
-    getFieldSchema: function(entity_name, field_name) {
+    getModelClass: function(entity_name) {
       var ufEntity = this.getRel('ufEntityCollection').getByName(entity_name);
       if (!ufEntity) throw 'Failed to locate entity: ' + entity_name;
-      var modelClass = CRM.CoreModel[ufEntity.get('entity_type')];
+      return CRM.CoreModel[ufEntity.get('entity_type')];
+    },
+    getFieldSchema: function(entity_name, field_name) {
+      var modelClass = this.getModelClass(entity_name);
       var fieldSchema = modelClass.prototype.schema[field_name];
       if (!fieldSchema) throw 'Failed to locate field: ' + entity_name + "." + field_name;
       return fieldSchema;

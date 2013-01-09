@@ -5,11 +5,6 @@
   CRM.Designer.PaletteFieldModel = CRM.Backbone.Model.extend({
     defaults: {
       /**
-       * @var {class} required; eg CRM.CoreModel.ActivityModel
-       */
-      modelClass: null,
-
-      /**
        * @var {string} required; a form-specific binding to an entity instance (eg 'student', 'mother')
        */
       entityName: null,
@@ -20,7 +15,6 @@
       fieldName: null
     },
     initialize: function() {
-      var fieldSchema = this.get('modelClass').prototype.schema[this.get('fieldName')];
     },
     getFieldSchema: function() {
       return this.getRel('ufGroupModel').getFieldSchema(this.get('entityName'), this.get('fieldName'));
@@ -32,7 +26,7 @@
       return this.getFieldSchema().section || 'default';
     },
     getSection: function() {
-      return this.get('modelClass').prototype.sections[this.getSectionName()];
+      return this.getRel('ufGroupModel').getModelClass(this.get('entityName')).prototype.sections[this.getSectionName()];
     },
     /**
      * Add a new UFField model to a UFFieldCollection (if doing so is legal).
