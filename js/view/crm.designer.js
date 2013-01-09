@@ -164,8 +164,11 @@
       _.each(this.model.getFieldsByEntitySection(), function(values, key) {
         var items = [];
         _.each(values, function(vals, k) {
-          items.push({data: vals.get('label'), attr: {"data-plm-cid": vals.cid}});
+          items.push({data: vals.get('label'), attr: {class: 'crm-designer-palette-field', "data-plm-cid": vals.cid}});
         });
+        if (sections[key].is_addable) {
+          items.push({data: 'placeholder', attr: {class: 'crm-designer-palette-add', 'data-section-key': key}});
+        }
         treeData.push({data: sections[key].title, children: items});
       });
       this.$('.crm-designer-palette-tree').jstree({
@@ -181,13 +184,13 @@
         },
         'plugins': ['themes', 'json_data', 'ui', 'search']
       }).bind('loaded.jstree', function () {
-        $('.jstree-leaf', this).draggable({
+        $('.crm-designer-palette-field', this).draggable({
           appendTo: '#crm-designer',
           zIndex: $(this.$el).zIndex() + 5000,
           helper: 'clone',
           connectToSortable: '.crm-designer-fields' // FIXME: tight canvas/palette coupling
         });
-        $('.jstree-leaf', this).dblclick(function(event){
+        $('.crm-designer-palette-field', this).dblclick(function(event){
           var paletteFieldModel = paletteView.model.get($(event.currentTarget).attr('data-plm-cid'));
           paletteFieldModel.addToUFCollection(paletteView.options.ufFieldCollection);
           event.stopPropagation();
@@ -195,6 +198,15 @@
         paletteView.options.ufFieldCollection.each(function(ufFieldModel) {
           paletteView.toggleActive(ufFieldModel, paletteView.options.ufFieldCollection)
         });
+        paletteView.$('.crm-designer-palette-add a').remove();
+        paletteView.$('.crm-designer-palette-add').append('<button>'+ts('Add Field')+'</button>');
+        paletteView.$('.crm-designer-palette-add button').button()
+          .click(function(event){
+            var sectionKey = $(event.currentTarget).closest('.crm-designer-palette-add').attr('data-section-key');
+            paletteView.doAddField(sectionKey);
+            event.stopPropagation();
+          })
+        ;
       }).bind("select_node.jstree", function (e, data) {
         $(this).jstree("toggle_node", data.rslt.obj);
         $(this).jstree("deselect_node", data.rslt.obj);
@@ -216,6 +228,16 @@
     },
     doSearch: function(event) {
       $('.crm-designer-palette-tree').jstree("search", $(event.target).val());
+    },
+    doAddField: function(sectionKey) {
+      var sections = this.model.getSections();
+      var section = sections[sectionKey];
+      var url = CRM.url('civicrm/admin/custom/group/field/add', {
+        reset: 1,
+        action: 'add',
+        gid: section.custom_group_id
+      });
+      window.open(url, '_blank');
     },
     doRefresh: function(event) {
       console.log('doRefresh');

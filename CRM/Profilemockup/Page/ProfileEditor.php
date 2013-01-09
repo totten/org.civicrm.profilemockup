@@ -123,6 +123,7 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
       $section = array(
         'title' => ts('%1: %2', array(1 => $title, 2 => $customGroup['title'])),
         'is_addable' => TRUE,
+        'custom_group_id' => $customGroup['id'],
       );
       $result['sections'][$sectionName] = $section;
     }

@@ -29,22 +29,22 @@
   font-weight: bold;
 }
 
-.crm-designer-palette .jstree-leaf,
-.crm-designer-palette .jstree-leaf.disabled:hover {
+.crm-designer-palette .crm-designer-palette-field,
+.crm-designer-palette .crm-designer-palette-field.disabled:hover {
   padding: 1px;
   border: 1px dashed transparent;
   background-color: transparent;
 }
 
-.crm-designer-palette .jstree-leaf a {
+.crm-designer-palette .crm-designer-palette-field a {
   cursor: move;
 }
 
-.crm-designer-palette .jstree-leaf.disabled a {
+.crm-designer-palette .crm-designer-palette-field.disabled a {
   cursor: default;
 }
 
-.crm-designer-palette .jstree-leaf:hover,
+.crm-designer-palette .crm-designer-palette-field:hover,
 .crm-designer-fields-region .crm-designer-row:hover,
 .crm-designer-open .crm-designer-row,
 .crm-designer-row-placeholder {
