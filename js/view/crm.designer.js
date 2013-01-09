@@ -163,8 +163,8 @@
       var sections = this.model.getSections();
       _.each(this.model.getFieldsByEntitySection(), function(values, key) {
         var items = [];
-        _.each(values, function(vals, k) {
-          items.push({data: vals.getLabel(), attr: {class: 'crm-designer-palette-field', "data-plm-cid": vals.cid}});
+        _.each(values, function(paletteFieldModel, k) {
+          items.push({data: paletteFieldModel.getLabel(), attr: {class: 'crm-designer-palette-field', "data-plm-cid": paletteFieldModel.cid}});
         });
         if (sections[key].is_addable) {
           items.push({data: 'placeholder', attr: {class: 'crm-designer-palette-add', 'data-section-key': key}});
