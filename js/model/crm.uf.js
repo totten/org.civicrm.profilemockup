@@ -60,11 +60,6 @@
       help_pre: '',
       help_post: '',
       /**
-       * @var {UFGroupModel} non-persistent link to the group which contains this field
-       * see also: uf_group_id
-       */
-      ufGroupModel: null,
-      /**
        * @var bool, non-persistent indication of whether this field is unique or duplicate
        * within its UFFieldCollection
        */
@@ -202,19 +197,13 @@
    * options:
    *  - uf_group_id: int
    */
-  CRM.UF.UFFieldCollection = Backbone.Collection.extend({
+  CRM.UF.UFFieldCollection = CRM.Backbone.Collection.extend({
     model: CRM.UF.UFFieldModel,
     uf_group_id: null, // int
-    /**
-     * @var {UFGroupModel}
-     */
-    ufGroupModel: null,
     initialize: function(models, options) {
       options = options || {};
       this.uf_group_id = options.uf_group_id;
-      this.ufGroupModel = options.ufGroupModel;
-      this.on('reset', this._relateAll, this);
-      this.on('add', this._relate, this);
+      this.initializeCopyToChildrenRelation('ufGroupModel', options.ufGroupModel, models);
       this.on('add', this.watchDuplicates, this);
       this.on('remove', this.unwatchDuplicates, this);
     },
@@ -230,15 +219,6 @@
       return _.sortBy(fields, function(ufFieldJSON){
         return parseInt(ufFieldJSON.weight);
       });
-    },
-    _relateAll: function() {
-      var ufGroupModel = this.ufGroupModel;
-      this.each(function(model) {
-        model.set('ufGroupModel', ufGroupModel);
-      });
-    },
-    _relate: function(ufFieldModel) {
-      ufFieldModel.set('ufGroupModel', this.ufGroupModel);
     },
     isAddable: function(ufFieldModel) {
       var entity_name = ufFieldModel.get('entity_name'),
@@ -320,12 +300,12 @@
    * options:
    *  - ufGroupModel: UFGroupModel
    */
-  CRM.UF.UFEntityCollection = Backbone.Collection.extend({
+  CRM.UF.UFEntityCollection = CRM.Backbone.Collection.extend({
     model: CRM.UF.UFEntityModel,
     byName: {},
     initialize: function(models, options) {
       options = options || {};
-      this.ufGroupModel = options.ufGroupModel;
+      this.initializeCopyToChildrenRelation('ufGroupModel', options.ufGroupModel, models);
     },
     /**
      *
@@ -346,15 +326,7 @@
   CRM.UF.UFGroupModel = CRM.Backbone.Model.extend({
     defaults: {
       title: ts('Unnamed Form'),
-      is_active: 1,
-      /**
-       * @var CRM.UF.UFEntityCollection non-persistent representation of UFEntity(s) in the UFGroup
-       */
-      ufEntityCollection: null,
-      /**
-       * @var CRM.UF.UFFieldCollection non-persistent representation of UFFields in the UFGroup
-       */
-      ufFieldCollection: null
+      is_active: 1
     },
     schema: {
       'id': {
@@ -487,15 +459,15 @@
       ], {
         ufGroupModel: this
       });
-      this.set('ufEntityCollection', ufEntityCollection);
+      this.setRel('ufEntityCollection', ufEntityCollection);
       var ufFieldCollection = new CRM.UF.UFFieldCollection([], {
         uf_group_id: this.id,
         ufGroupModel: this
       });
-      this.set('ufFieldCollection', ufFieldCollection);
+      this.setRel('ufFieldCollection', ufFieldCollection);
     },
     getFieldSchema: function(entity_name, field_name) {
-      var ufEntity = this.get('ufEntityCollection').getByName(entity_name);
+      var ufEntity = this.getRel('ufEntityCollection').getByName(entity_name);
       if (!ufEntity) throw 'Failed to locate entity: ' + entity_name;
       var modelClass = CRM.CoreModel[ufEntity.get('entity_type')];
       var fieldSchema = modelClass.prototype.schema[field_name];

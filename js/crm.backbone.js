@@ -3,6 +3,7 @@
   if (!CRM.Backbone) CRM.Backbone = {};
 
   CRM.Backbone.Model = Backbone.Model.extend({
+    rels: {},
     /**
      * Return JSON version of model -- but only include fields that are
      * listed in the 'schema'.
@@ -17,7 +18,53 @@
           delete result[key];
         }
       });
-      return this.attributes;
+      return result;
+    },
+    setRel: function(key, value, options) {
+      this.rels[key] = value;
+    },
+    getRel: function(key) {
+      return this.rels[key];
+    }
+  });
+
+  CRM.Backbone.Collection = Backbone.Collection.extend({
+    rels: {},
+    /**
+     * Store 'key' on this.rel and automatically copy it to
+     * any children.
+     *
+     * @param key
+     * @param value
+     * @param initialModels
+     */
+    initializeCopyToChildrenRelation: function(key, value, initialModels) {
+      this.setRel(key, value, {silent: true});
+      this.on('reset', this._copyToChildren, this);
+      this.on('add', this._copyToChild, this);
+      if (initialModels) {
+        _.each(initialModels, function(model){
+          model.rels = model.rels || {};
+          model.rels[key] = value;
+        });
+      }
+    },
+    _copyToChildren: function() {
+      var collection = this;
+      collection.each(function(model){
+        collection._copyToChild(model);
+      });
+    },
+    _copyToChild: function(model) {
+      _.each(this.rels, function(relValue, relKey){
+        model.setRel(relKey, relValue, {silent: true});
+      });
+    },
+    setRel: function(key, value, options) {
+      this.rels[key] = value;
+    },
+    getRel: function(key) {
+      return this.rels[key];
     }
   });
 

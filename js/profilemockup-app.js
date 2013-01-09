@@ -86,15 +86,15 @@ cj(document).ready(function($) {
               success: function(formData) {
                 // Note: With chaining, API returns some extraneous keys that aren't part of UFGroupModel
                 var ufGroupModel = new CRM.UF.UFGroupModel(_.pick(formData, _.keys(CRM.UF.UFGroupModel.prototype.schema)));
-                ufGroupModel.get('ufFieldCollection').reset(_.values(formData["api.UFField.get"].values));
-                launchDesigner(ufGroupModel, ufGroupModel.get('ufFieldCollection'));
+                ufGroupModel.getRel('ufFieldCollection').reset(_.values(formData["api.UFField.get"].values));
+                launchDesigner(ufGroupModel, ufGroupModel.getRel('ufFieldCollection'));
               }
             });
           }
           else {
             // Initialize new UF group
             var ufGroupModel = new CRM.UF.UFGroupModel();
-            launchDesigner(ufGroupModel, ufGroupModel.get('ufFieldCollection'));
+            launchDesigner(ufGroupModel, ufGroupModel.getRel('ufFieldCollection'));
           }
         },
         close: function() {
