@@ -256,13 +256,7 @@
       }
     },
     doRefresh: function(event) {
-      console.log('doRefresh');
-
-      // FIXME get new data
-      var newPFC = new CRM.Designer.PaletteFieldCollection();
-      newPFC.addEntity('contact_1', CRM.CoreModel.IndividualModel);
-      newPFC.addEntity('activity_1', CRM.CoreModel.ActivityModel);
-      this.model.reset(newPFC.models);
+      this.model.fetch();
       return false;
     },
     clearSearch: function(event) {
