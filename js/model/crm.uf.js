@@ -60,7 +60,7 @@
       help_pre: '',
       help_post: '',
       /**
-       * bool, non-persistent indication of whether this field is unique or duplicate
+       * @var bool, non-persistent indication of whether this field is unique or duplicate
        * within its UFFieldCollection
        */
       is_duplicate: false
@@ -270,12 +270,66 @@
   });
 
   /**
+   * Represents an entity in a customizable form
+   */
+  CRM.UF.UFEntityModel = CRM.Backbone.Model.extend({
+    schema: {
+      'id': {
+        // title: ts(''),
+        type: 'Number'
+      },
+      'entity_name': {
+        title: ts('Entity Name'),
+        help: ts('Symbolic name which referenced in the fields'),
+        type: 'Text'
+      },
+      'entity_type': {
+        title: ts('Entity Type'),
+        type: 'Select',
+        options: ['IndividualModel', 'ActivityModel']
+      }
+    },
+    initialize: function() {
+    }
+  });
+
+  /**
+   * Represents a list of entities in a customizable form
+   *
+   * options:
+   *  - ufGroup: UFGroupModel
+   */
+  CRM.UF.UFEntityCollection = Backbone.Collection.extend({
+    model: CRM.UF.UFEntityModel,
+    byName: {},
+    initialize: function(models, options) {
+      options = options || {};
+      this.ufGroup = options.ufGroup;
+    },
+    /**
+     *
+     * @param name
+     * @return {UFEntityModel} if found; otherwise, null
+     */
+    getByName: function(name) {
+      // TODO consider indexing
+      return this.find(function(ufEntityModel){
+        return ufEntityModel.get('entity_name') == name;
+      });
+    }
+  });
+
+  /**
    * Represents a customizable form
    */
   CRM.UF.UFGroupModel = CRM.Backbone.Model.extend({
     defaults: {
       title: ts('Unnamed Form'),
       is_active: 1,
+      /**
+       * @var CRM.UF.UFEntityCollection non-persistent representation of UFEntity(s) in the UFGroup
+       */
+      ufEntityCollection: null,
       /**
        * @var CRM.UF.UFFieldCollection non-persistent representation of UFFields in the UFGroup
        */
@@ -405,6 +459,22 @@
       }
     },
     initialize: function() {
+      // FIXME don't hardcode this data
+      var ufEntityCollection = new CRM.UF.UFEntityCollection([
+        {entity_name: 'contact_1', entity_type: 'IndividualModel'},
+        {entity_name: 'activity_1', entity_type: 'ActivityModel'}
+      ], {
+        ufGroup: this
+      });
+      this.set('ufEntityCollection', ufEntityCollection);
+    },
+    getFieldSchema: function(entity_name, field_name) {
+      var ufEntity = this.get('ufEntityCollection').getByName(entity_name);
+      if (!ufEntity) throw 'Failed to locate entity: ' + entity_name;
+      var modelClass = CRM.CoreModel[ufEntity.get('entity_type')];
+      var fieldSchema = modelClass.prototype.schema[field_name];
+      if (!fieldSchema) throw 'Failed to locate field: ' + entity_name + "." + field_name;
+      return fieldSchema;
     }
   });
 })();
