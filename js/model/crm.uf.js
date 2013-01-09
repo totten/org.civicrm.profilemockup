@@ -467,6 +467,38 @@
         ufGroupModel: this
       });
       this.setRel('ufFieldCollection', ufFieldCollection);
+
+      // FIXME list of entities depends on the UFGroup
+      var paletteFieldCollection = new CRM.Designer.PaletteFieldCollection([], {
+        ufGroupModel: this
+      });
+      paletteFieldCollection.addEntity('contact_1', CRM.CoreModel.IndividualModel);
+      paletteFieldCollection.addEntity('activity_1', CRM.CoreModel.ActivityModel);
+      paletteFieldCollection.sync = function(method, model, options) {
+        options || (options = {});
+        console.log(method, model, options);
+        switch (method) {
+          case 'read':
+            var newPFC = new CRM.Designer.PaletteFieldCollection();
+            newPFC.addEntity('contact_1', CRM.CoreModel.IndividualModel);
+            newPFC.addEntity('activity_1', CRM.CoreModel.ActivityModel);
+
+            var success = options.success;
+            options.success = function(resp, status, xhr) {
+              if (success) success(resp, status, xhr);
+              model.trigger('sync', model, resp, options);
+            };
+            success(newPFC.models);
+
+            break;
+          case 'create':
+          case 'update':
+          case 'delete':
+          default:
+            throw 'Unsupported method: ' + method;
+        }
+      };
+      this.setRel('paletteFieldCollection', paletteFieldCollection);
     },
     getFieldSchema: function(entity_name, field_name) {
       var ufEntity = this.getRel('ufEntityCollection').getByName(entity_name);

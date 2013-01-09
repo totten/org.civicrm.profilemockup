@@ -4,47 +4,18 @@ cj(document).ready(function($) {
     CRM.designerApp.addRegions({
       designerRegion: '#crm-designer'
     });
-    // Prepare data to pass into application
-    var paletteFieldCollection = new CRM.Designer.PaletteFieldCollection();
-    paletteFieldCollection.addEntity('contact_1', CRM.CoreModel.IndividualModel);
-    paletteFieldCollection.addEntity('activity_1', CRM.CoreModel.ActivityModel);
-    paletteFieldCollection.sync = function(method, model, options) {
-      options || (options = {});
-      console.log(method, model, options);
-      switch (method) {
-        case 'read':
-          var newPFC = new CRM.Designer.PaletteFieldCollection();
-          newPFC.addEntity('contact_1', CRM.CoreModel.IndividualModel);
-          newPFC.addEntity('activity_1', CRM.CoreModel.ActivityModel);
-
-          var success = options.success;
-          options.success = function(resp, status, xhr) {
-            if (success) success(resp, status, xhr);
-            model.trigger('sync', model, resp, options);
-          };
-          success(newPFC.models);
-
-          break;
-        case 'create':
-        case 'update':
-        case 'delete':
-        default:
-          throw 'Unsupported method: ' + method;
-      }
-    };
 
     /**
      * Prepare application
      */
     var launchDesigner = function(ufGroupModel, ufFieldCollection) {
-      window.tmpPaletteFieldCollection = paletteFieldCollection; // temporary; for debugging
       window.tmpUFGroupModel = ufGroupModel; // temporary; for debugging
 
       var designerLayout = new CRM.Designer.DesignerLayout({
         model: ufGroupModel,
         el: '<div class="full-height"></div>',
         ufFieldCollection: ufFieldCollection,
-        paletteFieldCollection: paletteFieldCollection
+        paletteFieldCollection: ufGroupModel.getRel('paletteFieldCollection')
       });
       $("#crm-designer-dialog").unblock();
       CRM.designerApp.designerRegion.show(designerLayout);

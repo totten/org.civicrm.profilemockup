@@ -81,9 +81,15 @@
     }
   });
 
-  CRM.Designer.PaletteFieldCollection = Backbone.Collection.extend({
+  /**
+   *
+   * options:
+   *  - ufGroupModel: UFGroupModel
+   */
+  CRM.Designer.PaletteFieldCollection = CRM.Backbone.Collection.extend({
     model: CRM.Designer.PaletteFieldModel,
-    initialize: function() {
+    initialize: function(models, options) {
+      this.initializeCopyToChildrenRelation('ufGroupModel', options.ufGroupModel, models);
     },
     addEntity: function(entityName, modelClass, options) {
       var collection = this;
