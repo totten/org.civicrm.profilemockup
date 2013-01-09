@@ -55,7 +55,6 @@
     /**
      * Backbone.Form descripton of the field to which this refers
      */
-    fieldSchema: null,
     defaults: {
       help_pre: '',
       help_post: '',
@@ -150,12 +149,14 @@
     },
     initialize: function() {
       this.set('entity_name', CRM.UF.guessEntityName(this.get('field_type')));
-      this.fieldSchema = this.get('fieldSchema');
-      this.unset('fieldSchema');
-      if (this.fieldSchema && this.fieldSchema.civiIsLocation && !this.get('location_type_id')) {
+      this.on("rel:ufGroupModel", this.applyDefaults, this);
+    },
+    applyDefaults: function() {
+      var fieldSchema = this.getFieldSchema();
+      if (fieldSchema && fieldSchema.civiIsLocation && !this.get('location_type_id')) {
         this.set('location_type_id', DEFAULT_LOCATION_TYPE_ID);
       }
-      if (this.fieldSchema && this.fieldSchema.civiIsPhone && !this.get('phone_type_id')) {
+      if (fieldSchema && fieldSchema.civiIsPhone && !this.get('phone_type_id')) {
         this.set('phone_type_id', DEFAULT_PHONE_TYPE_ID);
       }
     },
@@ -164,7 +165,7 @@
       return visibility.isInSelectorAllowed;
     },
     getFieldSchema: function() {
-      return this.fieldSchema;
+      return this.getRel('ufGroupModel').getFieldSchema(this.get('entity_name'), this.get('field_name'));
     },
     /**
      * Create a uniqueness signature. Ideally, each UFField in a UFGroup should
@@ -223,7 +224,7 @@
     isAddable: function(ufFieldModel) {
       var entity_name = ufFieldModel.get('entity_name'),
         field_name = ufFieldModel.get('field_name'),
-        fieldSchema = ufFieldModel.getFieldSchema();
+        fieldSchema = this.getRel('ufGroupModel').getFieldSchema(ufFieldModel.get('entity_name'), ufFieldModel.get('field_name'));
 
       if (! fieldSchema) {
         throw ('Missing fieldSchema for ' + entity_name + "." + field_name);
@@ -457,7 +458,8 @@
         {entity_name: 'contact_1', entity_type: 'IndividualModel'},
         {entity_name: 'activity_1', entity_type: 'ActivityModel'}
       ], {
-        ufGroupModel: this
+        ufGroupModel: this,
+        silent: false
       });
       this.setRel('ufEntityCollection', ufEntityCollection);
       var ufFieldCollection = new CRM.UF.UFFieldCollection([], {

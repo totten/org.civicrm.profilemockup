@@ -54,7 +54,7 @@
      */
     addToUFCollection: function(ufFieldCollection, addOptions) {
       var paletteFieldModel = this;
-      var ufFieldModel = paletteFieldModel.createUFFieldModel();
+      var ufFieldModel = paletteFieldModel.createUFFieldModel(ufFieldCollection.getRel('ufGroupModel'));
       ufFieldModel.set('uf_group_id', ufFieldCollection.uf_group_id);
       if (!ufFieldCollection.isAddable(ufFieldModel)) {
         CRM.alert(
@@ -69,9 +69,8 @@
       ufFieldCollection.add(ufFieldModel, addOptions);
       return ufFieldModel;
     },
-    createUFFieldModel: function() {
+    createUFFieldModel: function(ufGroupModel) {
       var model = new CRM.UF.UFFieldModel({
-        fieldSchema: this.get('fieldSchema'),
         is_active: 1,
         label: this.get('label'),
         entity_name: this.get('entityName'),

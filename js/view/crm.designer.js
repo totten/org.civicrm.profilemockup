@@ -266,10 +266,6 @@
     toggleActive: function(ufFieldModel, ufFieldCollection, options) {
       var paletteFieldCollection = this.model;
       var paletteFieldModel = paletteFieldCollection.getFieldByName(ufFieldModel.get('entity_name'), ufFieldModel.get('field_name'));
-      if (!ufFieldModel.getFieldSchema()) {
-        // FIXME: This fills in the 'fieldSchema' property for ufFieldModel, but this is a silly place to do it.
-        ufFieldModel.fieldSchema = paletteFieldModel.get('fieldSchema');
-      }
       var isAddable = ufFieldCollection.isAddable(ufFieldModel);
       this.$('[data-plm-cid='+paletteFieldModel.cid+']').toggleClass('disabled', !isAddable);
     },
