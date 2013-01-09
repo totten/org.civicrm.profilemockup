@@ -230,14 +230,30 @@
       $('.crm-designer-palette-tree').jstree("search", $(event.target).val());
     },
     doAddField: function(sectionKey) {
+      var paletteView = this;
       var sections = this.model.getSections();
       var section = sections[sectionKey];
-      var url = CRM.url('civicrm/admin/custom/group/field/add', {
-        reset: 1,
-        action: 'add',
-        gid: section.custom_group_id
-      });
-      window.open(url, '_blank');
+      var openAddNewWindow = function() {
+        var url = CRM.url('civicrm/admin/custom/group/field/add', {
+          reset: 1,
+          action: 'add',
+          gid: section.custom_group_id
+        });
+        window.open(url, '_blank');
+      };
+
+      if (paletteView.hideAddFieldAlert) {
+        openAddNewWindow();
+      } else {
+        CRM.confirm({
+          title: ts('Add Field'),
+          message: ts('A new window or tab will open. Use the new window to add your field, and then return to this window and click "Refresh."'),
+          onContinue: function() {
+            paletteView.hideAddFieldAlert = true;
+            openAddNewWindow();
+          }
+        });
+      }
     },
     doRefresh: function(event) {
       console.log('doRefresh');
