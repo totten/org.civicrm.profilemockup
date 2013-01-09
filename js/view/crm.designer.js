@@ -164,7 +164,7 @@
       _.each(this.model.getFieldsByEntitySection(), function(values, key) {
         var items = [];
         _.each(values, function(vals, k) {
-          items.push({data: vals.get('label'), attr: {class: 'crm-designer-palette-field', "data-plm-cid": vals.cid}});
+          items.push({data: vals.getLabel(), attr: {class: 'crm-designer-palette-field', "data-plm-cid": vals.cid}});
         });
         if (sections[key].is_addable) {
           items.push({data: 'placeholder', attr: {class: 'crm-designer-palette-add', 'data-section-key': key}});
@@ -448,7 +448,7 @@
      * @return {String}
      */
     getBindingLabel: function() {
-      var result = this.options.paletteFieldModel.getSection().title + ": " + this.options.paletteFieldModel.get('label');
+      var result = this.options.paletteFieldModel.getSection().title + ": " + this.options.paletteFieldModel.getLabel();
       if (this.options.fieldSchema.civiIsPhone) {
         result = result + '-' + CRM.PseudoConstant.phoneType[this.model.get('phone_type_id')];
       }
