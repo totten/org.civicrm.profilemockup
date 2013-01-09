@@ -391,12 +391,12 @@
     onRender: function() {
       this.summary.show(new CRM.Designer.UFFieldSummaryView({
         model: this.model,
-        fieldSchema: this.options.paletteFieldModel.get('fieldSchema'),
+        fieldSchema: this.options.paletteFieldModel.getFieldSchema(),
         paletteFieldModel: this.options.paletteFieldModel
       }));
       this.detail.show(new CRM.Designer.UFFieldDetailView({
         model: this.model,
-        fieldSchema: this.options.paletteFieldModel.get('fieldSchema'),
+        fieldSchema: this.options.paletteFieldModel.getFieldSchema(),
         paletteFieldModel: this.options.paletteFieldModel
       }));
       this.onChangeIsDuplicate(this.model, this.model.get('is_duplicate'))

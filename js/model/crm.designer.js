@@ -25,20 +25,17 @@
       fieldName: null,
 
       /**
-       * @var {object} like Backbone.Form
-       */
-      fieldSchema: null,
-
-      /**
        * @var {string}
        */
       label: null
     },
     initialize: function() {
       var fieldSchema = this.get('modelClass').prototype.schema[this.get('fieldName')];
-      this.set('fieldSchema', fieldSchema);
       this.set('sectionName', fieldSchema.section || 'default');
       this.set('label', fieldSchema.title || this.get('fieldName'));
+    },
+    getFieldSchema: function() {
+      return this.getRel('ufGroupModel').getFieldSchema(this.get('entityName'), this.get('fieldName'));
     },
     getSection: function() {
       return this.get('modelClass').prototype.sections[this.get('sectionName')];
@@ -74,7 +71,7 @@
         is_active: 1,
         label: this.get('label'),
         entity_name: this.get('entityName'),
-        field_type: this.get('fieldSchema').civiFieldType,
+        field_type: this.getFieldSchema().civiFieldType,
         field_name: this.get('fieldName')
       });
       return model;
