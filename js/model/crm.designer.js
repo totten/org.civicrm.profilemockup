@@ -17,17 +17,10 @@
       /**
        * @var {string}
        */
-      sectionName: null,
-
-      /**
-       * @var {string}
-       */
       fieldName: null
     },
     initialize: function() {
       var fieldSchema = this.get('modelClass').prototype.schema[this.get('fieldName')];
-      this.set('sectionName', fieldSchema.section || 'default');
-      // this.set('label', fieldSchema.title || this.get('fieldName'));
     },
     getFieldSchema: function() {
       return this.getRel('ufGroupModel').getFieldSchema(this.get('entityName'), this.get('fieldName'));
@@ -35,8 +28,11 @@
     getLabel: function() {
       return this.getFieldSchema().title || this.get('fieldName');
     },
+    getSectionName: function() {
+      return this.getFieldSchema().section || 'default';
+    },
     getSection: function() {
-      return this.get('modelClass').prototype.sections[this.get('sectionName')];
+      return this.get('modelClass').prototype.sections[this.getSectionName()];
     },
     /**
      * Add a new UFField model to a UFFieldCollection (if doing so is legal).
@@ -119,7 +115,7 @@
     getFieldsByEntitySection: function() {
       // TODO cache
       var fieldsByEntitySection = this.groupBy(function(paletteFieldModel) {
-        return paletteFieldModel.get('entityName') + '-' + paletteFieldModel.get('sectionName');
+        return paletteFieldModel.get('entityName') + '-' + paletteFieldModel.getSectionName();
       });
       return fieldsByEntitySection;
     },
