@@ -388,13 +388,12 @@
     onRender: function() {
       this.summary.show(new CRM.Designer.UFFieldSummaryView({
         model: this.model,
-        fieldSchema: this.options.paletteFieldModel.getFieldSchema(),
+        fieldSchema: this.model.getFieldSchema(),
         paletteFieldModel: this.options.paletteFieldModel
       }));
       this.detail.show(new CRM.Designer.UFFieldDetailView({
         model: this.model,
-        fieldSchema: this.options.paletteFieldModel.getFieldSchema(),
-        paletteFieldModel: this.options.paletteFieldModel
+        fieldSchema: this.model.getFieldSchema()
       }));
       this.onChangeIsDuplicate(this.model, this.model.get('is_duplicate'))
       if (!this.expanded) {
@@ -479,7 +478,6 @@
    * options:
    * - model: CRM.UF.UFFieldModel
    * - fieldSchema: (Backbone.Form schema element)
-   * - paletteFieldModel: CRM.Designer.PaletteFieldModel
    */
   CRM.Designer.UFFieldDetailView = Backbone.View.extend({
     initialize: function() {
