@@ -29,8 +29,6 @@
    *
    * options:
    *  - model: CRM.UF.UFGroupModel
-   *  - ufFieldCollection: CRM.UF.UFFieldCollection
-   *  - paletteFieldCollection: CRM.Designer.PaletteFieldCollection
    */
   CRM.Designer.DesignerLayout = Backbone.Marionette.Layout.extend({
     serializeData: extendedSerializeData,
@@ -43,20 +41,16 @@
     },
     onRender: function() {
       this.buttons.show(new CRM.Designer.ToolbarView({
-        ufGroupModel: this.model,
-        ufFieldCollection: this.options.ufFieldCollection
+        model: this.model
       }));
       this.palette.show(new CRM.Designer.PaletteView({
-        model: this.options.paletteFieldCollection,
-        ufFieldCollection: this.options.ufFieldCollection
+        model: this.model
       }));
       this.form.show(new CRM.Designer.UFGroupView({
         model: this.model
       }));
       this.fields.show(new CRM.Designer.UFFieldCanvasView({
-        model: this.model,
-        ufFieldCollection: this.options.ufFieldCollection,
-        paletteFieldCollection: this.options.paletteFieldCollection
+        model: this.model
       }));
     }
   });
@@ -65,8 +59,7 @@
    * Display toolbar with working button
    *
    * options:
-   *  - ufGroupModel: CRM.UF.UFGroupModel
-   *  - ufFieldCollection: CRM.UF.UFFieldCollection
+   *  - model: CRM.UF.UFGroupModel
    */
   CRM.Designer.ToolbarView = Backbone.Marionette.ItemView.extend({
     serializeData: extendedSerializeData,
@@ -81,13 +74,13 @@
       this.$('.crm-designer-preview').button();
     },
     doSave: function(event) {
-      if (this.options.ufFieldCollection.hasDuplicates()) {
+      if (this.model.getRel('ufFieldCollection').hasDuplicates()) {
         CRM.alert(ts('Please correct errors before saving.'), '', 'alert');
         return;
       }
       $('#crm-designer-dialog').block({message: 'Saving...', theme: true});
-      var profile = this.options.ufGroupModel.toStrictJSON();
-      profile["api.UFField.replace"] = {values: this.options.ufFieldCollection.toSortedJSON(), 'option.autoweight': 0};
+      var profile = this.model.toStrictJSON();
+      profile["api.UFField.replace"] = {values: this.model.getRel('ufFieldCollection').toSortedJSON(), 'option.autoweight': 0, debug: 1};
       CRM.api('UFGroup', 'create', profile, {success: function(data) {
         $('#crm-designer-dialog').unblock().dialog('close');
       }});
@@ -100,7 +93,7 @@
         $('.crm-designer-preview span').html(ts('Preview'));
         return;
       }
-      if (this.options.ufFieldCollection.hasDuplicates()) {
+      if (this.model.getRel('ufFieldCollection').hasDuplicates()) {
         CRM.alert(ts('Please correct errors before previewing.'), '', 'alert');
         return;
       }
@@ -113,8 +106,8 @@
           'class_name': 'CRM_Profilemockup_Form_Inline_Preview',
           'snippet': 1,
           'ufData': JSON.stringify({
-            ufGroup: this.options.ufGroupModel.toStrictJSON(),
-            ufFieldCollection: this.options.ufFieldCollection.toSortedJSON()
+            ufGroup: this.model.toStrictJSON(),
+            ufFieldCollection: this.model.getRel('ufFieldCollection').toSortedJSON()
           })
         }
       }).done(function(data) {
@@ -130,8 +123,7 @@
    * Display a selection of available fields
    *
    * options:
-   *  - model: CRM.Designer.PaletteFieldCollection
-   *  - ufFieldCollection: CRM.UF.UFFieldCollection
+   *  - model: CRM.UF.UFGroupModel
    */
   CRM.Designer.PaletteView = Backbone.Marionette.ItemView.extend({
     serializeData: extendedSerializeData,
@@ -144,15 +136,19 @@
       'click .crm-designer-palette-toggle': 'toggleAll'
     },
     initialize: function() {
-      this.options.ufFieldCollection.on('add', this.toggleActive, this);
-      this.options.ufFieldCollection.on('remove', this.toggleActive, this);
-      this.model.on('reset', this.render, this);
+      this.model.getRel('ufFieldCollection')
+        .on('add', this.toggleActive, this)
+        .on('remove', this.toggleActive, this);
+      this.model.getRel('paletteFieldCollection')
+        .on('reset', this.render, this);
       CRM.designerApp.vent.on('resize', this.onResize, this);
     },
     onClose: function() {
-      this.options.ufFieldCollection.off('add', this.toggleActive, this);
-      this.options.ufFieldCollection.off('remove', this.toggleActive, this);
-      this.model.off('reset', this.render, this);
+      this.model.getRel('ufFieldCollection')
+        .off('add', this.toggleActive, this)
+        .off('remove', this.toggleActive, this);
+      this.model.getRel('paletteFieldCollection')
+        .off('reset', this.render, this);
       CRM.designerApp.vent.off('resize', this.onResize, this);
     },
     onRender: function() {
@@ -160,8 +156,8 @@
 
       // Prepare data for jstree
       var treeData = [];
-      var sections = this.model.getSections();
-      _.each(this.model.getFieldsByEntitySection(), function(values, key) {
+      var sections = this.model.getRel('paletteFieldCollection').getSections();
+      _.each(this.model.getRel('paletteFieldCollection').getFieldsByEntitySection(), function(values, key) {
         var items = [];
         _.each(values, function(paletteFieldModel, k) {
           items.push({data: paletteFieldModel.getLabel(), attr: {class: 'crm-designer-palette-field', "data-plm-cid": paletteFieldModel.cid}});
@@ -171,6 +167,7 @@
         }
         treeData.push({data: sections[key].title, children: items});
       });
+
       this.$('.crm-designer-palette-tree').jstree({
         'json_data': {data: treeData},
         'search': {
@@ -191,12 +188,12 @@
           connectToSortable: '.crm-designer-fields' // FIXME: tight canvas/palette coupling
         });
         $('.crm-designer-palette-field', this).dblclick(function(event){
-          var paletteFieldModel = paletteView.model.get($(event.currentTarget).attr('data-plm-cid'));
-          paletteFieldModel.addToUFCollection(paletteView.options.ufFieldCollection);
+          var paletteFieldModel = paletteView.model.getRel('paletteFieldCollection').get($(event.currentTarget).attr('data-plm-cid'));
+          paletteFieldModel.addToUFCollection(paletteView.model.getRel('ufFieldCollection'));
           event.stopPropagation();
         });
-        paletteView.options.ufFieldCollection.each(function(ufFieldModel) {
-          paletteView.toggleActive(ufFieldModel, paletteView.options.ufFieldCollection)
+        paletteView.model.getRel('ufFieldCollection').each(function(ufFieldModel) {
+          paletteView.toggleActive(ufFieldModel, paletteView.model.getRel('ufFieldCollection'))
         });
         paletteView.$('.crm-designer-palette-add a').remove();
         paletteView.$('.crm-designer-palette-add').append('<button>'+ts('Add Field')+'</button>');
@@ -231,7 +228,7 @@
     },
     doAddField: function(sectionKey) {
       var paletteView = this;
-      var sections = this.model.getSections();
+      var sections = this.model.getRel('paletteFieldCollection').getSections();
       var section = sections[sectionKey];
       var openAddNewWindow = function() {
         var url = CRM.url('civicrm/admin/custom/group/field/add', {
@@ -256,7 +253,7 @@
       }
     },
     doRefresh: function(event) {
-      this.model.fetch();
+      this.model.getRel('paletteFieldCollection').fetch();
       return false;
     },
     clearSearch: function(event) {
@@ -264,7 +261,7 @@
       return false;
     },
     toggleActive: function(ufFieldModel, ufFieldCollection, options) {
-      var paletteFieldCollection = this.model;
+      var paletteFieldCollection = this.model.getRel('paletteFieldCollection');
       var paletteFieldModel = paletteFieldCollection.getFieldByName(ufFieldModel.get('entity_name'), ufFieldModel.get('field_name'));
       var isAddable = ufFieldCollection.isAddable(ufFieldModel);
       this.$('[data-plm-cid='+paletteFieldModel.cid+']').toggleClass('disabled', !isAddable);
@@ -282,19 +279,19 @@
    *
    * options:
    *  - model: CRM.UF.UFGroupModel
-   *  - ufFieldCollection: CRM.UF.UFFieldCollection
-   *  - paletteFieldCollection: CRM.Designer.PaletteFieldCollection
    */
   CRM.Designer.UFFieldCanvasView = Backbone.Marionette.View.extend({
     initialize: function() {
-      this.options.ufFieldCollection.on('add', this.updatePlaceholder, this);
-      this.options.ufFieldCollection.on('remove', this.updatePlaceholder, this);
-      this.options.ufFieldCollection.on('add', this.addUFFieldView, this);
+      this.model.getRel('ufFieldCollection')
+        .on('add', this.updatePlaceholder, this)
+        .on('remove', this.updatePlaceholder, this)
+        .on('add', this.addUFFieldView, this);
     },
     onClose: function() {
-      this.options.ufFieldCollection.off('add', this.updatePlaceholder, this);
-      this.options.ufFieldCollection.off('remove', this.updatePlaceholder, this);
-      this.options.ufFieldCollection.off('add', this.addUFFieldView, this);
+      this.model.getRel('ufFieldCollection')
+        .off('add', this.updatePlaceholder, this)
+        .off('remove', this.updatePlaceholder, this)
+        .off('add', this.addUFFieldView, this);
     },
     render: function() {
       var ufFieldCanvasView = this;
@@ -303,19 +300,19 @@
       // BOTTOM: Setup field-level editing
       var $fields = this.$('.crm-designer-fields');
       this.updatePlaceholder();
-      var ufFieldModels = this.options.ufFieldCollection.sortBy(function(ufFieldModel) {
+      var ufFieldModels = this.model.getRel('ufFieldCollection').sortBy(function(ufFieldModel) {
         return parseInt(ufFieldModel.get('weight'));
       });
       _.each(ufFieldModels, function(ufFieldModel) {
-        ufFieldCanvasView.addUFFieldView(ufFieldModel, ufFieldCanvasView.options.ufFieldCollection, {skipWeights: true});
+        ufFieldCanvasView.addUFFieldView(ufFieldModel, ufFieldCanvasView.model.getRel('ufFieldCollection'), {skipWeights: true});
       });
       this.$(".crm-designer-fields").sortable({
         placeholder: 'crm-designer-row-placeholder',
         forcePlaceholderSize: true,
         receive: function(event, ui) {
-          var paletteFieldModel = ufFieldCanvasView.options.paletteFieldCollection.get(ui.item.attr('data-plm-cid'));
+          var paletteFieldModel = ufFieldCanvasView.model.getRel('paletteFieldCollection').get(ui.item.attr('data-plm-cid'));
           var ufFieldModel = paletteFieldModel.addToUFCollection(
-            ufFieldCanvasView.options.ufFieldCollection,
+            ufFieldCanvasView.model.getRel('ufFieldCollection'),
             {skipWeights: true}
           );
           if (null == ufFieldModel) {
@@ -341,13 +338,13 @@
           return;
         }
         var ufFieldCid = $(row).attr('data-field-cid');
-        var ufFieldModel = ufFieldCanvasView.options.ufFieldCollection.get(ufFieldCid);
+        var ufFieldModel = ufFieldCanvasView.model.getRel('ufFieldCollection').get(ufFieldCid);
         ufFieldModel.set('weight', weight);
         weight++;
       });
     },
     addUFFieldView: function(ufFieldModel, ufFieldCollection, options) {
-      var paletteFieldModel = this.options.paletteFieldCollection.getFieldByName(ufFieldModel.get('entity_name'), ufFieldModel.get('field_name'));
+      var paletteFieldModel = this.model.getRel('paletteFieldCollection').getFieldByName(ufFieldModel.get('entity_name'), ufFieldModel.get('field_name'));
       var ufFieldView = new CRM.Designer.UFFieldView({
         el: $("<div></div>"),
         model: ufFieldModel,
@@ -360,7 +357,7 @@
       }
     },
     updatePlaceholder: function() {
-      if (this.options.ufFieldCollection.isEmpty()) {
+      if (this.model.getRel('ufFieldCollection').isEmpty()) {
         this.$('.placeholder').css({display: 'block', border: '0 none', cursor: 'default'});
       } else {
         this.$('.placeholder').hide();

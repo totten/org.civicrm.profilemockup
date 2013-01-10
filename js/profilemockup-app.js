@@ -8,14 +8,12 @@ cj(document).ready(function($) {
     /**
      * Prepare application
      */
-    var launchDesigner = function(ufGroupModel, ufFieldCollection) {
+    var launchDesigner = function(ufGroupModel) {
       window.tmpUFGroupModel = ufGroupModel; // temporary; for debugging
 
       var designerLayout = new CRM.Designer.DesignerLayout({
         model: ufGroupModel,
-        el: '<div class="full-height"></div>',
-        ufFieldCollection: ufFieldCollection,
-        paletteFieldCollection: ufGroupModel.getRel('paletteFieldCollection')
+        el: '<div class="full-height"></div>'
       });
       $("#crm-designer-dialog").unblock();
       CRM.designerApp.designerRegion.show(designerLayout);
@@ -58,14 +56,14 @@ cj(document).ready(function($) {
                 // Note: With chaining, API returns some extraneous keys that aren't part of UFGroupModel
                 var ufGroupModel = new CRM.UF.UFGroupModel(_.pick(formData, _.keys(CRM.UF.UFGroupModel.prototype.schema)));
                 ufGroupModel.getRel('ufFieldCollection').reset(_.values(formData["api.UFField.get"].values));
-                launchDesigner(ufGroupModel, ufGroupModel.getRel('ufFieldCollection'));
+                launchDesigner(ufGroupModel);
               }
             });
           }
           else {
             // Initialize new UF group
             var ufGroupModel = new CRM.UF.UFGroupModel();
-            launchDesigner(ufGroupModel, ufGroupModel.getRel('ufFieldCollection'));
+            launchDesigner(ufGroupModel);
           }
         },
         close: function() {
