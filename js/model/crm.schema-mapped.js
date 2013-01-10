@@ -19,7 +19,27 @@
     initialize: function() {
     }
   });
-  _.each(CRM.civiSchema, function(value, key, list) {
-    CRM.Schema[key] = CRM.Schema.BaseModel.extend(value);
-  });
+
+  CRM.Schema.loadModels = function(civiSchema) {
+    _.each(civiSchema, function(value, key, list) {
+      CRM.Schema[key] = CRM.Schema.BaseModel.extend(value);
+    });
+  };
+
+  CRM.Schema.reloadModels = function(options) {
+    return $
+      .ajax({
+        url: CRM.url("civicrm/profile-editor/schema"),
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+          if (data) {
+            CRM.civiSchema = data;
+            CRM.Schema.loadModels(CRM.civiSchema);
+          }
+        }
+      });
+  };
+
+  CRM.Schema.loadModels(CRM.civiSchema);
 })();

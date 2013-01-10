@@ -253,7 +253,14 @@
       }
     },
     doRefresh: function(event) {
-      this.model.getRel('paletteFieldCollection').fetch();
+      var ufGroupModel = this.model;
+      CRM.Schema.reloadModels()
+        .done(function(data){
+          ufGroupModel.resetEntities();
+        })
+        .fail(function() {
+          CRM.alert(ts('Failed to retrieve schema'));
+        });
       return false;
     },
     clearSearch: function(event) {
