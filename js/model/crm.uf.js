@@ -292,8 +292,11 @@
       }
     },
     initialize: function() {
+    },
+    getModelClass: function() {
+      return CRM.CoreModel[this.get('entity_type')];
     }
-  });
+});
 
   /**
    * Represents a list of entities in a customizable form
@@ -453,42 +456,34 @@
       }
     },
     initialize: function() {
-      // FIXME don't hardcode this data
-      var ufEntityCollection = new CRM.UF.UFEntityCollection([
-        {entity_name: 'contact_1', entity_type: 'IndividualModel'},
-        {entity_name: 'activity_1', entity_type: 'ActivityModel'}
-      ], {
+      var ufGroupModel = this;
+
+      var ufEntityCollection = new CRM.UF.UFEntityCollection([], {
         ufGroupModel: this,
         silent: false
       });
       this.setRel('ufEntityCollection', ufEntityCollection);
+
       var ufFieldCollection = new CRM.UF.UFFieldCollection([], {
         uf_group_id: this.id,
         ufGroupModel: this
       });
       this.setRel('ufFieldCollection', ufFieldCollection);
 
-      // FIXME list of entities depends on the UFGroup
       var paletteFieldCollection = new CRM.Designer.PaletteFieldCollection([], {
         ufGroupModel: this
       });
-      paletteFieldCollection.addEntity('contact_1', CRM.CoreModel.IndividualModel);
-      paletteFieldCollection.addEntity('activity_1', CRM.CoreModel.ActivityModel);
       paletteFieldCollection.sync = function(method, model, options) {
         options || (options = {});
-        console.log(method, model, options);
+        // console.log(method, model, options);
         switch (method) {
           case 'read':
-            var newPFC = new CRM.Designer.PaletteFieldCollection();
-            newPFC.addEntity('contact_1', CRM.CoreModel.IndividualModel);
-            newPFC.addEntity('activity_1', CRM.CoreModel.ActivityModel);
-
             var success = options.success;
             options.success = function(resp, status, xhr) {
               if (success) success(resp, status, xhr);
               model.trigger('sync', model, resp, options);
             };
-            success(newPFC.models);
+            success(ufGroupModel.buildPaletteFields());
 
             break;
           case 'create':
@@ -499,17 +494,58 @@
         }
       };
       this.setRel('paletteFieldCollection', paletteFieldCollection);
+
+      ufEntityCollection.on('reset', this.resetEntities, this)
+      this.resetEntities();
     },
     getModelClass: function(entity_name) {
       var ufEntity = this.getRel('ufEntityCollection').getByName(entity_name);
       if (!ufEntity) throw 'Failed to locate entity: ' + entity_name;
-      return CRM.CoreModel[ufEntity.get('entity_type')];
+      return ufEntity.getModelClass();
     },
     getFieldSchema: function(entity_name, field_name) {
       var modelClass = this.getModelClass(entity_name);
       var fieldSchema = modelClass.prototype.schema[field_name];
       if (!fieldSchema) throw 'Failed to locate field: ' + entity_name + "." + field_name;
       return fieldSchema;
+    },
+    resetEntities: function() {
+      this.getRel('paletteFieldCollection').reset(this.buildPaletteFields());
+    },
+    /**
+     *
+     * @return {Array} of PaletteFieldModel
+     */
+    buildPaletteFields: function() {
+      // rebuild list of fields; reuse old instances of PaletteFieldModel and create new ones
+      // as appropriate
+      // Note: The system as a whole is ill-defined in cases where we have an existing
+      // UFField that references a model field that disappears.
+
+      var ufGroupModel = this;
+
+      var oldPaletteFieldModelsBySig = {};
+      this.getRel('paletteFieldCollection').each(function(paletteFieldModel){
+        oldPaletteFieldModelsBySig[paletteFieldModel.get("entityName") + '::' + paletteFieldModel.get("fieldName")] = paletteFieldModel;
+      });
+
+      var newPaletteFieldModels = [];
+      this.getRel('ufEntityCollection').each(function(ufEntityModel){
+        var modelClass = ufEntityModel.getModelClass();
+        _.each(modelClass.prototype.schema, function(value, key, list) {
+          var model = oldPaletteFieldModelsBySig[ufEntityModel.get('entity_name') + '::' + key];
+          if (!model) {
+            model = new CRM.Designer.PaletteFieldModel({
+              modelClass: modelClass,
+              entityName: ufEntityModel.get('entity_name'),
+              fieldName: key
+            });
+          }
+          newPaletteFieldModels.push(model);
+        });
+      });
+
+      return newPaletteFieldModels;
     }
   });
 })();

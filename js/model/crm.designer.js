@@ -76,17 +76,6 @@
     initialize: function(models, options) {
       this.initializeCopyToChildrenRelation('ufGroupModel', options.ufGroupModel, models);
     },
-    addEntity: function(entityName, modelClass, options) {
-      var collection = this;
-      _.each(modelClass.prototype.schema, function(value, key, list) {
-        var model = new CRM.Designer.PaletteFieldModel({
-          modelClass: modelClass,
-          entityName: entityName,
-          fieldName: key
-        });
-        collection.add(model, options);
-      });
-    },
 
     /**
      * Look up a palette-field

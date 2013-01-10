@@ -55,6 +55,10 @@ cj(document).ready(function($) {
               success: function(formData) {
                 // Note: With chaining, API returns some extraneous keys that aren't part of UFGroupModel
                 var ufGroupModel = new CRM.UF.UFGroupModel(_.pick(formData, _.keys(CRM.UF.UFGroupModel.prototype.schema)));
+                ufGroupModel.getRel('ufEntityCollection').reset([
+                  {entity_name: 'contact_1', entity_type: 'IndividualModel'},
+                  {entity_name: 'activity_1', entity_type: 'ActivityModel'}
+                ]);
                 ufGroupModel.getRel('ufFieldCollection').reset(_.values(formData["api.UFField.get"].values));
                 launchDesigner(ufGroupModel);
               }
@@ -63,6 +67,10 @@ cj(document).ready(function($) {
           else {
             // Initialize new UF group
             var ufGroupModel = new CRM.UF.UFGroupModel();
+            ufGroupModel.getRel('ufEntityCollection').reset([
+              {entity_name: 'contact_1', entity_type: 'IndividualModel'},
+              {entity_name: 'activity_1', entity_type: 'ActivityModel'}
+            ]);
             launchDesigner(ufGroupModel);
           }
         },
