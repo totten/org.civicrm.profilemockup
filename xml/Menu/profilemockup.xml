@@ -7,8 +7,8 @@
         <access_arguments>access CiviCRM</access_arguments>
     </item>
     <item>
-        <path>civicrm/profile-editor/models</path>
-        <page_callback>CRM_Profilemockup_Page_ProfileEditor::getModelsJSON</page_callback>
+        <path>civicrm/profile-editor/schema</path>
+        <page_callback>CRM_Profilemockup_Page_ProfileEditor::getSchemaJSON</page_callback>
         <title>ProfileEditor</title>
         <access_arguments>access CiviCRM</access_arguments>
     </item>

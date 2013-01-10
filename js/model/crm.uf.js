@@ -294,7 +294,7 @@
     initialize: function() {
     },
     getModelClass: function() {
-      return CRM.CoreModel[this.get('entity_type')];
+      return CRM.Schema[this.get('entity_type')];
     }
 });
 

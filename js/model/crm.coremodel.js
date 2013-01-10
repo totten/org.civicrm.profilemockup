@@ -1,6 +1,6 @@
 (function() {
   var CRM = (window.CRM) ? (window.CRM) : (window.CRM = {});
-  if (!CRM.CoreModel) CRM.CoreModel = {};
+  if (!CRM.Schema) CRM.Schema = {};
 
   /**
    * Civi data models require more attributes than basic Backbone models:
@@ -10,7 +10,7 @@
    * @see https://github.com/powmedia/backbone-forms
    */
 
-  CRM.CoreModel.IndividualModel = CRM.Backbone.Model.extend({
+  CRM.Schema.IndividualModel = CRM.Backbone.Model.extend({
     sections: {
       'default': {title: 'Individual'},
       'custom1': {title: 'Individual: Favorite Things', is_addable: true},
@@ -32,7 +32,7 @@
   });
 
 
-  CRM.CoreModel.ActivityModel = CRM.Backbone.Model.extend({
+  CRM.Schema.ActivityModel = CRM.Backbone.Model.extend({
     sections: {
       'default': {title: 'Activity'},
       'custom3': {title: 'Activity: Questions', is_addable: true}

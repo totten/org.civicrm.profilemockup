@@ -7,7 +7,7 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
 
     CRM_Core_Resources::singleton()
       ->addSetting(array(
-        'civiCoreModels' => self::getModels(),
+        'civiSchema' => self::getSchema(),
         'PseudoConstant' => array(
           'locationType' => CRM_Core_PseudoConstant::locationType(),
           'phoneType' => CRM_Core_PseudoConstant::phoneType(),
@@ -42,8 +42,8 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
   /**
    * AJAX callback
    */
-  static function getModelsJSON() {
-    echo json_encode(self::getModels());
+  static function getSchemaJSON() {
+    echo json_encode(self::getSchema());
     CRM_Utils_System::civiExit();
   }
 
@@ -54,13 +54,13 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
    * @see js/model/crm.core.js
    * @see js/model/crm.mappedcore.js
    */
-  static function getModels() {
+  static function getSchema() {
     // FIXME: Depending on context (eg civicrm/profile/create vs search-columns), it may be appropriate to
     // pick importable or exportable fields
     $availableFields = CRM_Core_BAO_UFField::getAvailableFieldsFlat();
 
     $extends = array('Individual', 'Contact');
-    $civiCoreModels['IndividualModel'] = self::convertCiviModelToBackboneModel(
+    $civiSchema['IndividualModel'] = self::convertCiviModelToBackboneModel(
       ts('Individual'),
       CRM_Contact_BAO_Contact::importableFields('Individual', FALSE, FALSE, TRUE, TRUE, TRUE),
       CRM_Core_BAO_CustomGroup::getGroupDetail(NULL, NULL, $extends),
@@ -68,14 +68,14 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
     );
 
     $extends = array('Activity');
-    $civiCoreModels['ActivityModel'] = self::convertCiviModelToBackboneModel(
+    $civiSchema['ActivityModel'] = self::convertCiviModelToBackboneModel(
       ts('Activity'),
       CRM_Activity_BAO_Activity::importableFields('Activity'),
       CRM_Core_BAO_CustomGroup::getGroupDetail(NULL, NULL, $extends),
       $availableFields
     );
 
-    return $civiCoreModels;
+    return $civiSchema;
   }
 
   /**
