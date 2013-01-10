@@ -2,6 +2,7 @@
   var CRM = (window.CRM) ? (window.CRM) : (window.CRM = {});
   if (!CRM.Designer) CRM.Designer = {};
 
+  // TODO Optimize this class
   CRM.Designer.PaletteFieldModel = CRM.Backbone.Model.extend({
     defaults: {
       /**
@@ -20,9 +21,11 @@
       return this.getRel('ufGroupModel').getFieldSchema(this.get('entityName'), this.get('fieldName'));
     },
     getLabel: function() {
+      // Note: if fieldSchema were a bit tighter, then we need to get a label from PaletteFieldModel at all
       return this.getFieldSchema().title || this.get('fieldName');
     },
     getSectionName: function() {
+      // Note: if fieldSchema were a bit tighter, then we need to get a section from PaletteFieldModel at all
       return this.getFieldSchema().section || 'default';
     },
     getSection: function() {
