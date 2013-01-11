@@ -18,7 +18,7 @@ cj(document).ready(function($) {
       $("#crm-designer-dialog").unblock();
       CRM.designerApp.designerRegion.show(designerLayout);
       // Resize toolbar
-      handleSize();
+      CRM.designerApp.vent.trigger('resize');
       $('.crm-designer-toolbar').resizable({
         handles: 'w',
         maxWidth: 400,
@@ -28,13 +28,15 @@ cj(document).ready(function($) {
           $(this).css({left: '', height: ''});
         }
       }).css({left: '', height: ''});
+      CRM.Designer.isModified = false;
     };
 
-    /**
-     * Set height of palette
-     */
-    var handleSize = function() {
-      CRM.designerApp.vent.trigger('resize');
+    var undoState = false;
+    var undoAlert;
+    window.onbeforeunload = function() {
+      if (CRM.Designer.isDialogOpen && CRM.Designer.isModified) {
+        return ts("Your profile has not been saved.");
+      }
     };
 
     $('.crm-designer-open').click(function() {
@@ -47,37 +49,58 @@ cj(document).ready(function($) {
         minWidth: 500,
         minHeight: 600, // to allow dropping in big whitespace, coordinate with min-height of .crm-designer-fields
         open: function() {
-          $("#crm-designer-dialog").block({message: 'Loading...', theme: true});
-          var ufId = $('#test-profile-id').val();
-          if (ufId) {
-            // Retrieve UF group and fields from the api
-            CRM.api('UFGroup', 'getsingle', {id: ufId, "api.UFField.get": 1}, {
-              success: function(formData) {
-                // Note: With chaining, API returns some extraneous keys that aren't part of UFGroupModel
-                var ufGroupModel = new CRM.UF.UFGroupModel(_.pick(formData, _.keys(CRM.UF.UFGroupModel.prototype.schema)));
-                ufGroupModel.getRel('ufEntityCollection').reset([
-                  {entity_name: 'contact_1', entity_type: 'IndividualModel'},
-                  {entity_name: 'activity_1', entity_type: 'ActivityModel'}
-                ]);
-                ufGroupModel.getRel('ufFieldCollection').reset(_.values(formData["api.UFField.get"].values));
-                launchDesigner(ufGroupModel);
+          undoAlert && undoAlert.close && undoAlert.close();
+          CRM.Designer.isDialogOpen = true;
+          if (undoState === false) {
+            CRM.designerApp.designerRegion && CRM.designerApp.designerRegion.close && CRM.designerApp.designerRegion.close();
+            $("#crm-designer-dialog").block({message: 'Loading...', theme: true});
+            var ufId = $('#test-profile-id').val();
+            if (ufId) {
+              // Retrieve UF group and fields from the api
+              CRM.api('UFGroup', 'getsingle', {id: ufId, "api.UFField.get": 1}, {
+                success: function(formData) {
+                  // Note: With chaining, API returns some extraneous keys that aren't part of UFGroupModel
+                  var ufGroupModel = new CRM.UF.UFGroupModel(_.pick(formData, _.keys(CRM.UF.UFGroupModel.prototype.schema)));
+                  ufGroupModel.getRel('ufEntityCollection').reset([
+                    {entity_name: 'contact_1', entity_type: 'IndividualModel'},
+                    {entity_name: 'activity_1', entity_type: 'ActivityModel'}
+                  ]);
+                  ufGroupModel.getRel('ufFieldCollection').reset(_.values(formData["api.UFField.get"].values));
+                  launchDesigner(ufGroupModel);
+                }
+              });
+            }
+            else {
+              // Initialize new UF group
+              var ufGroupModel = new CRM.UF.UFGroupModel();
+              ufGroupModel.getRel('ufEntityCollection').reset([
+                {entity_name: 'contact_1', entity_type: 'IndividualModel'},
+                {entity_name: 'activity_1', entity_type: 'ActivityModel'}
+              ]);
+              launchDesigner(ufGroupModel);
+            }
+            $('.ui-dialog-titlebar-close').unbind('click').click(function() {
+              undoAlert && undoAlert.close && undoAlert.close();
+              if (CRM.Designer.isModified) {
+                undoAlert = CRM.alert('<a href="#" class="crm-undo">' + ts('Undo discard') + '</a>', ts('Changes Discarded'), 'alert', {expires: 20000});
+                $('.ui-notify-message a.crm-undo').click(function() {
+                  undoState = true;
+                  $("#crm-designer-dialog").dialog('open');
+                  return false;
+                });
               }
+              $("#crm-designer-dialog").dialog('close');
+              return false;
             });
           }
-          else {
-            // Initialize new UF group
-            var ufGroupModel = new CRM.UF.UFGroupModel();
-            ufGroupModel.getRel('ufEntityCollection').reset([
-              {entity_name: 'contact_1', entity_type: 'IndividualModel'},
-              {entity_name: 'activity_1', entity_type: 'ActivityModel'}
-            ]);
-            launchDesigner(ufGroupModel);
-          }
+          undoState = false;
         },
         close: function() {
-          CRM.designerApp.designerRegion.close();
+          CRM.Designer.isDialogOpen = false;
         },
-        resize: handleSize
+        resize: function() {
+          CRM.designerApp.vent.trigger('resize');
+        }
       });
     });
   }

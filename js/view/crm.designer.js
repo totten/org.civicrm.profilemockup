@@ -259,7 +259,7 @@
           ufGroupModel.resetEntities();
         })
         .fail(function() {
-          CRM.alert(ts('Failed to retrieve schema'));
+          CRM.alert(ts('Failed to retrieve schema'), ts('Error'), 'error');
         });
       return false;
     },

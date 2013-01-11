@@ -28,6 +28,10 @@
     return title + ' <a href=\'javascript:CRM.help("' + title + '", ' + JSON.stringify(options) + ')\' title="' + ts('%1 Help', {1: title}) + '" class="helpicon"></a>';
   }
 
+  function watchChanges() {
+    CRM.Designer.isModified = true;
+  }
+
   /**
    * This function is a hack for generating simulated values of "entity_name"
    * in the form-field model.
@@ -150,6 +154,7 @@
     initialize: function() {
       this.set('entity_name', CRM.UF.guessEntityName(this.get('field_type')));
       this.on("rel:ufGroupModel", this.applyDefaults, this);
+      this.on('change', watchChanges);
     },
     applyDefaults: function() {
       var fieldSchema = this.getFieldSchema();
@@ -207,6 +212,7 @@
       this.initializeCopyToChildrenRelation('ufGroupModel', options.ufGroupModel, models);
       this.on('add', this.watchDuplicates, this);
       this.on('remove', this.unwatchDuplicates, this);
+      this.on('change', watchChanges);
     },
     getFieldsByName: function(entityName, fieldName) {
       return this.filter(function(ufFieldModel) {
@@ -497,6 +503,8 @@
 
       ufEntityCollection.on('reset', this.resetEntities, this)
       this.resetEntities();
+
+      this.on('change', watchChanges);
     },
     getModelClass: function(entity_name) {
       var ufEntity = this.getRel('ufEntityCollection').getByName(entity_name);
