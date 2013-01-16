@@ -191,10 +191,27 @@
       $dialog.block({message: 'Saving...', theme: true});
       var profile = this.model.toStrictJSON();
       profile["api.UFField.replace"] = {values: this.model.getRel('ufFieldCollection').toSortedJSON(), 'option.autoweight': 0, debug: 1};
-      CRM.api('UFGroup', 'create', profile, {success: function(data) {
-        CRM.designerApp.vent.trigger('ufUnsaved', false);
-        $dialog.unblock().dialog('close');
-      }});
+      CRM.api('UFGroup', 'create', profile, {
+        success: function(data) {
+          console.log(data);
+          $dialog.unblock();
+          var error = false;
+          if (data.is_error) {
+            CRM.alert(data.error_message);
+            error = true;
+          }
+          _.each(data.values, function(ufGroupResponse) {
+            if (ufGroupResponse['api.UFField.replace'].is_error) {
+              CRM.alert(ufGroupResponse['api.UFField.replace'].error_message);
+              error = true;
+            }
+          });
+          if (!error) {
+            CRM.designerApp.vent.trigger('ufUnsaved', false);
+            $dialog.dialog('close');
+          }
+        }
+      });
     },
     doPreview: function(event) {
       this.previewMode = !this.previewMode;
