@@ -13,15 +13,34 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
           'phoneType' => CRM_Core_PseudoConstant::phoneType(),
         ),
         'profilePreviewKey' => CRM_Core_Key::get('CRM_Core_Controller_Simple', TRUE),
-      ))
-      ->addScriptFile('civicrm', 'packages/backbone/json2.js', 100, 'html-header')
-      ->addScriptFile('civicrm', 'packages/backbone/underscore.js', 110, 'html-header')
-      ->addScriptFile('civicrm', 'packages/backbone/backbone.js', 120, 'html-header')
-      ->addScriptFile('civicrm', 'packages/backbone/backbone.marionette.js', 125, 'html-header')
-      ->addScriptFile('civicrm', 'packages/backbone-forms/distribution/backbone-forms.js', 130, 'html-header')
-      ->addScriptFile('civicrm', 'packages/backbone-forms/distribution/adapters/backbone.bootstrap-modal.min.js', 140, 'html-header')
-      ->addScriptFile('civicrm', 'packages/backbone-forms/distribution/editors/list.min.js', 140, 'html-header')
-      ->addStyleFile('civicrm', 'packages/backbone-forms/distribution/templates/default.css', 140, 'html-header')
+      ));
+    if (FALSE) {
+      // New way based on in-progress changes for CRM-11612
+      CRM_Core_Resources::singleton()
+        ->addScriptFile('civicrm', 'packages/backbone/json2.js', 100, 'html-header')
+        ->addScriptFile('civicrm', 'packages/backbone/underscore.js', 110, 'html-header')
+        ->addScriptFile('civicrm', 'packages/backbone/backbone.js', 120, 'html-header')
+        ->addScriptFile('civicrm', 'packages/backbone/backbone.marionette.js', 125, 'html-header')
+        ->addScriptFile('civicrm', 'packages/backbone-forms/distribution/backbone-forms.js', 130, 'html-header')
+        ->addScriptFile('civicrm', 'packages/backbone-forms/distribution/adapters/backbone.bootstrap-modal.min.js', 140, 'html-header')
+        ->addScriptFile('civicrm', 'packages/backbone-forms/distribution/editors/list.min.js', 140, 'html-header')
+        ->addStyleFile('civicrm', 'packages/backbone-forms/distribution/templates/default.css', 140, 'html-header')
+        ;
+    } else {
+      // Old work-around
+      CRM_Core_Resources::singleton()
+        ->addScript('jQuery = $ = cj;') // HACK - must be removed
+        ->addScriptFile('civicrm', 'packages/backbone/json2.js', 100)
+        ->addScriptFile('civicrm', 'packages/backbone/underscore.js', 110)
+        ->addScriptFile('civicrm', 'packages/backbone/backbone.js', 120)
+        ->addScriptFile('civicrm', 'packages/backbone/backbone.marionette.js', 125)
+        ->addScriptFile('civicrm', 'packages/backbone-forms/distribution/backbone-forms.js', 130)
+        ->addScriptFile('civicrm', 'packages/backbone-forms/distribution/adapters/backbone.bootstrap-modal.min.js', 140)
+        ->addScriptFile('civicrm', 'packages/backbone-forms/distribution/editors/list.min.js', 140)
+        ->addStyleFile('civicrm', 'packages/backbone-forms/distribution/templates/default.css', 140)
+        ;
+    }
+    CRM_Core_Resources::singleton()
       ->addStyleFile('org.civicrm.profilemockup', 'css/profilemockup.css', 140)
       ->addScriptFile('org.civicrm.profilemockup', 'js/crm.backbone.js', 150)
       ->addScriptFile('org.civicrm.profilemockup', 'js/model/crm.schema-mapped.js', 200)
