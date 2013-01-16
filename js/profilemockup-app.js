@@ -4,7 +4,7 @@ cj(document).ready(function($) {
    *
    * vents:
    * - resize: the size/position of widgets should be adjusted
-   * - ufChanged: any part of a UFGroup was changed
+   * - ufUnsaved: any part of a UFGroup was changed; args: (is_changed:bool)
    * - formOpened: a toggleable form (such as a UFFieldView or a UFGroupView) has been opened
    */
   CRM.designerApp = new Backbone.Marionette.Application();

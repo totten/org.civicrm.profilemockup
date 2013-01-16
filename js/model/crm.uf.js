@@ -29,7 +29,7 @@
   }
 
   function watchChanges() {
-    CRM.designerApp.vent.trigger('ufChanged');
+    CRM.designerApp.vent.trigger('ufUnsaved', true);
   }
 
   /**

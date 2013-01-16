@@ -41,26 +41,26 @@
     /** @var bool whether this dialog is currently open */
     isDialogOpen: false,
     /** @var bool whether any changes have been made */
-    isUfChanged: false,
+    isUfUnsaved: false,
     /** @var unsure see CRM.alert() return */
     undoAlert: null,
     undoState: false,
 
     initialize: function(options) {
-      CRM.designerApp.vent.on('ufChanged', this.onUfChanged, this);
+      CRM.designerApp.vent.on('ufUnsaved', this.onUfChanged, this);
 
       var designerDialog = this;
       window.onbeforeunload = function() {
-        if (designerDialog.isDialogOpen && designerDialog.isUfChanged) {
+        if (designerDialog.isDialogOpen && designerDialog.isUfUnsaved) {
           return ts("Your profile has not been saved.");
         }
       };
     },
     onClose: function() {
-      CRM.designerApp.vent.off('ufChanged', this.onUfChanged, this);
+      CRM.designerApp.vent.off('ufUnsaved', this.onUfChanged, this);
     },
-    onUfChanged: function() {
-      this.isUfChanged = true;
+    onUfChanged: function(isUfUnsaved) {
+      this.isUfUnsaved = isUfUnsaved;
     },
     onRender: function() {
       var designerDialog = this;
@@ -77,20 +77,6 @@
           if (designerDialog.undoState === false) {
             designerDialog.designerRegion && designerDialog.designerRegion.close && designerDialog.designerRegion.close();
             designerDialog.$el.block({message: 'Loading...', theme: true});
-            // FIXME/TEST: $ => this.$
-            $('.ui-dialog-titlebar-close').unbind('click').click(function() {
-              designerDialog.undoAlert && designerDialog.undoAlert.close && designerDialog.undoAlert.close();
-              if (designerDialog.isUfChanged) {
-                designerDialog.undoAlert = CRM.alert('<a href="#" class="crm-undo">' + ts('Undo discard') + '</a>', ts('Changes Discarded'), 'alert', {expires: 20000});
-                $('.ui-notify-message a.crm-undo').click(function() {
-                  designerDialog.undoState = true;
-                  designerDialog.$el.dialog('open');
-                  return false;
-                });
-              }
-              designerDialog.$el.dialog('close');
-              return false;
-            });
             designerDialog.options.findCreateUfGroupModel({
               onLoad: function(ufGroupModel) {
                 var designerLayout = new CRM.Designer.DesignerLayout({
@@ -100,7 +86,7 @@
                 designerDialog.$el.unblock();
                 designerDialog.designerRegion.show(designerLayout);
                 CRM.designerApp.vent.trigger('resize');
-                designerDialog.isUfChanged = false;
+                designerDialog.isUfUnsaved = false;
               }
             });
           }
@@ -108,6 +94,16 @@
         },
         close: function() {
           designerDialog.isDialogOpen = false;
+
+          designerDialog.undoAlert && designerDialog.undoAlert.close && designerDialog.undoAlert.close();
+          if (designerDialog.isUfUnsaved) {
+            designerDialog.undoAlert = CRM.alert('<a href="#" class="crm-undo">' + ts('Undo discard') + '</a>', ts('Changes Discarded'), 'alert', {expires: 20000});
+            $('.ui-notify-message a.crm-undo').click(function() {
+              designerDialog.undoState = true;
+              designerDialog.$el.dialog('open');
+              return false;
+            });
+          }
         },
         resize: function() {
           CRM.designerApp.vent.trigger('resize');
@@ -196,6 +192,7 @@
       var profile = this.model.toStrictJSON();
       profile["api.UFField.replace"] = {values: this.model.getRel('ufFieldCollection').toSortedJSON(), 'option.autoweight': 0, debug: 1};
       CRM.api('UFGroup', 'create', profile, {success: function(data) {
+        CRM.designerApp.vent.trigger('ufUnsaved', false);
         $dialog.unblock().dialog('close');
       }});
     },
