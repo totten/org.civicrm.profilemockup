@@ -44,7 +44,7 @@
       var undoState = false;
       var undoAlert;
       window.onbeforeunload = function() {
-        if (CRM.Designer.isDialogOpen && CRM.Designer.isModified) {
+        if (designerDialog.isDialogOpen && CRM.Designer.isModified) {
           return ts("Your profile has not been saved.");
         }
       };
@@ -58,7 +58,7 @@
         minHeight: 600, // to allow dropping in big whitespace, coordinate with min-height of .crm-designer-fields
         open: function() {
           undoAlert && undoAlert.close && undoAlert.close();
-          CRM.Designer.isDialogOpen = true;
+          designerDialog.isDialogOpen = true;
           if (undoState === false) {
             designerDialog.designerRegion && designerDialog.designerRegion.close && designerDialog.designerRegion.close();
             designerDialog.$el.block({message: 'Loading...', theme: true});
@@ -92,7 +92,7 @@
           undoState = false;
         },
         close: function() {
-          CRM.Designer.isDialogOpen = false;
+          designerDialog.isDialogOpen = false;
         },
         resize: function() {
           CRM.designerApp.vent.trigger('resize');
