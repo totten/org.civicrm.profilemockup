@@ -42,6 +42,9 @@
     isDialogOpen: false,
     /** @var bool whether any changes have been made */
     isUfChanged: false,
+    /** @var unsure see CRM.alert() return */
+    undoAlert: null,
+    undoState: false,
 
     initialize: function(options) {
       CRM.designerApp.vent.on('ufChanged', this.onUfChanged, this);
@@ -61,10 +64,6 @@
     },
     onRender: function() {
       var designerDialog = this;
-
-      var undoState = false;
-      var undoAlert;
-
       designerDialog.$el.dialog({
         autoOpen: true, // note: affects accordion height
         title: 'Edit Profile',
@@ -73,18 +72,18 @@
         minWidth: 500,
         minHeight: 600, // to allow dropping in big whitespace, coordinate with min-height of .crm-designer-fields
         open: function() {
-          undoAlert && undoAlert.close && undoAlert.close();
+          designerDialog.undoAlert && designerDialog.undoAlert.close && designerDialog.undoAlert.close();
           designerDialog.isDialogOpen = true;
-          if (undoState === false) {
+          if (designerDialog.undoState === false) {
             designerDialog.designerRegion && designerDialog.designerRegion.close && designerDialog.designerRegion.close();
             designerDialog.$el.block({message: 'Loading...', theme: true});
             // FIXME/TEST: $ => this.$
             $('.ui-dialog-titlebar-close').unbind('click').click(function() {
-              undoAlert && undoAlert.close && undoAlert.close();
+              designerDialog.undoAlert && designerDialog.undoAlert.close && designerDialog.undoAlert.close();
               if (designerDialog.isUfChanged) {
-                undoAlert = CRM.alert('<a href="#" class="crm-undo">' + ts('Undo discard') + '</a>', ts('Changes Discarded'), 'alert', {expires: 20000});
+                designerDialog.undoAlert = CRM.alert('<a href="#" class="crm-undo">' + ts('Undo discard') + '</a>', ts('Changes Discarded'), 'alert', {expires: 20000});
                 $('.ui-notify-message a.crm-undo').click(function() {
-                  undoState = true;
+                  designerDialog.undoState = true;
                   designerDialog.$el.dialog('open');
                   return false;
                 });
@@ -105,7 +104,7 @@
               }
             });
           }
-          undoState = false;
+          designerDialog.undoState = false;
         },
         close: function() {
           designerDialog.isDialogOpen = false;
