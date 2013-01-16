@@ -48,7 +48,6 @@
     },
     onClose: function() {
       CRM.designerApp.vent.off('ufChanged', this.onUfChanged, this);
-      // FIXME actually close!
     },
     onUfChanged: function() {
       this.isUfChanged = true;
