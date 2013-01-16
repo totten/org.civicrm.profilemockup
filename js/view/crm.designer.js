@@ -38,7 +38,11 @@
     regions: {
       designerRegion: '.crm-designer'
     },
+    /** @var bool whether this dialog is currently open */
+    isDialogOpen: false,
+    /** @var bool whether any changes have been made */
     isUfChanged: false,
+
     initialize: function(options) {
       CRM.designerApp.vent.on('ufChanged', this.onUfChanged, this);
     },
