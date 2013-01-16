@@ -2,6 +2,34 @@
   var CRM = (window.CRM) ? (window.CRM) : (window.CRM = {});
   if (!CRM.ProfileSelector) CRM.ProfileSelector = {};
 
+  var findCreateUfGroupModel = function(options) {
+    var ufId = $('#test-profile-id').val();
+    if (ufId) {
+      // Retrieve UF group and fields from the api
+      CRM.api('UFGroup', 'getsingle', {id: ufId, "api.UFField.get": 1}, {
+        success: function(formData) {
+          // Note: With chaining, API returns some extraneous keys that aren't part of UFGroupModel
+          var ufGroupModel = new CRM.UF.UFGroupModel(_.pick(formData, _.keys(CRM.UF.UFGroupModel.prototype.schema)));
+          ufGroupModel.getRel('ufEntityCollection').reset([
+            {entity_name: 'contact_1', entity_type: 'IndividualModel'},
+            {entity_name: 'activity_1', entity_type: 'ActivityModel'}
+          ]);
+          ufGroupModel.getRel('ufFieldCollection').reset(_.values(formData["api.UFField.get"].values));
+          options.onLoad(ufGroupModel);
+        }
+      });
+    }
+    else {
+      // Initialize new UF group
+      var ufGroupModel = new CRM.UF.UFGroupModel();
+      ufGroupModel.getRel('ufEntityCollection').reset([
+        {entity_name: 'contact_1', entity_type: 'IndividualModel'},
+        {entity_name: 'activity_1', entity_type: 'ActivityModel'}
+      ]);
+      options.onLoad(ufGroupModel);
+    }
+  };
+
   CRM.ProfileSelector.View = Backbone.Marionette.ItemView.extend({
     template: '#profile_selector_template',
     events: {
@@ -18,6 +46,10 @@
     },
     doEdit: function() {
       console.log('doEdit');
+      var dialog = new CRM.Designer.DesignerDialog({
+        findCreateUfGroupModel: findCreateUfGroupModel
+      });
+      dialog.render();
     },
     doCopy: function() {
       console.log('doCopy');

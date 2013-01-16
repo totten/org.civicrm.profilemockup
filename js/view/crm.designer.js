@@ -23,6 +23,85 @@
   }
 
   /**
+   * Display a dialog window with an editable form for a UFGroupModel
+   *
+   * The implementation here is very "jQuery-style" and not "Backbone-style";
+   * it's been extracted
+   *
+   * options:
+   *  - model: CRM.UF.UFGroupModel
+   */
+  CRM.Designer.DesignerDialog = Backbone.Marionette.Layout.extend({
+    serializeData: extendedSerializeData,
+    template: '#designer_dialog_template',
+    className: 'crm-designer-dialog',
+    regions: {
+      designerRegion: '.crm-designer'
+    },
+    onRender: function() {
+      var designerDialog = this;
+
+      var undoState = false;
+      var undoAlert;
+      window.onbeforeunload = function() {
+        if (CRM.Designer.isDialogOpen && CRM.Designer.isModified) {
+          return ts("Your profile has not been saved.");
+        }
+      };
+
+      designerDialog.$el.dialog({
+        autoOpen: true, // note: affects accordion height
+        title: 'Edit Profile',
+        width: '75%',
+        height: 600,
+        minWidth: 500,
+        minHeight: 600, // to allow dropping in big whitespace, coordinate with min-height of .crm-designer-fields
+        open: function() {
+          undoAlert && undoAlert.close && undoAlert.close();
+          CRM.Designer.isDialogOpen = true;
+          if (undoState === false) {
+            designerDialog.designerRegion && designerDialog.designerRegion.close && designerDialog.designerRegion.close();
+            designerDialog.$el.block({message: 'Loading...', theme: true});
+            // FIXME/TEST: $ => this.$
+            designerDialog.$('.ui-dialog-titlebar-close').unbind('click').click(function() {
+              undoAlert && undoAlert.close && undoAlert.close();
+              if (CRM.Designer.isModified) {
+                undoAlert = CRM.alert('<a href="#" class="crm-undo">' + ts('Undo discard') + '</a>', ts('Changes Discarded'), 'alert', {expires: 20000});
+                $('.ui-notify-message a.crm-undo').click(function() {
+                  undoState = true;
+                  designerDialog.$el.dialog('open');
+                  return false;
+                });
+              }
+              designerDialog.$el.dialog('close');
+              return false;
+            });
+            designerDialog.options.findCreateUfGroupModel({
+              onLoad: function(ufGroupModel) {
+                var designerLayout = new CRM.Designer.DesignerLayout({
+                  model: ufGroupModel,
+                  el: '<div class="full-height"></div>'
+                });
+                designerDialog.$el.unblock();
+                designerDialog.designerRegion.show(designerLayout);
+                CRM.designerApp.vent.trigger('resize');
+                CRM.Designer.isModified = false;
+              }
+            });
+          }
+          undoState = false;
+        },
+        close: function() {
+          CRM.Designer.isDialogOpen = false;
+        },
+        resize: function() {
+          CRM.designerApp.vent.trigger('resize');
+        }
+      });
+    }
+  });
+
+  /**
    * Display a complete form-editing UI, including canvas, palette, and
    * buttons.
    *

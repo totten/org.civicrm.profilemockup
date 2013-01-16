@@ -11,7 +11,6 @@
 {/foreach}
   <option value="">- Add New Profile -</option>
 </select>
-<button class="crm-designer-open">Edit Profile</button>
 <div id="crm-designer-dialog" class="crm-designer-dialog">
   <div id="crm-designer" class="crm-designer crm-container full-height">
   </div>
@@ -128,4 +127,12 @@
     <button class="crm-profile-selector-edit">Edit</button>
     <button class="crm-profile-selector-copy">Copy</button>
     <button class="crm-profile-selector-create">Create</button>
+</script>
+
+{**
+ * Variables correspond to properties of CRM.ProfileSelector.DummyModel
+ *}
+<script type="text/template" id="designer_dialog_template">
+  <div class="crm-designer crm-container full-height">
+  </div>
 </script>
