@@ -79,7 +79,7 @@
             designerDialog.designerRegion && designerDialog.designerRegion.close && designerDialog.designerRegion.close();
             designerDialog.$el.block({message: 'Loading...', theme: true});
             // FIXME/TEST: $ => this.$
-            designerDialog.$('.ui-dialog-titlebar-close').unbind('click').click(function() {
+            $('.ui-dialog-titlebar-close').unbind('click').click(function() {
               undoAlert && undoAlert.close && undoAlert.close();
               if (designerDialog.isUfChanged) {
                 undoAlert = CRM.alert('<a href="#" class="crm-undo">' + ts('Undo discard') + '</a>', ts('Changes Discarded'), 'alert', {expires: 20000});
