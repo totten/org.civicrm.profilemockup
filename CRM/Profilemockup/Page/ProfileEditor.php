@@ -46,7 +46,10 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
       ->addScriptFile('org.civicrm.profilemockup', 'js/model/crm.schema-mapped.js', 200)
       ->addScriptFile('org.civicrm.profilemockup', 'js/model/crm.uf.js', 200)
       ->addScriptFile('org.civicrm.profilemockup', 'js/model/crm.designer.js', 200)
+      ->addScriptFile('org.civicrm.profilemockup', 'js/model/crm.profile-selector.js', 200)
       ->addScriptFile('org.civicrm.profilemockup', 'js/view/crm.designer.js', 200)
+      ->addScriptFile('org.civicrm.profilemockup', 'js/view/crm.profile-selector.js', 200)
+      ->addScriptFile('org.civicrm.profilemockup', 'js/jquery.crmprofile.js', 250)
       ->addScriptFile('org.civicrm.profilemockup', 'js/profilemockup-app.js', 250)
       ;
 

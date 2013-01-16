@@ -4,7 +4,7 @@
 
 <div id="profile_editor_app"></div>
 <label for="test-profile-id">Select Profile</label>
-<select id="test-profile-id">
+<select id="test-profile-id" class="crm-profile-selector">
 {crmAPI var='result' entity='UFGroup' action='get' sequential=1}
 {foreach from=$result.values item=UFGroup}
   <option value="{$UFGroup.id}">{$UFGroup.title}</option>
@@ -118,4 +118,14 @@
   <div class="crm-designer-fields">
     <div class="crm-designer-row placeholder">{ts}Drag a field from the palette to add it to this form.{/ts}</div>
   </div>
+</script>
+
+{**
+ * Variables correspond to properties of CRM.ProfileSelector.DummyModel
+ *}
+<script type="text/template" id="profile_selector_template">
+    <button class="crm-profile-selector-preview">Preview</button>
+    <button class="crm-profile-selector-edit">Edit</button>
+    <button class="crm-profile-selector-copy">Copy</button>
+    <button class="crm-profile-selector-create">Create</button>
 </script>
