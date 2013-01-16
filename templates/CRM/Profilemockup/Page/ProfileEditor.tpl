@@ -115,7 +115,7 @@
 
 <script type="text/template" id="field_canvas_view_template">
   <div class="crm-designer-fields">
-    <div class="crm-designer-row placeholder">{ts}Drag a field from the palette to add it to this form.{/ts}</div>
+    <div class="crm-designer-row placeholder">{ts}To add a field to this form, drag or double-click an item in the palette.{/ts}</div>
   </div>
 </script>
 
