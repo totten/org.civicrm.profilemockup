@@ -389,6 +389,7 @@
       "click .crm-designer-action-remove": 'doRemove'
     },
     modelEvents: {
+      "destroy": 'remove',
       "change:is_duplicate": 'onChangeIsDuplicate'
     },
     onRender: function() {
@@ -427,7 +428,6 @@
       var that = this;
       this.$el.hide(250, function() {
         that.model.destroyLocal();
-        that.remove();
       });
     }
   });

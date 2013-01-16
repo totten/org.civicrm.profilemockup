@@ -233,7 +233,7 @@
         fieldSchema = this.getRel('ufGroupModel').getFieldSchema(ufFieldModel.get('entity_name'), ufFieldModel.get('field_name'));
 
       if (! fieldSchema) {
-        throw ('Missing fieldSchema for ' + entity_name + "." + field_name);
+        return false;
       }
       var fields = this.getFieldsByName(entity_name, field_name);
       var limit = 1;
@@ -514,10 +514,24 @@
     getFieldSchema: function(entity_name, field_name) {
       var modelClass = this.getModelClass(entity_name);
       var fieldSchema = modelClass.prototype.schema[field_name];
-      if (!fieldSchema) throw 'Failed to locate field: ' + entity_name + "." + field_name;
+      if (!fieldSchema) {
+        if (console.log) {
+          console.log('Failed to locate field: ' + entity_name + "." + field_name);
+        }
+        return null;
+      }
       return fieldSchema;
     },
     resetEntities: function() {
+      var ufGroupModel = this;
+      ufGroupModel.getRel('ufFieldCollection').each(function(ufFieldModel){
+        if (!ufFieldModel.getFieldSchema()) {
+          CRM.alert(ts('The data model no longer includes field "%1"! All references to the field have been removed.', {
+            1: ufFieldModel.get('entity_name') + "." + ufFieldModel.get('field_name')
+          }), '', 'alert', {expires: false});
+          ufFieldModel.destroyLocal();
+        }
+      });
       this.getRel('paletteFieldCollection').reset(this.buildPaletteFields());
     },
     /**
