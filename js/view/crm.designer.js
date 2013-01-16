@@ -1,5 +1,4 @@
-(function() {
-  var CRM = (window.CRM) ? (window.CRM) : (window.CRM = {});
+(function($) {
   if (!CRM.Designer) CRM.Designer = {};
 
   /**
@@ -603,4 +602,4 @@
     }
   });
 
-})();
+})(cj);
