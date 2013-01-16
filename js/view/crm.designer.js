@@ -45,6 +45,13 @@
 
     initialize: function(options) {
       CRM.designerApp.vent.on('ufChanged', this.onUfChanged, this);
+
+      var designerDialog = this;
+      window.onbeforeunload = function() {
+        if (designerDialog.isDialogOpen && designerDialog.isUfChanged) {
+          return ts("Your profile has not been saved.");
+        }
+      };
     },
     onClose: function() {
       CRM.designerApp.vent.off('ufChanged', this.onUfChanged, this);
@@ -57,11 +64,6 @@
 
       var undoState = false;
       var undoAlert;
-      window.onbeforeunload = function() {
-        if (designerDialog.isDialogOpen && designerDialog.isUfChanged) {
-          return ts("Your profile has not been saved.");
-        }
-      };
 
       designerDialog.$el.dialog({
         autoOpen: true, // note: affects accordion height
