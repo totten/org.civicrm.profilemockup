@@ -97,11 +97,12 @@
         CRM.alert(ts('Please correct errors before saving.'), '', 'alert');
         return;
       }
-      $('#crm-designer-dialog').block({message: 'Saving...', theme: true});
+      var $dialog = this.$el.closest('.crm-designer-dialog'); // FIXME use events
+      $dialog.block({message: 'Saving...', theme: true});
       var profile = this.model.toStrictJSON();
       profile["api.UFField.replace"] = {values: this.model.getRel('ufFieldCollection').toSortedJSON(), 'option.autoweight': 0, debug: 1};
       CRM.api('UFGroup', 'create', profile, {success: function(data) {
-        $('#crm-designer-dialog').unblock().dialog('close');
+        $dialog.unblock().dialog('close');
       }});
     },
     doPreview: function(event) {
@@ -116,7 +117,8 @@
         CRM.alert(ts('Please correct errors before previewing.'), '', 'alert');
         return;
       }
-      $('#crm-designer-dialog').block({message: 'Loading...', theme: true});
+      var $dialog = this.$el.closest('.crm-designer-dialog'); // FIXME use events
+      $dialog.block({message: 'Loading...', theme: true});
       $.ajax({
         url: CRM.url("civicrm/ajax/inline"),
         type: 'POST',
@@ -130,7 +132,7 @@
           })
         }
       }).done(function(data) {
-        $('#crm-designer-dialog').unblock();
+        $dialog.unblock();
         $('.crm-designer-canvas > *, .crm-designer-palette-region').hide();
         $('.crm-designer-preview-canvas').html(data).show();
         $('.crm-designer-preview span').html(ts('Edit'));

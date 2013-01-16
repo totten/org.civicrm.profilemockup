@@ -123,7 +123,7 @@
 }
 
 .crm-designer-row .crm-designer-buttons a:hover,
-#crm-designer button:hover {
+.crm-designer button:hover {
   box-shadow: 1px 1px 2px #7D7C8C;
 }
 
@@ -161,34 +161,34 @@
   height: 2em;
 }
 
-#crm-designer-dialog .description {
+.crm-designer-dialog .description {
   margin: 0px 2em 0px 0px;
 }
 
-#crm-designer-dialog .disabled .description {
+.crm-designer-dialog .disabled .description {
   display: none;
 }
 
-#crm-designer-dialog li.crm-designer-row-placeholder,
-#crm-designer-dialog li.ui-draggable-dragging,
-#crm-designer-dialog .bbf-form ul {
+.crm-designer-dialog li.crm-designer-row-placeholder,
+.crm-designer-dialog li.ui-draggable-dragging,
+.crm-designer-dialog .bbf-form ul {
   list-style-image: none;
   list-style: none;
 }
 
-#crm-designer-dialog {
+.crm-designer-dialog {
   overflow: visible;
 }
 
-#crm-designer-dialog .full-height {
+.crm-designer-dialog .full-height {
   height: 100%;
 }
 
-#crm-designer {
+.crm-designer {
   position: relative;
 }
 
-#crm-designer .scroll {
+.crm-designer .scroll {
   overflow-x: auto;
   overflow-y: scroll;
 }
