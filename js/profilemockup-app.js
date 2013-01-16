@@ -10,25 +10,13 @@ cj(document).ready(function($) {
      * Prepare application
      */
     var launchDesigner = function(ufGroupModel) {
-      window.tmpUFGroupModel = ufGroupModel; // temporary; for debugging
-
       var designerLayout = new CRM.Designer.DesignerLayout({
         model: ufGroupModel,
         el: '<div class="full-height"></div>'
       });
       $("#crm-designer-dialog").unblock();
       CRM.designerApp.designerRegion.show(designerLayout);
-      // Resize toolbar
       CRM.designerApp.vent.trigger('resize');
-      $('.crm-designer-toolbar').resizable({
-        handles: 'w',
-        maxWidth: 400,
-        minWidth: 150,
-        resize: function(event, ui) {
-          $('.crm-designer-canvas').css('margin-right', (ui.size.width + 10) + 'px');
-          $(this).css({left: '', height: ''});
-        }
-      }).css({left: '', height: ''});
       CRM.Designer.isModified = false;
     };
 

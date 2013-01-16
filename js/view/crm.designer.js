@@ -38,6 +38,12 @@
       form: '.crm-designer-form-region',
       fields: '.crm-designer-fields-region'
     },
+    initialize: function() {
+      CRM.designerApp.vent.on('resize', this.onResize, this);
+    },
+    onClose: function() {
+      CRM.designerApp.vent.off('resize', this.onResize, this);
+    },
     onRender: function() {
       this.buttons.show(new CRM.Designer.ToolbarView({
         model: this.model
@@ -51,6 +57,20 @@
       this.fields.show(new CRM.Designer.UFFieldCanvasView({
         model: this.model
       }));
+    },
+    onResize: function() {
+      if (! this.hasResizedBefore) {
+        this.hasResizedBefore = true;
+        this.$('.crm-designer-toolbar').resizable({
+          handles: 'w',
+          maxWidth: 400,
+          minWidth: 150,
+          resize: function(event, ui) {
+            $('.crm-designer-canvas').css('margin-right', (ui.size.width + 10) + 'px');
+            $(this).css({left: '', height: ''});
+          }
+        }).css({left: '', height: ''});
+      }
     }
   });
 
