@@ -30,6 +30,8 @@
     }
   };
 
+  var designerDialog = null;
+
   CRM.ProfileSelector.View = Backbone.Marionette.ItemView.extend({
     template: '#profile_selector_template',
     events: {
@@ -46,10 +48,14 @@
     },
     doEdit: function() {
       console.log('doEdit');
-      var dialog = new CRM.Designer.DesignerDialog({
+      if (designerDialog) {
+        // we may have kept it around to facilitate undo, but it's moot now
+        designerDialog.close();
+      }
+      designerDialog = new CRM.Designer.DesignerDialog({
         findCreateUfGroupModel: findCreateUfGroupModel
       });
-      dialog.render();
+      designerDialog.render();
     },
     doCopy: function() {
       console.log('doCopy');

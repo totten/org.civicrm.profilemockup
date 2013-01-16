@@ -29,7 +29,7 @@
   }
 
   function watchChanges() {
-    CRM.Designer.isModified = true;
+    CRM.designerApp.vent.trigger('ufChanged');
   }
 
   /**

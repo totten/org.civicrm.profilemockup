@@ -38,13 +38,24 @@
     regions: {
       designerRegion: '.crm-designer'
     },
+    isUfChanged: false,
+    initialize: function(options) {
+      CRM.designerApp.vent.on('ufChanged', this.onUfChanged, this);
+    },
+    onClose: function() {
+      CRM.designerApp.vent.off('ufChanged', this.onUfChanged, this);
+      // FIXME actually close!
+    },
+    onUfChanged: function() {
+      this.isUfChanged = true;
+    },
     onRender: function() {
       var designerDialog = this;
 
       var undoState = false;
       var undoAlert;
       window.onbeforeunload = function() {
-        if (designerDialog.isDialogOpen && CRM.Designer.isModified) {
+        if (designerDialog.isDialogOpen && designerDialog.isUfChanged) {
           return ts("Your profile has not been saved.");
         }
       };
@@ -65,7 +76,7 @@
             // FIXME/TEST: $ => this.$
             designerDialog.$('.ui-dialog-titlebar-close').unbind('click').click(function() {
               undoAlert && undoAlert.close && undoAlert.close();
-              if (CRM.Designer.isModified) {
+              if (designerDialog.isUfChanged) {
                 undoAlert = CRM.alert('<a href="#" class="crm-undo">' + ts('Undo discard') + '</a>', ts('Changes Discarded'), 'alert', {expires: 20000});
                 $('.ui-notify-message a.crm-undo').click(function() {
                   undoState = true;
@@ -85,7 +96,7 @@
                 designerDialog.$el.unblock();
                 designerDialog.designerRegion.show(designerLayout);
                 CRM.designerApp.vent.trigger('resize');
-                CRM.Designer.isModified = false;
+                designerDialog.isUfChanged = false;
               }
             });
           }
