@@ -1,7 +1,7 @@
 /**
  * Dynamically-generated alternative to civi.core.js
  */
-(function() {
+(function($) {
   var CRM = (window.CRM) ? (window.CRM) : (window.CRM = {});
   if (!CRM.Schema) CRM.Schema = {};
 
@@ -42,4 +42,4 @@
   };
 
   CRM.Schema.loadModels(CRM.civiSchema);
-})();
+})(cj);

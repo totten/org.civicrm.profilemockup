@@ -1,4 +1,4 @@
-(function() {
+(function($) {
   var CRM = (window.CRM) ? (window.CRM) : (window.CRM = {});
   if (!CRM.Designer) CRM.Designer = {};
 
@@ -120,4 +120,4 @@
       return sections;
     }
   });
-})();
+})(cj);

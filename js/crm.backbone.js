@@ -1,4 +1,4 @@
-(function() {
+(function($) {
   var CRM = (window.CRM) ? (window.CRM) : (window.CRM = {});
   if (!CRM.Backbone) CRM.Backbone = {};
 
@@ -117,4 +117,4 @@
     }
   });
   */
-})();
+})(cj);

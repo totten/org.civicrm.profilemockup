@@ -1,4 +1,4 @@
-(function() {
+(function($) {
   var CRM = (window.CRM) ? (window.CRM) : (window.CRM = {});
   if (!CRM.UF) CRM.UF = {};
 
@@ -570,4 +570,4 @@
       return newPaletteFieldModels;
     }
   });
-})();
+})(cj);
