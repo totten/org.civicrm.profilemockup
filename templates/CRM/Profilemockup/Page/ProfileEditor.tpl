@@ -3,13 +3,12 @@
 {* Markup for the initial page view *}
 
 <div id="profile_editor_app"></div>
-<label for="test-profile-id">Select Profile</label>
-<select id="test-profile-id" class="crm-profile-selector">
-{crmAPI var='result' entity='UFGroup' action='get' sequential=1}
-{foreach from=$result.values item=UFGroup}
-  <option value="{$UFGroup.id}">{$UFGroup.title}</option>
-{/foreach}
-</select>
+
+<label for="contact-profile-id">Contact Profile</label>
+<input id="contact-profile-id" type="text" class="crm-profile-selector" value="4" />
+
+<label for="act-profile-id">Activity Profile</label>
+<input id="act-profile-id" type="text" class="crm-profile-selector" value="4" />
 
 {* Library of templates *}
 
@@ -118,10 +117,15 @@
  * Variables correspond to properties of CRM.ProfileSelector.DummyModel
  *}
 <script type="text/template" id="profile_selector_template">
+    <span class="crm-profile-selector-select"></span>
     <button class="crm-profile-selector-preview">Preview</button>
     <button class="crm-profile-selector-edit">Edit</button>
     <button class="crm-profile-selector-copy">Copy</button>
     <button class="crm-profile-selector-create">Create</button>
+</script>
+
+<script type="text/template" id="profile_selector_option_template">
+<%= title %>
 </script>
 
 {**
