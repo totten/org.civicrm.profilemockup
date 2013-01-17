@@ -1,3 +1,7 @@
+.crm-profile-selector {
+    display: none;
+}
+
 .crm-designer-toolbar {
   width: 290px;
   position: absolute;
