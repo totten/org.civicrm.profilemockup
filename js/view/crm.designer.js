@@ -57,6 +57,7 @@
       };
     },
     onClose: function() {
+      this.undoAlert && this.undoAlert.close && this.undoAlert.close();
       CRM.designerApp.vent.off('ufUnsaved', this.onUfChanged, this);
     },
     onUfChanged: function(isUfUnsaved) {
