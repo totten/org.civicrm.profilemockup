@@ -197,7 +197,6 @@
       profile["api.UFField.replace"] = {values: ufGroupModel.getRel('ufFieldCollection').toSortedJSON(), 'option.autoweight': 0, debug: 1};
       CRM.api('UFGroup', 'create', profile, {
         success: function(data) {
-          console.log(data);
           $dialog.unblock();
           var error = false;
           if (data.is_error) {

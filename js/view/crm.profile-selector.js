@@ -68,7 +68,6 @@
       return this.options.ufGroupId;
     },
     doPreview: function() {
-      console.log('doPreview', this.getUfGroupId());
       var $pane = this.$('.crm-profile-selector-preview-pane');
       $pane.block({message: ts('Loading...'), theme: true});
       $.ajax({
@@ -89,7 +88,6 @@
       });
     },
     doEdit: function() {
-      console.log('doEdit', this.getUfGroupId());
       var profileSelectorView = this;
       var designerDialog = new CRM.Designer.DesignerDialog({
         findCreateUfGroupModel: function(options) {
@@ -111,7 +109,6 @@
     },
     doCopy: function() {
       // This is largely the same as doEdit, but we ultimately pass in a deepCopy of the ufGroupModel.
-      console.log('doCopy', this.getUfGroupId());
       var profileSelectorView = this;
       var designerDialog = new CRM.Designer.DesignerDialog({
         findCreateUfGroupModel: function(options) {
@@ -132,7 +129,6 @@
       this.setDialog(designerDialog);
     },
     doCreate: function() {
-      console.log('doCreate -- ignore value');
       var profileSelectorView = this;
       var designerDialog = new CRM.Designer.DesignerDialog({
         findCreateUfGroupModel: function(options) {
