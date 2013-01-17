@@ -133,6 +133,10 @@
 <%= title %>
 </script>
 
+<script type="text/template" id="profile_selector_option_template">
+<%= title %>
+</script>
+
 {**
  * Variables correspond to properties of CRM.ProfileSelector.DummyModel
  *}

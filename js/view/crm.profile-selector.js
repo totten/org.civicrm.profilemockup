@@ -77,7 +77,6 @@
             return false; // disable buttons
           });
       });
-
     },
     doEdit: function() {
       console.log('doEdit', this.getUfGroupId());
