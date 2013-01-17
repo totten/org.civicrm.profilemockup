@@ -188,7 +188,7 @@
 }
 
 .crm-designer-dialog {
-  overflow: visible;
+  overflow: visible !important;
 }
 
 .crm-designer-dialog .full-height {
