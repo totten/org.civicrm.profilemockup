@@ -10,7 +10,13 @@
       dummyModel.set('profile_id', $(select).val());
     });
 
-    var view = new CRM.ProfileSelector.View(dummyModel);
+    var view = new CRM.ProfileSelector.View({
+      model: dummyModel,
+      ufEntities: [
+        {entity_name: 'contact_1', entity_type: 'IndividualModel'},
+        {entity_name: 'activity_1', entity_type: 'ActivityModel'}
+      ]
+    });
     view.render();
     $(select).after(view.el);
   });
