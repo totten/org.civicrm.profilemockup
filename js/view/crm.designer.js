@@ -194,7 +194,7 @@
       var $dialog = this.$el.closest('.crm-designer-dialog'); // FIXME use events
       $dialog.block({message: 'Saving...', theme: true});
       var profile = ufGroupModel.toStrictJSON();
-      profile["api.UFField.replace"] = {values: ufGroupModel.getRel('ufFieldCollection').toSortedJSON(), 'option.autoweight': 0, debug: 1};
+      profile["api.UFField.replace"] = {values: ufGroupModel.getRel('ufFieldCollection').toSortedJSON(), 'option.autoweight': 0};
       CRM.api('UFGroup', 'create', profile, {
         success: function(data) {
           $dialog.unblock();
