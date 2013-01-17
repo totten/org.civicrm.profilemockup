@@ -5,6 +5,9 @@
   CRM.ProfileSelector.Option = Backbone.Marionette.ItemView.extend({
     template: '#profile_selector_option_template',
     tagName: 'option',
+    modelEvents: {
+      'change:title': 'render'
+    },
     onRender: function() {
       this.$el.attr('value', this.model.get('id'));
     }
@@ -17,6 +20,13 @@
 
   /**
    * Render a pane with 'Select/Preview/Edit/Copy/Create' functionality for profiles.
+   *
+   * Note: This view works with a ufGroupCollection, and it creates popups for a
+   * ufGroupModel. These are related but not facilely. The ufGroupModels in the
+   * ufGroupCollection are never passed to the popup, and the models from the
+   * popup are never added to the collection. This is because the popup works
+   * with temporary, local copies -- but the collection reflects the actual list
+   * on the server.
    *
    * options:
    *  - ufGroupId: int, the default selection
@@ -141,9 +151,14 @@
         // abandoned a new profile -- or abandoned a modified, existing profile
         return; // keep everything the same
       }
-      if (!this.options.ufGroupCollection.get(ufGroupId)) {
-        var clonedModel = new CRM.UF.UFGroupModel(designerDialog.model.toStrictJSON());
-        this.options.ufGroupCollection.add(clonedModel);
+      var modelFromCollection = this.options.ufGroupCollection.get(ufGroupId);
+      if (modelFromCollection) {
+        // copy in changes to UFGroup
+        modelFromCollection.set(designerDialog.model.toStrictJSON());
+      } else {
+        // add in new UFGroup
+        modelFromCollection = new CRM.UF.UFGroupModel(designerDialog.model.toStrictJSON());
+        this.options.ufGroupCollection.add(modelFromCollection);
       }
       this.setUfGroupId(ufGroupId);
       this.doPreview();
