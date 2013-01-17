@@ -62,13 +62,11 @@
       var $pane = this.$('.crm-profile-selector-preview-pane');
       $pane.block({message: ts('Loading...'), theme: true});
       $.ajax({
-        url: CRM.url("civicrm/admin/uf/group"),
+        url: CRM.url("civicrm/ajax/inline"),
         type: 'GET',
         data: {
-          action: 'preview',
+          class_name: 'CRM_Profilemockup_Form_Inline_PreviewById',
           id: this.getUfGroupId(),
-          field: 0,
-          context: 'group',
           snippet: 5
         }
       }).done(function(data) {
