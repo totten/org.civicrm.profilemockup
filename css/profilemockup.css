@@ -1,6 +1,13 @@
 .crm-profile-selector {
     display: none;
 }
+.crm-profile-selector-preview-pane {
+    width: 75%;
+    height: 20em;
+    overflow: scroll;
+    border: 1px solid black;
+    padding: 4px;
+}
 
 .crm-designer-toolbar {
   width: 290px;

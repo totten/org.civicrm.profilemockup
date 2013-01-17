@@ -59,6 +59,27 @@
     },
     doPreview: function() {
       console.log('doPreview', this.getUfGroupId());
+      var $pane = this.$('.crm-profile-selector-preview-pane');
+      $pane.block({message: ts('Loading...'), theme: true});
+      $.ajax({
+        url: CRM.url("civicrm/admin/uf/group"),
+        type: 'GET',
+        data: {
+          action: 'preview',
+          id: this.getUfGroupId(),
+          field: 0,
+          context: 'group',
+          snippet: 5
+        }
+      }).done(function(data) {
+        $pane
+          .unblock()
+          .html(data)
+          .click(function() {
+            return false; // disable buttons
+          });
+      });
+
     },
     doEdit: function() {
       console.log('doEdit', this.getUfGroupId());

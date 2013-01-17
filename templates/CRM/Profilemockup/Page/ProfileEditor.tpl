@@ -117,11 +117,16 @@
  * Variables correspond to properties of CRM.ProfileSelector.DummyModel
  *}
 <script type="text/template" id="profile_selector_template">
-    <span class="crm-profile-selector-select"></span>
-    <button class="crm-profile-selector-preview">Preview</button>
-    <button class="crm-profile-selector-edit">Edit</button>
-    <button class="crm-profile-selector-copy">Copy</button>
-    <button class="crm-profile-selector-create">Create</button>
+    <div>
+        <span class="crm-profile-selector-select"></span>
+        <button class="crm-profile-selector-preview">Preview</button>
+        <button class="crm-profile-selector-edit">Edit</button>
+        <button class="crm-profile-selector-copy">Copy</button>
+        <button class="crm-profile-selector-create">Create</button>
+    </div>
+    <div class="crm-profile-selector-preview-pane">
+        {ts}(Preview Area){/ts}
+    </div>
 </script>
 
 <script type="text/template" id="profile_selector_option_template">

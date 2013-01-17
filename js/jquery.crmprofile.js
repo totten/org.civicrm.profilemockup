@@ -18,5 +18,6 @@
     })
     view.render();
     $(select).after(view.el);
+    setTimeout(function(){view.doPreview();}, 100);
   });
 })(cj);
