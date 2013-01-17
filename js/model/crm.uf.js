@@ -512,6 +512,28 @@
 
       this.on('change', watchChanges);
     },
+    /**
+     * Generate a copy of this UFGroupModel and its fields, with all ID's removed. The result
+     * is suitable for a new, identical UFGroup.
+     *
+     * @return {CRM.UF.UFGroupModel}
+     */
+    deepCopy: function() {
+      var copy = new CRM.UF.UFGroupModel(_.omit(this.toStrictJSON(), ['id']));
+      copy.getRel('ufEntityCollection').reset(
+        this.getRel('ufEntityCollection').toJSON()
+        // FIXME: for configurable entities, omit ['id', 'uf_group_id']
+      );
+      copy.getRel('ufFieldCollection').reset(
+        this.getRel('ufFieldCollection').map(function(ufFieldModel) {
+          return _.omit(ufFieldModel.toStrictJSON(), ['id', 'uf_group_id']);
+        })
+      );
+      copy.set('title', ts('%1 (Copy)', {
+        1: copy.get('title')
+      }));
+      return copy;
+    },
     getModelClass: function(entity_name) {
       var ufEntity = this.getRel('ufEntityCollection').getByName(entity_name);
       if (!ufEntity) throw 'Failed to locate entity: ' + entity_name;

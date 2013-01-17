@@ -100,7 +100,26 @@
       this.setDialog(designerDialog);
     },
     doCopy: function() {
+      // This is largely the same as doEdit, but we ultimately pass in a deepCopy of the ufGroupModel.
       console.log('doCopy', this.getUfGroupId());
+      var profileSelectorView = this;
+      var designerDialog = new CRM.Designer.DesignerDialog({
+        findCreateUfGroupModel: function(options) {
+          var ufId = profileSelectorView.getUfGroupId();
+          // Retrieve UF group and fields from the api
+          CRM.api('UFGroup', 'getsingle', {id: ufId, "api.UFField.get": 1}, {
+            success: function(formData) {
+              // Note: With chaining, API returns some extraneous keys that aren't part of UFGroupModel
+              var ufGroupModel = new CRM.UF.UFGroupModel(_.pick(formData, _.keys(CRM.UF.UFGroupModel.prototype.schema)));
+              ufGroupModel.getRel('ufEntityCollection').reset(profileSelectorView.options.ufEntities);
+              ufGroupModel.getRel('ufFieldCollection').reset(_.values(formData["api.UFField.get"].values));
+              options.onLoad(ufGroupModel.deepCopy());
+            }
+          });
+        }
+      });
+      designerDialog.on('close-dialog', this.onCloseDesignerDialog, this);
+      this.setDialog(designerDialog);
     },
     doCreate: function() {
       console.log('doCreate -- ignore value');
