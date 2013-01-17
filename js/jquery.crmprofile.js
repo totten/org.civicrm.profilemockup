@@ -12,6 +12,7 @@
 
     var view = new CRM.ProfileSelector.View({
       model: dummyModel,
+      ufGroupCollection: new CRM.UF.UFGroupCollection(CRM.initialProfileList.values),
       ufEntities: [
         {entity_name: 'contact_1', entity_type: 'IndividualModel'},
         {entity_name: 'activity_1', entity_type: 'ActivityModel'}

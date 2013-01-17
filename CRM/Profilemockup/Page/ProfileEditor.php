@@ -12,6 +12,9 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
           'locationType' => CRM_Core_PseudoConstant::locationType(),
           'phoneType' => CRM_Core_PseudoConstant::phoneType(),
         ),
+        'initialProfileList' => civicrm_api('UFGroup', 'get', array(
+          'version' => 3,
+        )),
         'profilePreviewKey' => CRM_Core_Key::get('CRM_Core_Controller_Simple', TRUE),
       ))
       ->addScriptFile('civicrm', 'packages/backbone/json2.js', 100, 'html-header')

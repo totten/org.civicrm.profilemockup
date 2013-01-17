@@ -576,4 +576,11 @@
       return newPaletteFieldModels;
     }
   });
+
+  /**
+   * Represents a list of customizable form
+   */
+  CRM.UF.UFGroupCollection = CRM.Backbone.Collection.extend({
+    model: CRM.UF.UFGroupModel
+  });
 })(cj);
