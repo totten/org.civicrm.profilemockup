@@ -464,44 +464,50 @@
     initialize: function() {
       var ufGroupModel = this;
 
-      var ufEntityCollection = new CRM.UF.UFEntityCollection([], {
-        ufGroupModel: this,
-        silent: false
-      });
-      this.setRel('ufEntityCollection', ufEntityCollection);
+      if (!this.getRel('ufEntityCollection')) {
+        var ufEntityCollection = new CRM.UF.UFEntityCollection([], {
+          ufGroupModel: this,
+          silent: false
+        });
+        this.setRel('ufEntityCollection', ufEntityCollection);
+      }
 
-      var ufFieldCollection = new CRM.UF.UFFieldCollection([], {
-        uf_group_id: this.id,
-        ufGroupModel: this
-      });
-      this.setRel('ufFieldCollection', ufFieldCollection);
+      if (!this.getRel('ufFieldCollection')) {
+        var ufFieldCollection = new CRM.UF.UFFieldCollection([], {
+          uf_group_id: this.id,
+          ufGroupModel: this
+        });
+        this.setRel('ufFieldCollection', ufFieldCollection);
+      }
 
-      var paletteFieldCollection = new CRM.Designer.PaletteFieldCollection([], {
-        ufGroupModel: this
-      });
-      paletteFieldCollection.sync = function(method, model, options) {
-        options || (options = {});
-        // console.log(method, model, options);
-        switch (method) {
-          case 'read':
-            var success = options.success;
-            options.success = function(resp, status, xhr) {
-              if (success) success(resp, status, xhr);
-              model.trigger('sync', model, resp, options);
-            };
-            success(ufGroupModel.buildPaletteFields());
+      if (!this.getRel('paletteFieldCollection')) {
+        var paletteFieldCollection = new CRM.Designer.PaletteFieldCollection([], {
+          ufGroupModel: this
+        });
+        paletteFieldCollection.sync = function(method, model, options) {
+          options || (options = {});
+          // console.log(method, model, options);
+          switch (method) {
+            case 'read':
+              var success = options.success;
+              options.success = function(resp, status, xhr) {
+                if (success) success(resp, status, xhr);
+                model.trigger('sync', model, resp, options);
+              };
+              success(ufGroupModel.buildPaletteFields());
 
-            break;
-          case 'create':
-          case 'update':
-          case 'delete':
-          default:
-            throw 'Unsupported method: ' + method;
-        }
-      };
-      this.setRel('paletteFieldCollection', paletteFieldCollection);
+              break;
+            case 'create':
+            case 'update':
+            case 'delete':
+            default:
+              throw 'Unsupported method: ' + method;
+          }
+        };
+        this.setRel('paletteFieldCollection', paletteFieldCollection);
+      }
 
-      ufEntityCollection.on('reset', this.resetEntities, this)
+      this.getRel('ufEntityCollection').on('reset', this.resetEntities, this);
       this.resetEntities();
 
       this.on('change', watchChanges);
