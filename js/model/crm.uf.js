@@ -519,7 +519,7 @@
      * @return {CRM.UF.UFGroupModel}
      */
     deepCopy: function() {
-      var copy = new CRM.UF.UFGroupModel(_.omit(this.toStrictJSON(), ['id']));
+      var copy = new CRM.UF.UFGroupModel(_.omit(this.toStrictJSON(), ['id','created_id','created_date','is_reserved','group_type']));
       copy.getRel('ufEntityCollection').reset(
         this.getRel('ufEntityCollection').toJSON()
         // FIXME: for configurable entities, omit ['id', 'uf_group_id']
