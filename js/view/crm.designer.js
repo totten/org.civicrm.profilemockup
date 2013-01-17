@@ -311,7 +311,7 @@
         'plugins': ['themes', 'json_data', 'ui', 'search']
       }).bind('loaded.jstree', function () {
         $('.crm-designer-palette-field', this).draggable({
-          appendTo: '#crm-designer',
+          appendTo: '.crm-designer',
           zIndex: $(this.$el).zIndex() + 5000,
           helper: 'clone',
           connectToSortable: '.crm-designer-fields' // FIXME: tight canvas/palette coupling

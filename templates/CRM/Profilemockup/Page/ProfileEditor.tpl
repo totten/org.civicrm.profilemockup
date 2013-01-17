@@ -10,10 +10,6 @@
   <option value="{$UFGroup.id}">{$UFGroup.title}</option>
 {/foreach}
 </select>
-<div id="crm-designer-dialog" class="crm-designer-dialog">
-  <div id="crm-designer" class="crm-designer crm-container full-height">
-  </div>
-</div>
 
 {* Library of templates *}
 
