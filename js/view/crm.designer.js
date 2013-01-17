@@ -79,6 +79,7 @@
             designerDialog.$el.block({message: 'Loading...', theme: true});
             designerDialog.options.findCreateUfGroupModel({
               onLoad: function(ufGroupModel) {
+                designerDialog.model = ufGroupModel;
                 var designerLayout = new CRM.Designer.DesignerLayout({
                   model: ufGroupModel,
                   el: '<div class="full-height"></div>'
@@ -104,6 +105,7 @@
               return false;
             });
           }
+          designerDialog.trigger('close-dialog', designerDialog);
         },
         resize: function() {
           CRM.designerApp.vent.trigger('resize');
@@ -183,14 +185,15 @@
       this.$('.crm-designer-preview').button();
     },
     doSave: function(event) {
-      if (this.model.getRel('ufFieldCollection').hasDuplicates()) {
+      var ufGroupModel = this.model;
+      if (ufGroupModel.getRel('ufFieldCollection').hasDuplicates()) {
         CRM.alert(ts('Please correct errors before saving.'), '', 'alert');
         return;
       }
       var $dialog = this.$el.closest('.crm-designer-dialog'); // FIXME use events
       $dialog.block({message: 'Saving...', theme: true});
-      var profile = this.model.toStrictJSON();
-      profile["api.UFField.replace"] = {values: this.model.getRel('ufFieldCollection').toSortedJSON(), 'option.autoweight': 0, debug: 1};
+      var profile = ufGroupModel.toStrictJSON();
+      profile["api.UFField.replace"] = {values: ufGroupModel.getRel('ufFieldCollection').toSortedJSON(), 'option.autoweight': 0, debug: 1};
       CRM.api('UFGroup', 'create', profile, {
         success: function(data) {
           console.log(data);
@@ -207,6 +210,9 @@
             }
           });
           if (!error) {
+            if (!ufGroupModel.get('id')) {
+              ufGroupModel.set('id', data.id);
+            }
             CRM.designerApp.vent.trigger('ufUnsaved', false);
             $dialog.dialog('close');
           }

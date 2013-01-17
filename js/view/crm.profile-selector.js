@@ -96,6 +96,7 @@
           });
         }
       });
+      designerDialog.on('close-dialog', this.onCloseDesignerDialog, this);
       this.setDialog(designerDialog);
     },
     doCopy: function() {
@@ -112,7 +113,21 @@
           options.onLoad(ufGroupModel);
         }
       });
+      designerDialog.on('close-dialog', this.onCloseDesignerDialog, this);
       this.setDialog(designerDialog);
+    },
+    onCloseDesignerDialog: function(designerDialog) {
+      var ufGroupId = designerDialog.model.get('id');
+      if (!ufGroupId || designerDialog.isUfUnsaved) {
+        // abandoned a new profile -- or abandoned a modified, existing profile
+        return; // keep everything the same
+      }
+      if (!this.options.ufGroupCollection.get(ufGroupId)) {
+        var clonedModel = new CRM.UF.UFGroupModel(designerDialog.model.toStrictJSON());
+        this.options.ufGroupCollection.add(clonedModel);
+      }
+      this.setUfGroupId(ufGroupId);
+      this.doPreview();
     },
     setDialog: function(view) {
       if (this.activeDialog) {
