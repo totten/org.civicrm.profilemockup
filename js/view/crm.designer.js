@@ -555,7 +555,25 @@
         CRM.designerApp.vent.trigger('formOpened', this.cid);
       }
       this.$el.toggleClass('crm-designer-open', this.expanded);
-      this.detail.$el.toggle('blind', 250);
+      var $detail = this.detail.$el;
+      if (!this.expanded) {
+        $detail.toggle('blind', 250);
+      }
+      else {
+        var $canvas = $('.crm-designer-canvas');
+        var top = $canvas.offset().top;
+        $detail.slideDown({
+          duration: 250,
+          step: function(num, effect) {
+            // Scroll canvas to keep field details visible
+            if (effect.prop == 'height') {
+              if (effect.now + $detail.offset().top - top > $canvas.height() - 9) {
+                $canvas.scrollTop($canvas.scrollTop() + effect.now + $detail.offset().top - top - $canvas.height() + 9);
+              }
+            }
+          }
+        });
+      }
     },
     onChangeIsDuplicate: function(model, value, options) {
       this.$el.toggleClass('crm-designer-duplicate', value);
