@@ -119,7 +119,6 @@
 <script type="text/template" id="profile_selector_template">
     <div>
         <span class="crm-profile-selector-select"></span>
-        <button class="crm-profile-selector-preview">Preview</button>
         <button class="crm-profile-selector-edit">Edit</button>
         <button class="crm-profile-selector-copy">Copy</button>
         <button class="crm-profile-selector-create">Create</button>

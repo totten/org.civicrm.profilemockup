@@ -42,7 +42,6 @@
     },
     events: {
       'change .crm-profile-selector-select select': 'onChangeUfGroupId',
-      'click .crm-profile-selector-preview': 'doPreview',
       'click .crm-profile-selector-edit': 'doEdit',
       'click .crm-profile-selector-copy': 'doCopy',
       'click .crm-profile-selector-create': 'doCreate'
@@ -59,6 +58,7 @@
     onChangeUfGroupId: function(event) {
       this.options.ufGroupId = $(event.target).val();
       this.trigger('change:ufGroupId', this);
+      this.doPreview();
     },
     setUfGroupId: function(value) {
       this.options.ufGroupId = value;

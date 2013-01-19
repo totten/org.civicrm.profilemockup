@@ -213,3 +213,8 @@
   border: 1px solid #444;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
 }
+
+/* Hide annoying 'preview' message */
+.crm-profile-selector-preview-pane form > div.messages.status.info {
+  display: none;
+}
