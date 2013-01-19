@@ -4,7 +4,11 @@ require_once 'CRM/Core/Page.php';
 
 class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
   function run() {
+    self::registerProfileScripts();
+    parent::run();
+  }
 
+  static function registerProfileScripts() {
     CRM_Core_Resources::singleton()
       ->addSetting(array(
         'civiSchema' => self::getSchema(),
@@ -22,6 +26,7 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
       ->addScriptFile('civicrm', 'packages/backbone/underscore.js', 110, 'html-header')
       ->addScriptFile('civicrm', 'packages/backbone/backbone.js', 120, 'html-header')
       ->addScriptFile('civicrm', 'packages/backbone/backbone.marionette.js', 125, 'html-header')
+      ->addScriptFile('civicrm', 'packages/backbone/backbone.collectionsubset.js', 125, 'html-header')
       ->addScriptFile('civicrm', 'packages/backbone-forms/distribution/backbone-forms.js', 130, 'html-header')
       ->addScriptFile('civicrm', 'packages/backbone-forms/distribution/adapters/backbone.bootstrap-modal.min.js', 140, 'html-header')
       ->addScriptFile('civicrm', 'packages/backbone-forms/distribution/editors/list.min.js', 140, 'html-header')
@@ -37,8 +42,6 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
       ->addScriptFile('org.civicrm.profilemockup', 'js/jquery.crmprofile.js', 250)
       ->addScriptFile('org.civicrm.profilemockup', 'js/profilemockup-app.js', 250)
       ;
-
-    parent::run();
   }
 
   /**

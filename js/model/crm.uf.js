@@ -2,6 +2,8 @@
   var CRM = (window.CRM) ? (window.CRM) : (window.CRM = {});
   if (!CRM.UF) CRM.UF = {};
 
+  var DELIMITER = '\0';
+
   var YESNO = [
     {val: 0, label: ts('No')},
     {val: 1, label: ts('Yes')}
@@ -549,6 +551,21 @@
         return null;
       }
       return fieldSchema;
+    },
+    checkGroupType: function(validTypes) {
+      var allMatched = true;
+      if (this.get('group_type') == '') return true;
+      var actualTypes = this.get('group_type').split(',');
+      _.each(actualTypes, function(actualType){
+        var matched = false;
+        _.each(validTypes, function(validType){
+          if (actualType == validType) {
+            matched = true;
+          }
+        });
+        allMatched = allMatched && matched;
+      });
+      return allMatched;
     },
     resetEntities: function() {
       var ufGroupModel = this;
