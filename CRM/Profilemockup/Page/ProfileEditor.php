@@ -9,6 +9,10 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
   }
 
   static function registerProfileScripts() {
+    static $loaded = FALSE;
+    if ($loaded) return;
+    $loaded = TRUE;
+
     CRM_Core_Resources::singleton()
       ->addSetting(array(
         'civiSchema' => self::getSchema(),
@@ -42,6 +46,9 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
       ->addScriptFile('org.civicrm.profilemockup', 'js/jquery.crmprofile.js', 250)
       ->addScriptFile('org.civicrm.profilemockup', 'js/profilemockup-app.js', 250)
       ;
+    CRM_Core_Region::instance('page-header')->add(array(
+      'template' => 'CRM/Profilemockup/Page/ProfileTemplates.tpl',
+    ));
   }
 
   /**
