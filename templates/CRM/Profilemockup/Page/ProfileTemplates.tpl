@@ -114,6 +114,10 @@
     </div>
 </script>
 
+<script type="text/template" id="profile_selector_empty_preview_template">
+{ts}(Preview Area){/ts}
+</script>
+
 <script type="text/template" id="profile_selector_option_template">
 <%= title %>
 </script>

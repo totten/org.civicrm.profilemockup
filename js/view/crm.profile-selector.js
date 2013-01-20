@@ -69,6 +69,12 @@
     },
     doPreview: function() {
       var $pane = this.$('.crm-profile-selector-preview-pane');
+
+      if (!this.getUfGroupId() || this.getUfGroupId() == '') {
+        $pane.html($('#profile_selector_empty_preview_template').html());
+        return;
+      }
+
       $pane.block({message: ts('Loading...'), theme: true});
       $.ajax({
         url: CRM.url("civicrm/ajax/inline"),
