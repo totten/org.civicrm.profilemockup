@@ -1,5 +1,10 @@
 (function($) {
   var ufGroupCollection = new CRM.UF.UFGroupCollection(CRM.initialProfileList.values);
+  ufGroupCollection.unshift(new CRM.UF.UFGroupModel({
+    id: '',
+    title: ts('- select -')
+  }));
+
   /**
    * Example:
    * <input type="text" value="{$profileId}" class="crm-profile-selector" />

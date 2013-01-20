@@ -54,11 +54,19 @@
       });
       this.selectRegion.show(view);
       this.setUfGroupId(this.options.ufGroupId);
+      this.toggleButtons();
     },
     onChangeUfGroupId: function(event) {
       this.options.ufGroupId = $(event.target).val();
       this.trigger('change:ufGroupId', this);
+      this.toggleButtons();
       this.doPreview();
+    },
+    toggleButtons: function() {
+      this.$('.crm-profile-selector-edit,.crm-profile-selector-copy').attr('disabled', !this.hasUfGroupId());
+    },
+    hasUfGroupId: function() {
+      return (this.getUfGroupId() && this.getUfGroupId() != '') ? true : false;
     },
     setUfGroupId: function(value) {
       this.options.ufGroupId = value;
@@ -70,7 +78,7 @@
     doPreview: function() {
       var $pane = this.$('.crm-profile-selector-preview-pane');
 
-      if (!this.getUfGroupId() || this.getUfGroupId() == '') {
+      if (!this.hasUfGroupId()) {
         $pane.html($('#profile_selector_empty_preview_template').html());
         return;
       }
