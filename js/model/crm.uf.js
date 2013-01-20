@@ -36,11 +36,13 @@
    * Parse a "group_type" expression
    *
    * @param string groupTypeExpr example: "Individual,Activity\0ActivityType:2:28"
+   *   Note: I've seen problems where HTML "&#00;" != JS '\0', so we support ';;' as an equivalent delimiter
    * @return Object example: {coreTypes: {"Individual":true,"Activity":true}, subTypes: {"ActivityType":{2: true, 28:true}]}}
    */
   CRM.UF.parseTypeList = function(groupTypeExpr) {
     var typeList = {coreTypes: {}, subTypes:{}};
-    var parts = groupTypeExpr.split('\0');
+    // The API may have automatically converted a string with '\0' to an array
+    var parts = _.isArray(groupTypeExpr) ? groupTypeExpr : groupTypeExpr.replace(';;','\0').split('\0');
     var coreTypesExpr = parts[0];
     var subTypesExpr = parts[1];
 
@@ -588,7 +590,9 @@
      */
     checkGroupType: function(validTypesExpr) {
       var allMatched = true;
-      if (this.get('group_type') == '') return true;
+      if (! this.get('group_type') || this.get('group_type') == '') {
+        return true;
+      }
 
       var actualTypes = CRM.UF.parseTypeList(this.get('group_type'));
       var validTypes = CRM.UF.parseTypeList(validTypesExpr);
