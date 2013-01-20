@@ -2,8 +2,6 @@
   var CRM = (window.CRM) ? (window.CRM) : (window.CRM = {});
   if (!CRM.UF) CRM.UF = {};
 
-  var DELIMITER = '\0';
-
   var YESNO = [
     {val: 0, label: ts('No')},
     {val: 1, label: ts('Yes')}
@@ -33,6 +31,35 @@
   function watchChanges() {
     CRM.designerApp.vent.trigger('ufUnsaved', true);
   }
+
+  /**
+   * Parse a "group_type" expression
+   *
+   * @param string groupTypeExpr example: "Individual,Activity\0ActivityType:2:28"
+   * @return Object example: {coreTypes: {"Individual":true,"Activity":true}, subTypes: {"ActivityType":{2: true, 28:true}]}}
+   */
+  CRM.UF.parseTypeList = function(groupTypeExpr) {
+    var typeList = {coreTypes: {}, subTypes:{}};
+    var parts = groupTypeExpr.split('\0');
+    var coreTypesExpr = parts[0];
+    var subTypesExpr = parts[1];
+
+    if (coreTypesExpr && coreTypesExpr != '') {
+      _.each(coreTypesExpr.split(','), function(coreType){
+        typeList.coreTypes[coreType] = true;
+      });
+    }
+
+    if (subTypesExpr && subTypesExpr != '') {
+      var subTypes = subTypesExpr.split(':');
+      var subTypeKey = subTypes.shift();
+      typeList.subTypes[subTypeKey] = {};
+      _.each(subTypes, function(subTypeId){
+        typeList.subTypes[subTypeKey][subTypeId] = true;
+      });
+    }
+    return typeList;
+  };
 
   /**
    * This function is a hack for generating simulated values of "entity_name"
@@ -356,6 +383,7 @@
         validators: ['required']
       },
       'group_type': {
+        // For a description of group_type, see CRM_Core_BAO_UFGroup::calculateGroupType
         // title: ts(''),
         type: 'Text'
       },
@@ -552,18 +580,41 @@
       }
       return fieldSchema;
     },
-    checkGroupType: function(validTypes) {
+    /**
+     * Check that the group_type contains *only* the types listed in validTypes
+     *
+     * @param string validTypesExpr
+     * @return {Boolean}
+     */
+    checkGroupType: function(validTypesExpr) {
       var allMatched = true;
       if (this.get('group_type') == '') return true;
-      var actualTypes = this.get('group_type').split(',');
-      _.each(actualTypes, function(actualType){
-        var matched = false;
-        _.each(validTypes, function(validType){
-          if (actualType == validType) {
-            matched = true;
+
+      var actualTypes = CRM.UF.parseTypeList(this.get('group_type'));
+      var validTypes = CRM.UF.parseTypeList(validTypesExpr);
+
+      // Every actual.coreType is a valid.coreType
+      _.each(actualTypes.coreTypes, function(ignore, actualCoreType) {
+        if (! validTypes.coreTypes[actualCoreType]) {
+          allMatched = false;
+        }
+      });
+
+      // Every actual.subType is a valid.subType
+      _.each(actualTypes.subTypes, function(actualSubTypeIds, actualSubTypeKey) {
+        if (!validTypes.subTypes[actualSubTypeKey]) {
+          allMatched = false;
+          return;
+        }
+        // actualSubTypeIds is a list of all subtypes which can be used by group,
+        // so it's sufficient to match any one of them
+        var subTypeMatched = false;
+        _.each(actualSubTypeIds, function(ignore, actualSubTypeId) {
+          if (validTypes.subTypes[actualSubTypeKey][actualSubTypeId]) {
+            subTypeMatched = true;
           }
         });
-        allMatched = allMatched && matched;
+        allMatched = allMatched && subTypeMatched;
       });
       return allMatched;
     },
