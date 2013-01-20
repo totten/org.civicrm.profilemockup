@@ -18,7 +18,7 @@ _.each(explodeCases, function(explodeCase, explodeCaseIndex) {
 module('UFGroupModel.checkGroupType');
 
 /**
- * For a description of group_type, see CRM_Core_BAO_UFGroup::calculateGroupType
+ * For a description of group_type, see CRM_Core_BAO_UFGroup::updateGroupTypes
  */
 
 var cases = [

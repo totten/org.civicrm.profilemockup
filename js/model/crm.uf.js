@@ -385,7 +385,7 @@
         validators: ['required']
       },
       'group_type': {
-        // For a description of group_type, see CRM_Core_BAO_UFGroup::calculateGroupType
+        // For a description of group_type, see CRM_Core_BAO_UFGroup::updateGroupTypes
         // title: ts(''),
         type: 'Text'
       },
