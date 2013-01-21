@@ -57,11 +57,14 @@
     });
   };
 
-  $('.crm-profile-selector').each(function(){
-    $(this).crmProfileSelector({
-      groupTypeFilter: $(this).attr('data-group-type'),
-      entities: $(this).attr('data-entities')
+  // FIXME: this needs a better place to live
+  CRM.scanProfileSelectors = function() {
+    $('.crm-profile-selector').each(function(){
+      $(this).crmProfileSelector({
+        groupTypeFilter: $(this).attr('data-group-type'),
+        entities: $(this).attr('data-entities')
+      });
     });
-  });
+  };
 
 })(cj);

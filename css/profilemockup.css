@@ -3,6 +3,7 @@
 }
 .crm-profile-selector-preview-pane {
     width: 75%;
+    min-width: 500px;
     height: 20em;
     overflow: scroll;
     border: 1px solid black;
