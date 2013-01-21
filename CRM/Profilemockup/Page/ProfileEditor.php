@@ -23,6 +23,7 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
         'initialProfileList' => civicrm_api('UFGroup', 'get', array(
           'version' => 3,
           'sequential' => 1,
+          'rowCount' => 1000, // FIXME
         )),
         'profilePreviewKey' => CRM_Core_Key::get('CRM_Profilemockup_Form_Inline_Preview', TRUE),
       ))
