@@ -1,5 +1,8 @@
 (function($) {
-  var ufGroupCollection = new CRM.UF.UFGroupCollection(CRM.initialProfileList.values);
+  var ufGroupCollection = new CRM.UF.UFGroupCollection(_.sortBy(CRM.initialProfileList.values, 'title'));
+  //var ufGroupCollection = new CRM.UF.UFGroupCollection(CRM.initialProfileList.values, {
+  //  comparator: 'title' // no point, this doesn't work with subcollections
+  //});
   ufGroupCollection.unshift(new CRM.UF.UFGroupModel({
     id: '',
     title: ts('- select -')
