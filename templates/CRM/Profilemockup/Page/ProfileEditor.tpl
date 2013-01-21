@@ -18,3 +18,11 @@
     data-group-type="Individual,Contact,Activity;;ActivityType:28"
     data-entities="contact_1:IndividualModel,activity_1:ActivityModel" />
 
+
+<script type="text/javascript">
+  {literal}
+  cj(document).on('ready', function(){
+    CRM.scanProfileSelectors();
+  });
+  {/literal}
+</script>
