@@ -218,6 +218,7 @@
           }
         }
       });
+      return false;
     },
     doPreview: function(event) {
       this.previewMode = !this.previewMode;
@@ -251,6 +252,7 @@
         $('.crm-designer-preview-canvas').html(data).show();
         $('.crm-designer-preview span').html(ts('Edit'));
       });
+      return false;
     }
   });
 
@@ -386,6 +388,7 @@
           }
         });
       }
+      return false;
     },
     doRefresh: function(event) {
       var ufGroupModel = this.model;

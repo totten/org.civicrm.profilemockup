@@ -100,6 +100,7 @@
             return false; // disable buttons
           });
       });
+      return false;
     },
     doEdit: function() {
       var profileSelectorView = this;
@@ -120,6 +121,7 @@
       });
       designerDialog.on('close-dialog', this.onCloseDesignerDialog, this);
       this.setDialog(designerDialog);
+      return false;
     },
     doCopy: function() {
       // This is largely the same as doEdit, but we ultimately pass in a deepCopy of the ufGroupModel.
@@ -141,6 +143,7 @@
       });
       designerDialog.on('close-dialog', this.onCloseDesignerDialog, this);
       this.setDialog(designerDialog);
+      return false;
     },
     doCreate: function() {
       var profileSelectorView = this;
@@ -154,6 +157,7 @@
       });
       designerDialog.on('close-dialog', this.onCloseDesignerDialog, this);
       this.setDialog(designerDialog);
+      return false;
     },
     onCloseDesignerDialog: function(designerDialog) {
       var ufGroupId = designerDialog.model.get('id');
