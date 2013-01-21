@@ -24,7 +24,7 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
           'version' => 3,
           'sequential' => 1,
         )),
-        'profilePreviewKey' => CRM_Core_Key::get('CRM_Core_Controller_Simple', TRUE),
+        'profilePreviewKey' => CRM_Core_Key::get('CRM_Profilemockup_Form_Inline_Preview', TRUE),
       ))
       ->addScriptFile('civicrm', 'packages/backbone/json2.js', 100, 'html-header')
       ->addScriptFile('civicrm', 'packages/backbone/underscore.js', 110, 'html-header')
