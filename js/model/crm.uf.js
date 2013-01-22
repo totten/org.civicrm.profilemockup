@@ -244,6 +244,8 @@
       this.on('add', this.watchDuplicates, this);
       this.on('remove', this.unwatchDuplicates, this);
       this.on('change', watchChanges);
+      this.on('add', watchChanges);
+      this.on('remove', watchChanges);
     },
     getFieldsByName: function(entityName, fieldName) {
       return this.filter(function(ufFieldModel) {
