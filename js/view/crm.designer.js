@@ -50,11 +50,6 @@
       CRM.designerApp.vent.on('ufUnsaved', this.onUfChanged, this);
 
       var designerDialog = this;
-      window.onbeforeunload = function() {
-        if (designerDialog.isDialogOpen && designerDialog.isUfUnsaved) {
-          return ts("Your profile has not been saved.");
-        }
-      };
     },
     onClose: function() {
       this.undoAlert && this.undoAlert.close && this.undoAlert.close();
@@ -73,6 +68,15 @@
         minWidth: 500,
         minHeight: 600, // to allow dropping in big whitespace, coordinate with min-height of .crm-designer-fields
         open: function() {
+          designerDialog.oldOnBeforeUnload = window.onbeforeunload;
+          window.onbeforeunload = function() {
+            if (designerDialog.isDialogOpen && designerDialog.isUfUnsaved) {
+              return ts("Your profile has not been saved.");
+            }
+            if (designerDialog.oldOnBeforeUnload) {
+              return designerDialog.oldOnBeforeUnload.apply(arguments);
+            }
+          };
           designerDialog.undoAlert && designerDialog.undoAlert.close && designerDialog.undoAlert.close();
           designerDialog.isDialogOpen = true;
           if (designerDialog.undoState === false) {
@@ -95,6 +99,7 @@
           designerDialog.undoState = false;
         },
         close: function() {
+          window.onbeforeunload = designerDialog.oldOnBeforeUnload;
           designerDialog.isDialogOpen = false;
 
           designerDialog.undoAlert && designerDialog.undoAlert.close && designerDialog.undoAlert.close();
