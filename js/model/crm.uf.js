@@ -127,7 +127,7 @@
       },
       'in_selector': {
         title: addHelp(ts('Results Columns?'), {id: "in_selector", file:"CRM/UF/Form/Field"}),
-        type: ts('Select'),
+        type: 'Select',
         options: YESNO
       },
       'is_active': {
