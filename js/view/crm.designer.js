@@ -69,7 +69,9 @@
         minWidth: 500,
         minHeight: 600, // to allow dropping in big whitespace, coordinate with min-height of .crm-designer-fields
         open: function() {
+          // Prevent conflicts with other onbeforeunload handlers
           designerDialog.oldOnBeforeUnload = window.onbeforeunload;
+          // Warn of unsaved changes when navigating away from the page
           window.onbeforeunload = function() {
             if (designerDialog.isDialogOpen && designerDialog.isUfUnsaved) {
               return ts("Your profile has not been saved.");
@@ -80,6 +82,7 @@
           };
           designerDialog.undoAlert && designerDialog.undoAlert.close && designerDialog.undoAlert.close();
           designerDialog.isDialogOpen = true;
+          // Initialize new dialog if we are not re-opening unsaved changes
           if (designerDialog.undoState === false) {
             designerDialog.designerRegion && designerDialog.designerRegion.close && designerDialog.designerRegion.close();
             designerDialog.$el.block({message: 'Loading...', theme: true});
@@ -105,7 +108,7 @@
 
           designerDialog.undoAlert && designerDialog.undoAlert.close && designerDialog.undoAlert.close();
           if (designerDialog.isUfUnsaved) {
-            designerDialog.undoAlert = CRM.alert('<a href="#" class="crm-undo">' + ts('Restore discarded changes') + '</a>', ts('Changes Discarded'), 'alert', {expires: 20000});
+            designerDialog.undoAlert = CRM.alert('<p>' + ts('Your changes to "%1" have not been saved.', {1: designerDialog.model.get('title')}) + '</p><a href="#" class="crm-undo">' + ts('Restore discarded changes') + '</a>', ts('Changes Discarded'), 'alert', {expires: 60000});
             $('.ui-notify-message a.crm-undo').click(function() {
               designerDialog.undoState = true;
               designerDialog.$el.dialog('open');
