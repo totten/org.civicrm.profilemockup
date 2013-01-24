@@ -109,9 +109,11 @@
         <button class="crm-profile-selector-copy">Copy</button>
         <button class="crm-profile-selector-create">Create</button>
     </div>
+    <form>
     <div class="crm-profile-selector-preview-pane">
         {ts}(Preview Area){/ts}
     </div>
+    </form>
 </script>
 
 <script type="text/template" id="profile_selector_empty_preview_template">
