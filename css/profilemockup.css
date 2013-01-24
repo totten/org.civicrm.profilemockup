@@ -222,6 +222,6 @@
 }
 
 /* Hide annoying 'preview' message */
-.crm-profile-selector-preview-pane form > div.messages.status.info {
+.crm-profile-selector-preview-pane > div.messages.status.info {
   display: none;
 }
