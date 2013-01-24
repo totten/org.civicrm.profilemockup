@@ -5,6 +5,10 @@ require_once 'CRM/Core/Page.php';
 class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
   function run() {
     self::registerProfileScripts();
+    $this->assign('testEntities', json_encode(array(
+      array('entity_name' => 'contact_1', 'entity_type' => 'IndividualModel'),
+      array('entity_name' => 'activity_1', 'entity_type' => 'ActivityModel'),
+    )));
     parent::run();
   }
 

@@ -38,16 +38,10 @@
         matchingUfGroups = ufGroupCollection;
       }
 
-      var ufEntities = [];
-      _.each(options.entities.split(','), function(binding) {
-        var bindingParts = binding.split(':');
-        ufEntities.push({entity_name: bindingParts[0], entity_type: bindingParts[1]});
-      });
-
       var view = new CRM.ProfileSelector.View({
         ufGroupId: $(select).val(),
         ufGroupCollection: matchingUfGroups,
-        ufEntities: ufEntities
+        ufEntities: options.entities
       });
       view.on('change:ufGroupId', function() {
         $(select).val(view.getUfGroupId()).change();
@@ -65,7 +59,7 @@
     $('.crm-profile-selector').each(function(){
       $(this).crmProfileSelector({
         groupTypeFilter: $(this).attr('data-group-type'),
-        entities: $(this).attr('data-entities')
+        entities: eval('(' + $(this).attr('data-entities') + ')')
       });
     });
   };
