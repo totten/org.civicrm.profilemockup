@@ -331,9 +331,39 @@
         title: ts('Entity Type'),
         type: 'Select',
         options: ['IndividualModel', 'ActivityModel']
+      },
+      'entity_sub_type': {
+        // Use '*' to match all subtypes; use an int to match a specific type id; use empty-string to match none
+        title: ts('Sub Type'),
+        type: 'Text'
       }
     },
+    defaults: {
+      entity_sub_type: '*'
+    },
     initialize: function() {
+    },
+    /**
+     * Get a list of all fields that can be used with this entity.
+     *
+     * @return {Object} keys are field names; values are fieldSchemas
+     */
+    getFieldSchemas: function() {
+      var modelClass= this.getModelClass();
+
+      if (this.get('entity_sub_type') == '*') {
+        return _.clone(modelClass.prototype.schema);
+      }
+
+      var result = {};
+      var subType = this.get('entity_sub_type');
+      _.each(modelClass.prototype.schema, function(fieldSchema, fieldName){
+        var section = modelClass.prototype.sections[fieldSchema.section];
+        if (!section || !section.extends_entity_column_value || _.contains(section.extends_entity_column_value, subType)) {
+          result[fieldName] = fieldSchema;
+        }
+      });
+      return result;
     },
     getModelClass: function() {
       return CRM.Schema[this.get('entity_type')];
@@ -659,7 +689,7 @@
       var newPaletteFieldModels = [];
       this.getRel('ufEntityCollection').each(function(ufEntityModel){
         var modelClass = ufEntityModel.getModelClass();
-        _.each(modelClass.prototype.schema, function(value, key, list) {
+        _.each(ufEntityModel.getFieldSchemas(), function(value, key, list) {
           var model = oldPaletteFieldModelsBySig[ufEntityModel.get('entity_name') + '::' + key];
           if (!model) {
             model = new CRM.Designer.PaletteFieldModel({

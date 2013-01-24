@@ -13,9 +13,9 @@
        data-group-type="Individual,Contact"
        data-entities="{$testEntities|escape}" />
 
-<label for="act-profile-id">Activity Profile</label>
+<label for="act-profile-id">Phone Profile</label>
 <input id="act-profile-id" type="text" class="crm-profile-selector" value=""
-    data-group-type="Individual,Contact,Activity;;ActivityType:28"
+    data-group-type="Individual,Contact,Activity;;ActivityType:2"
     data-entities="{$testEntities|escape}" />
 
 

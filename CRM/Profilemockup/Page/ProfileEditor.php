@@ -7,7 +7,7 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
     self::registerProfileScripts();
     $this->assign('testEntities', json_encode(array(
       array('entity_name' => 'contact_1', 'entity_type' => 'IndividualModel'),
-      array('entity_name' => 'activity_1', 'entity_type' => 'ActivityModel'),
+      array('entity_name' => 'activity_1', 'entity_type' => 'ActivityModel', 'entity_sub_type' => '2'),
     )));
     parent::run();
   }
@@ -149,6 +149,8 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
         'title' => ts('%1: %2', array(1 => $title, 2 => $customGroup['title'])),
         'is_addable' => TRUE,
         'custom_group_id' => $customGroup['id'],
+        'extends_entity_column_id' => CRM_Utils_Array::value('extends_entity_column_id', $customGroup),
+        'extends_entity_column_value' => CRM_Utils_Array::explodePadded(CRM_Utils_Array::value('extends_entity_column_value', $customGroup)),
       );
       $result['sections'][$sectionName] = $section;
     }
