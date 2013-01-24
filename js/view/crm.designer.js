@@ -42,8 +42,9 @@
     isDialogOpen: false,
     /** @var bool whether any changes have been made */
     isUfUnsaved: false,
-    /** @var unsure see CRM.alert() return */
+    /** @var obj handle for the CRM.alert containing undo link */
     undoAlert: null,
+    /** @var bool whether this dialog is being re-opened by the undo link */
     undoState: false,
 
     initialize: function(options) {

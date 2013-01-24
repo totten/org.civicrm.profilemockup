@@ -46,6 +46,7 @@
   padding: 1px;
   border: 1px dashed transparent;
   background-color: transparent;
+  margin-right: 0.5em;
 }
 
 .crm-designer-palette .crm-designer-palette-field a {
@@ -65,20 +66,25 @@
   background-color: #E9E9F5;
 }
 
-.crm-designer-palette .crm-designer-palette-tree a {
+.crm-container .crm-designer-palette .crm-designer-palette-tree a {
   color: #222;
   font-style: normal;
 }
 
-.crm-designer-palette .disabled a, .crm-designer-palette .crm-designer-palette-tree .disabled a.jstree-search {
+.crm-container .crm-designer-palette .disabled a,
+.crm-designer-palette .crm-designer-palette-tree .disabled a.jstree-search {
   color: #999;
+}
+
+.crm-designer-palette .jstree-leaf ins {
+  width: 6px;
 }
 
 /* Cancel hovering affect from JSTree theme -- we already do this! */
 .crm-designer-palette .crm-designer-palette-tree .jstree-hovered {
   background: transparent;
   border: 1px transparent;
-  padding:1px 2px 0 2px;
+  padding: 1px 2px 0 2px;
 }
 
 .crm-designer-canvas {
@@ -201,7 +207,7 @@
   position: relative;
 }
 
-.crm-designer .scroll {
+.crm-designer-dialog .crm-designer .scroll {
   overflow-x: auto;
   overflow-y: scroll;
 }

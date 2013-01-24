@@ -24,6 +24,9 @@
   });
   var DEFAULT_PHONE_TYPE_ID = PHONE_TYPES[0].val;
 
+  /**
+   * Add a help link to a form label
+   */
   function addHelp(title, options) {
     return title + ' <a href=\'javascript:CRM.help("' + title + '", ' + JSON.stringify(options) + ')\' title="' + ts('%1 Help', {1: title}) + '" class="helpicon"></a>';
   }
@@ -127,7 +130,7 @@
       },
       'in_selector': {
         title: addHelp(ts('Results Columns?'), {id: "in_selector", file:"CRM/UF/Form/Field"}),
-        type: ts('Select'),
+        type: 'Select',
         options: YESNO
       },
       'is_active': {
