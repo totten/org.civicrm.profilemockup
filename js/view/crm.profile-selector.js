@@ -90,7 +90,7 @@
         data: {
           class_name: 'CRM_Profilemockup_Form_Inline_PreviewById',
           id: this.getUfGroupId(),
-          snippet: 5
+          snippet: 4
         }
       }).done(function(data) {
         $pane
