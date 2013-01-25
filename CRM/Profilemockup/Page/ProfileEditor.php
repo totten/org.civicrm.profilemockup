@@ -85,9 +85,18 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
     );
 
     $extends = array('Activity');
+    $activityFields = CRM_Activity_BAO_Activity::getProfileFields();
+
+    if ($activityFields) {
+      // campaign related fields.
+      if (isset($activityFields['activity_campaign_id'])) {
+        $activityFields['activity_campaign_id']['title'] = ts('Campaign');
+      }
+    }
+    
     $civiSchema['ActivityModel'] = self::convertCiviModelToBackboneModel(
       ts('Activity'),
-      CRM_Activity_BAO_Activity::importableFields('Activity'),
+      $activityFields ,
       CRM_Core_BAO_CustomGroup::getGroupDetail(NULL, NULL, $extends),
       $availableFields
     );
