@@ -25,7 +25,7 @@
 <script type="text/template" id="palette_template">
   <div class="crm-designer-palette">
     <div class="crm-designer-palette-search">
-      <input type="text" placeholder="{ts}Search{/ts}" />
+      <input type="text" placeholder="{ts}Search Fields{/ts}" />
       <a class="crm-designer-palette-clear-search" href="#" title="{ts}Clear search{/ts}">X</a>
       <div class="crm-designer-palette-controls">
         <a href="#" class="crm-designer-palette-toggle" rel="open_all">{ts}Open All{/ts}</a>&nbsp; |&nbsp;
@@ -95,7 +95,7 @@
 
 <script type="text/template" id="field_canvas_view_template">
   <div class="crm-designer-fields">
-    <div class="crm-designer-row placeholder">{ts}To add a field to this form, drag or double-click an item in the palette.{/ts}</div>
+    <div class="crm-designer-row placeholder">{ts}To add a field to this form, drag or double-click an item from the list to the right.{/ts}</div>
   </div>
 </script>
 
