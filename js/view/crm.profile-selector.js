@@ -70,7 +70,7 @@
     },
     setUfGroupId: function(value) {
       this.options.ufGroupId = value;
-      this.$('.crm-profile-selector-select select').val(value);
+      this.$('.crm-profile-selector-select select').val(value).change();
     },
     getUfGroupId: function() {
       return this.options.ufGroupId;
