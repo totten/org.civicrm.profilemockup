@@ -314,7 +314,7 @@
             });
           }
           if (section.is_addable) {
-            items.push({data: 'placeholder', attr: {class: 'crm-designer-palette-add', 'data-section-key': entitySection}});
+            items.push({data: 'placeholder', attr: {class: 'crm-designer-palette-add', 'data-entity': ufEntityModel.get('entity_name'), 'data-section': sectionKey}});
           }
           if (items.length > 0) {
             treeData.push({data: section.title, children: items});
@@ -353,8 +353,11 @@
         paletteView.$('.crm-designer-palette-add').append('<button>'+ts('Add Field')+'</button>');
         paletteView.$('.crm-designer-palette-add button').button()
           .click(function(event){
-            var sectionKey = $(event.currentTarget).closest('.crm-designer-palette-add').attr('data-section-key');
-            paletteView.doAddField(sectionKey);
+            var entityKey = $(event.currentTarget).closest('.crm-designer-palette-add').attr('data-entity');
+            var sectionKey = $(event.currentTarget).closest('.crm-designer-palette-add').attr('data-section');
+            var ufEntityModel = paletteView.model.getRel('ufEntityCollection').getByName(entityKey);
+            var sections = ufEntityModel.getSections();
+            paletteView.doAddField(sections[sectionKey]);
             event.stopPropagation();
           })
         ;
@@ -380,10 +383,8 @@
     doSearch: function(event) {
       $('.crm-designer-palette-tree').jstree("search", $(event.target).val());
     },
-    doAddField: function(sectionKey) {
+    doAddField: function(section) {
       var paletteView = this;
-      var sections = this.model.getRel('paletteFieldCollection').getSections();
-      var section = sections[sectionKey];
       var openAddNewWindow = function() {
         var url = CRM.url('civicrm/admin/custom/group/field/add', {
           reset: 1,

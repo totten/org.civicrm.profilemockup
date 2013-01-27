@@ -104,22 +104,6 @@
         return paletteFieldModel.get('entityName') + '-' + paletteFieldModel.getSectionName();
       });
       return fieldsByEntitySection;
-    },
-
-    /**
-     * Get a list of all sections mentioned in this field-collection
-     *
-     * @return {Object} keys are synthetic section is; values are objects with "title", "is_addable", etc
-     */
-    getSections: function() {
-      // TODO cache
-      var sections = {};
-      this.getRel('ufGroupModel').getRel('ufEntityCollection').each(function(ufEntityModel){
-        _.each(ufEntityModel.getModelClass().prototype.sections, function(section, sectionKey){
-          sections[ufEntityModel.get('entity_name') + '-' + sectionKey] = section;
-        });
-      });
-      return sections;
     }
   });
 })(cj);
