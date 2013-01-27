@@ -53,7 +53,7 @@
         collection: this.options.ufGroupCollection
       });
       this.selectRegion.show(view);
-      this.setUfGroupId(this.options.ufGroupId);
+      this.setUfGroupId(this.options.ufGroupId, {silent: true});
       this.toggleButtons();
     },
     onChangeUfGroupId: function(event) {
@@ -68,9 +68,12 @@
     hasUfGroupId: function() {
       return (this.getUfGroupId() && this.getUfGroupId() != '') ? true : false;
     },
-    setUfGroupId: function(value) {
+    setUfGroupId: function(value, options) {
       this.options.ufGroupId = value;
-      this.$('.crm-profile-selector-select select').val(value).change();
+      this.$('.crm-profile-selector-select select').val(value);
+      if (options && !options.silent) {
+        this.$('.crm-profile-selector-select select').change();
+      }
     },
     getUfGroupId: function() {
       return this.options.ufGroupId;
