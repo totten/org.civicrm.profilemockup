@@ -108,7 +108,7 @@
 
           designerDialog.undoAlert && designerDialog.undoAlert.close && designerDialog.undoAlert.close();
           if (designerDialog.isUfUnsaved) {
-            designerDialog.undoAlert = CRM.alert('<p>' + ts('Your changes to "%1" have not been saved.', {1: designerDialog.model.get('title')}) + '</p><a href="#" class="crm-undo">' + ts('Restore discarded changes') + '</a>', ts('Discarded Changes'), 'alert', {expires: 60000});
+            designerDialog.undoAlert = CRM.alert('<p>' + ts('Your changes to "%1" have not been saved.', {1: designerDialog.model.get('title')}) + '</p><a href="#" class="crm-undo">' + ts('Restore unsaved changes') + '</a>', ts('Unsaved Changes'), 'alert', {expires: 60000});
             $('.ui-notify-message a.crm-undo').click(function() {
               designerDialog.undoState = true;
               designerDialog.$el.dialog('open');
