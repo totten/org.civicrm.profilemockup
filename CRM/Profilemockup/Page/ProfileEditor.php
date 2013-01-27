@@ -76,11 +76,10 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
     // pick importable or exportable fields
     $availableFields = CRM_Core_BAO_UFField::getAvailableFieldsFlat();
 
-    $extends = array('Individual', 'Contact');
     $civiSchema['IndividualModel'] = self::convertCiviModelToBackboneModel(
+      'Individual',
       ts('Individual'),
       CRM_Contact_BAO_Contact::importableFields('Individual', FALSE, FALSE, TRUE, TRUE, TRUE),
-      CRM_Core_BAO_CustomGroup::getGroupDetail(NULL, NULL, $extends),
       $availableFields
     );
 
@@ -95,9 +94,9 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
     }
     
     $civiSchema['ActivityModel'] = self::convertCiviModelToBackboneModel(
+      'Activity',
       ts('Activity'),
       $activityFields ,
-      CRM_Core_BAO_CustomGroup::getGroupDetail(NULL, NULL, $extends),
       $availableFields
     );
 
@@ -117,12 +116,12 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
    * @see js/model/crm.core.js
    * @see js/model/crm.mappedcore.js
    */
-  static function convertCiviModelToBackboneModel($title, $fields, $customGroupTree, $availableFields) {
+  static function convertCiviModelToBackboneModel($extends, $title, $fields, $availableFields) {
     $locationFields = CRM_Core_BAO_UFGroup::getLocationFields();
 
     $result = array(
-      'schema' => array(),
-      'sections' => array(),
+      'schema' => array(), // array($fieldName => $fieldSchema)
+      'sections' => array(), // array($sectionName => $section)
     );
 
     // build field list
@@ -152,28 +151,31 @@ class CRM_Profilemockup_Page_ProfileEditor extends CRM_Core_Page {
       'is_addable' => FALSE,
     );
 
-    foreach ($customGroupTree as $customGroup) {
-      $sectionName = 'cg_' . $customGroup['id'];
+    $customGroup = CRM_Core_BAO_CustomGroup::getAllCustomGroupsByBaseEntity($extends);
+    $customGroup->orderBy('weight');
+    $customGroup->is_active = 1;
+    $customGroup->find();
+    while ($customGroup->fetch()) {
+      $sectionName = 'cg_' . $customGroup->id;
       $section = array(
-        'title' => ts('%1: %2', array(1 => $title, 2 => $customGroup['title'])),
+        'title' => ts('%1: %2', array(1 => $title, 2 => $customGroup->title)),
         'is_addable' => TRUE,
-        'custom_group_id' => $customGroup['id'],
-        'extends_entity_column_id' => CRM_Utils_Array::value('extends_entity_column_id', $customGroup),
-        'extends_entity_column_value' => CRM_Utils_Array::explodePadded(CRM_Utils_Array::value('extends_entity_column_value', $customGroup)),
+        'custom_group_id' => $customGroup->id,
+        'extends_entity_column_id' => $customGroup->extends_entity_column_id,
+        'extends_entity_column_value' => CRM_Utils_Array::explodePadded($customGroup->extends_entity_column_value),
       );
       $result['sections'][$sectionName] = $section;
     }
 
     // put fields in their sections
-    foreach ($customGroupTree as $customGroup) {
-      $sectionName = 'cg_' . $customGroup['id'];
-      foreach ($customGroup['fields'] as $field) {
-        $fieldName = 'custom_' . $field['id'];
-        if (isset($result['schema'][$fieldName])) {
-          $result['schema'][$fieldName]['section'] = $sectionName;
-        }
-        $result['schema'][$fieldName]['civiIsMultiple'] = (bool)CRM_Core_BAO_CustomField::isMultiRecordField($field['id']);
+    $fields = CRM_Core_BAO_CustomField::getFields($extends);
+    foreach ($fields as $fieldId => $field) {
+      $sectionName = 'cg_' . $field['custom_group_id'];
+      $fieldName = 'custom_' . $fieldId;
+      if (isset($result['schema'][$fieldName])) {
+        $result['schema'][$fieldName]['section'] = $sectionName;
       }
+      $result['schema'][$fieldName]['civiIsMultiple'] = (bool)CRM_Core_BAO_CustomField::isMultiRecordField($fieldId);
     }
     return $result;
   }
