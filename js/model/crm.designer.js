@@ -114,8 +114,10 @@
     getSections: function() {
       // TODO cache
       var sections = {};
-      _.each(this.getFieldsByEntitySection(), function(localPaletteFields, sectionId, label) {
-        sections[sectionId] = _.first(localPaletteFields).getSection();
+      this.getRel('ufGroupModel').getRel('ufEntityCollection').each(function(ufEntityModel){
+        _.each(ufEntityModel.getModelClass().prototype.sections, function(section, sectionKey){
+          sections[ufEntityModel.get('entity_name') + '-' + sectionKey] = section;
+        });
       });
       return sections;
     }

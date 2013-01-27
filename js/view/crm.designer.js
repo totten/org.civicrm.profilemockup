@@ -302,16 +302,24 @@
 
       // Prepare data for jstree
       var treeData = [];
-      var sections = this.model.getRel('paletteFieldCollection').getSections();
-      _.each(this.model.getRel('paletteFieldCollection').getFieldsByEntitySection(), function(values, key) {
-        var items = [];
-        _.each(values, function(paletteFieldModel, k) {
-          items.push({data: paletteFieldModel.getLabel(), attr: {class: 'crm-designer-palette-field', "data-plm-cid": paletteFieldModel.cid}});
-        });
-        if (sections[key].is_addable) {
-          items.push({data: 'placeholder', attr: {class: 'crm-designer-palette-add', 'data-section-key': key}});
-        }
-        treeData.push({data: sections[key].title, children: items});
+      var paletteFieldsByEntitySection = this.model.getRel('paletteFieldCollection').getFieldsByEntitySection();
+
+      paletteView.model.getRel('ufEntityCollection').each(function(ufEntityModel){
+        _.each(ufEntityModel.getSections(), function(section, sectionKey){
+          var entitySection = ufEntityModel.get('entity_name') + '-' + sectionKey;
+          var items = [];
+          if (paletteFieldsByEntitySection[entitySection]) {
+            _.each(paletteFieldsByEntitySection[entitySection], function(paletteFieldModel, k) {
+              items.push({data: paletteFieldModel.getLabel(), attr: {class: 'crm-designer-palette-field', "data-plm-cid": paletteFieldModel.cid}});
+            });
+          }
+          if (section.is_addable) {
+            items.push({data: 'placeholder', attr: {class: 'crm-designer-palette-add', 'data-section-key': entitySection}});
+          }
+          if (items.length > 0) {
+            treeData.push({data: section.title, children: items});
+          }
+        })
       });
 
       this.$('.crm-designer-palette-tree').jstree({

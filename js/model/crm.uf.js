@@ -349,6 +349,7 @@
      * @return {Object} keys are field names; values are fieldSchemas
      */
     getFieldSchemas: function() {
+      var ufEntityModel = this;
       var modelClass= this.getModelClass();
 
       if (this.get('entity_sub_type') == '*') {
@@ -356,11 +357,23 @@
       }
 
       var result = {};
-      var subType = this.get('entity_sub_type');
       _.each(modelClass.prototype.schema, function(fieldSchema, fieldName){
         var section = modelClass.prototype.sections[fieldSchema.section];
-        if (!section || !section.extends_entity_column_value || _.contains(section.extends_entity_column_value, subType)) {
+        if (ufEntityModel.isSectionEnabled(section)) {
           result[fieldName] = fieldSchema;
+        }
+      });
+      return result;
+    },
+    isSectionEnabled: function(section) {
+      return (!section || !section.extends_entity_column_value || _.contains(section.extends_entity_column_value, this.get('entity_sub_type')));
+    },
+    getSections: function() {
+      var ufEntityModel = this;
+      var result = {};
+      _.each(ufEntityModel.getModelClass().prototype.sections, function(section, sectionKey){
+        if (ufEntityModel.isSectionEnabled(section)) {
+          result[sectionKey] = section;
         }
       });
       return result;
